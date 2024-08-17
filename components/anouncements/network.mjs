@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { success, error } from "../network/response.js";
+import { add, get, update, remove } from "./controller.mjs";
+import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 const controller = { add, get, update, remove };
