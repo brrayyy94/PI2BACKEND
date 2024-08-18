@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { success, error } from "../../network/response";
-import { add, get, update, remove } from "./controller";
+import { success, error } from "../../network/response.mjs";
+import { add, get, update, remove } from "./controller.mjs";
 
 const router = Router();
 
@@ -49,3 +49,5 @@ router.delete('/deleteUser', (req, res) => {
         error(res, 'Error interno', status || 500, message);
     });
 });
+
+export { router };

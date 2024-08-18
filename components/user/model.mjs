@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     idDocument: {
         type: String,
         required: true
@@ -14,7 +9,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    idConjunto: {
+    idComplex: {
         type: String,
         required: true
     },
@@ -35,7 +30,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    rol: {
+    role: {
         type: String,
         enum: ['ADMIN', 'RESIDENT'],
         required: true

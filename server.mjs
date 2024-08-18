@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import routes from './network/routes.mjs';
 import cors from 'cors';
+import { startConnection } from './db.mjs';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -29,7 +30,7 @@ app.get('/', (req, res) => {
 
 // Función para iniciar el servidor
 const startServer = async () => {
-    // await startConnection(); // Inicia la conexión a la base de datos
+    await startConnection(); // Inicia la conexión a la base de datos
     app.listen(process.env.PORT, () => { // Inicia el servidor y escucha en el puerto especificado en la variable de entorno PORT
       console.log(`La aplicación está escuchando en http://localhost:${process.env.PORT}`); // Imprime un mensaje en la consola indicando que el servidor ha comenzado a escuchar
     });

@@ -5,9 +5,9 @@ import User from './model.mjs';
 const add = async (req, res) => {
     try {
         const user = await addUser(req.body);
-        success(req, res, user, 201);
+        return { status: 201, message: user };
     } catch (error) {
-        error(req, res, error, 500);
+        throw { status: 400, message: error.message };
     }
 };
 
@@ -15,9 +15,9 @@ const add = async (req, res) => {
 const get = async (req, res) => {
     try {
         const users = await getUsers();
-        success(req, res, users, 200);
+        return { status: 200, message: users };
     } catch (error) {
-        error(req, res, error, 500);
+        throw { status: 400, message: error.message };
     }
 };
 
@@ -25,10 +25,9 @@ const get = async (req, res) => {
 const update = async (req, res) => {
     try {
         await updateUser(req.body);
-        success(req, res, 'Usuario actualizado', 200);
-    }
-    catch (error) {
-        error(req, res, error, 500);
+        return { status: 200, message: 'Usuario actualizado' };
+    } catch (error) {
+        throw { status: 400, message: error.message };
     }
 }
 
@@ -36,10 +35,9 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     try {
         await deleteUser(req.body);
-        success(req, res, 'Usuario eliminado', 200);
-    }
-    catch (error) {
-        error(req, res, error, 500);
+        return { status: 200, message: 'Usuario eliminado' };
+    } catch (error) {
+        throw { status: 400, message: error.message };
     }
 };
 
