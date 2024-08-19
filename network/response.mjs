@@ -1,8 +1,5 @@
 export const success = (res, message, status) => {
-    res.status(status || 200).send({
-        message,
-        status
-    });
+    res.status(status || 200).send(message);
 };
 
 export const error = (res, message, status, details) => {
