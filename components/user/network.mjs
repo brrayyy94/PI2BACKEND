@@ -17,7 +17,7 @@ router.post('/addUser', (req, res) => {
     });
 });
 
-// Route GET /user/getUsers
+// Route GET /user/getUsersByComplex
 router.get('/getUsersByComplex', (req, res) => {
     controller.get(req, res)
     .then(({ status, message }) => {
