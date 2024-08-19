@@ -1,4 +1,4 @@
-import { addUser, getUsers, updateUser, deleteUser } from './store.mjs';
+import { addUser, getUsersByComplex, updateUser, deleteUser } from './store.mjs';
 import User from './model.mjs';
 
 // Create (C)
@@ -14,7 +14,8 @@ const add = async (req, res) => {
 // Read (R)
 const get = async (req, res) => {
     try {
-        const users = await getUsers();
+        const { idComplex } = req.body;
+        const users = await getUsersByComplex(idComplex);
         return { status: 200, message: users };
     } catch (error) {
         throw { status: 400, message: error.message };

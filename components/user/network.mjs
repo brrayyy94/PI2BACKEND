@@ -18,7 +18,7 @@ router.post('/addUser', (req, res) => {
 });
 
 // Route GET /user/getUsers
-router.get('/getUsers', (req, res) => {
+router.get('/getUsersByComplex', (req, res) => {
     controller.get(req, res)
     .then(({ status, message }) => {
         success(res, message, status);

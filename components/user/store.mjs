@@ -12,9 +12,9 @@ export const addUser = async (user) => {
 };
 
 // Read (R)
-export const getUsers = async () => {
+export const getUsersByComplex = async (idComplex) => {
     try {
-        const users = await User.find();
+        const users = await User.find({ idComplex });
         return users;
     } catch (error) {
         throw new Error(error);
