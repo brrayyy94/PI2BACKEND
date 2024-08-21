@@ -4,6 +4,13 @@ import User from './model.mjs';
 // Create (C)
 const add = async (req, res) => {
     try {
+        const { idDocument, userName, idComplex, email, password, phone, apartment, role } = req.body;
+
+        // Validate required fields
+        if (!idDocument || !userName || !idComplex || !email || !password || !phone || !apartment || !role) {
+            throw { status: 400, message: "Los espacios están vacios" };
+        }
+
         const user = await addUser(req.body);
         return { status: 201, message: user };
     } catch (error) {
