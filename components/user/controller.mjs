@@ -14,7 +14,7 @@ const add = async (req, res) => {
 // Read (R)
 const get = async (req, res) => {
     try {
-        const { idComplex } = req.body;
+        const { idComplex } = req.query;
         const users = await getUsersByComplex(idComplex);
         return { status: 200, message: users };
     } catch (error) {
