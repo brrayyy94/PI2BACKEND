@@ -1,4 +1,5 @@
-import { addUser, getUsersByComplex, updateUser, deleteUser, isCorrectPassword, getUser } from './store.mjs';
+import { addUser, getUsersByComplex, updateUser, deleteUser, getUserById, isCorrectPassword, getUser} from './store.mjs';
+
 import User from './model.mjs';
 
 // Login
@@ -22,6 +23,13 @@ const login = async (req, res) => {
 // Create (C)
 const add = async (req, res) => {
     try {
+        const { idDocument, userName, idComplex, email, password, phone, apartment, role } = req.body;
+
+        // Validate required fields
+        if (!idDocument || !userName || !idComplex || !email || !password || !phone || !apartment || !role) {
+            throw { status: 400, message: "Los espacios están vacios" };
+        }
+
         const user = await addUser(req.body);
         return { status: 201, message: user };
     } catch (error) {
@@ -32,13 +40,23 @@ const add = async (req, res) => {
 // Read (R)
 const get = async (req, res) => {
     try {
-        const { idComplex } = req.body;
+        const { idComplex } = req.query;
         const users = await getUsersByComplex(idComplex);
         return { status: 200, message: users };
     } catch (error) {
         throw { status: 400, message: error.message };
     }
 };
+
+const getById = async (req, res) => {
+    try {
+        const { idUser } = req.query;
+        const user = await getUserById(idUser);
+        return { status: 200, message: user };
+    } catch (error) {
+        throw { status: 400, message: error.message };
+    }
+}
 
 // Update (U)
 const update = async (req, res) => {
@@ -60,4 +78,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, get, update, remove, login };
+export { add, get, update, remove, getById, login};

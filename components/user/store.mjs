@@ -52,6 +52,16 @@ export const getUsersByComplex = async (idComplex) => {
     }
 };
 
+export const getUserById = async (idUser) => {
+    try {
+        const user = await User.findById(idUser);
+        return user;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+
 // Update (U)
 export const updateUser = async (user) => {
     try {
