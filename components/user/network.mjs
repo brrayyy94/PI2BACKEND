@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { success, error } from "../../network/response.mjs";
-import { add, get, update, remove, getById} from "./controller.mjs";
+import { add, get, update, remove, getById, login} from "./controller.mjs";
 
 const router = Router();
 
-const controller = { add, get, update, remove, getById };
+const controller = { add, get, update, remove, getById, login };
 
 // Route POST /user/addUser
 router.post('/addUser', (req, res) => {
@@ -15,6 +15,17 @@ router.post('/addUser', (req, res) => {
         .catch(({ status, message }) => {
             error(res, 'Error interno', status || 500, message);
         });
+});
+
+//Route POST /login
+router.post('/login', (req, res) => {
+    controller.login(req, res)
+    .then(({ status, message }) => {
+        success(res, message, status);
+    })
+    .catch(({ status, message }) => {
+        error(res, 'Error interno', status || 500, message);
+    });
 });
 
 // Route GET /user/getUsersByComplex
