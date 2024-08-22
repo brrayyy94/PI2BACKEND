@@ -19,13 +19,13 @@ export const isCorrectPassword = async (userName, password) => {
     }
 };
 
-export const getUserName = async (userName) => {
+export const getUser = async (userName) => {
     try {
         const foundUser = await User.findOne({ userName });
         if (!foundUser) {
             return false; // Usuario no encontrado
         }
-        return foundUser.userName; // Devuelve el nombre del usuario
+        return foundUser; // Devuelve los datos del usuario
     } catch (error) {
         console.error('Error en getUserName:', error);
         throw new Error('Error interno');

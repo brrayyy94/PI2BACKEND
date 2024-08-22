@@ -1,4 +1,4 @@
-import { addUser, getUsersByComplex, updateUser, deleteUser, isCorrectPassword, getUserName } from './store.mjs';
+import { addUser, getUsersByComplex, updateUser, deleteUser, isCorrectPassword, getUser } from './store.mjs';
 import User from './model.mjs';
 
 // Login
@@ -10,9 +10,9 @@ const login = async (req, res) => {
         }
         const isAuthenticated = await isCorrectPassword(userName, password);
         if (isAuthenticated) { // Si la autenticación es exitosa
-            const name = await getUserName(userName); // Obtiene el nombre del usuario
-            console.log('Bienvenido', name); // Muestra un mensaje de bienvenida en la consola
-            return {status: 200, message: `Usuario ${name} logeado correctamente`, userName: name}; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
+            const user = await getUser(userName); // Obtiene el nombre del usuario
+            console.log('Bienvenido', user.userName); // Muestra un mensaje de bienvenida en la consola
+            return {status: 200, message:user}; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
         }
     }catch (error) {
         throw { status: 400, message: error.message };
