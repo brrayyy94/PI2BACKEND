@@ -1,5 +1,36 @@
 import User from './model.mjs';
 
+export const isCorrectPassword = async (email, password) => {
+    try {
+        const foundUser = await User.findOne({ email });
+        if (!foundUser) {
+            return "Correo no encontrado"; // Devuelve un mensaje si el usuario no existe
+        }
+        try {
+            const isMatch = await foundUser.comparePassword(password); // Compara la contraseña ingresada con la contraseña almacenada
+            return isMatch; // Devuelve true si la contraseña es correcta, false si no lo es
+        } catch (error) {
+            console.error('Error al comparar contraseñas:', error);
+            return false; // Devolver false si hay un error
+        }
+    } catch (error) {
+        console.error('Error en isCorrectPassword:', error);
+        throw new Error('Error interno');
+    }
+};
+
+export const getUser = async (email) => {
+    try {
+        const foundUser = await User.findOne({ email });
+        if (!foundUser) {
+            return false; // Usuario no encontrado
+        }
+        return foundUser; // Devuelve los datos del usuario
+    } catch (error) {
+        console.error('Error en getUserName:', error);
+        throw new Error('Error interno');
+    }
+};
 // Create (C)
 export const addUser = async (user) => {
     try {
@@ -12,9 +43,9 @@ export const addUser = async (user) => {
 };
 
 // Read (R)
-export const getUsers = async () => {
+export const getUsersByComplex = async (idComplex) => {
     try {
-        const users = await User.find();
+        const users = await User.find({ idComplex });
         return users;
     } catch (error) {
         throw new Error(error);
