@@ -1,5 +1,23 @@
-import { addUser, getUsersByComplex, updateUser, deleteUser } from './store.mjs';
+import { addUser, getUsersByComplex, updateUser, deleteUser, isCorrectPassword, getUserName } from './store.mjs';
 import User from './model.mjs';
+
+// Login
+const login = async (req, res) => {
+    try {
+        const { userName, password } = req.body;
+        if (!userName || !password) {
+            return { status: 400, message: 'Faltan datos' };
+        }
+        const isAuthenticated = await isCorrectPassword(userName, password);
+        if (isAuthenticated) { // Si la autenticación es exitosa
+            const name = await getUserName(userName); // Obtiene el nombre del usuario
+            console.log('Bienvenido', name); // Muestra un mensaje de bienvenida en la consola
+            return {status: 200, message: `Usuario ${name} logeado correctamente`, userName: name}; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
+        }
+    }catch (error) {
+        throw { status: 400, message: error.message };
+    }
+};
 
 // Create (C)
 const add = async (req, res) => {
@@ -42,4 +60,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, get, update, remove };
+export { add, get, update, remove, login };

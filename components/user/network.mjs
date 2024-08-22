@@ -1,14 +1,25 @@
 import { Router } from "express";
 import { success, error } from "../../network/response.mjs";
-import { add, get, update, remove } from "./controller.mjs";
+import { add, get, update, remove, login } from "./controller.mjs";
 
 const router = Router();
 
-const controller = {add, get, update, remove};
+const controller = {add, get, update, remove, login};
 
 // Route POST /user/addUser
 router.post('/addUser', (req, res) => {
     controller.add(req, res)
+    .then(({ status, message }) => {
+        success(res, message, status);
+    })
+    .catch(({ status, message }) => {
+        error(res, 'Error interno', status || 500, message);
+    });
+});
+
+//Route POST /login
+router.post('/login', (req, res) => {
+    controller.login(req, res)
     .then(({ status, message }) => {
         success(res, message, status);
     })
