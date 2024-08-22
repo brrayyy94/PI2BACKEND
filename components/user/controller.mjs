@@ -4,13 +4,13 @@ import User from './model.mjs';
 // Login
 const login = async (req, res) => {
     try {
-        const { userName, password } = req.body;
-        if (!userName || !password) {
+        const { email, password } = req.body;
+        if (!email || !password) {
             return { status: 400, message: 'Faltan datos' };
         }
-        const isAuthenticated = await isCorrectPassword(userName, password);
+        const isAuthenticated = await isCorrectPassword(email, password);
         if (isAuthenticated) { // Si la autenticación es exitosa
-            const user = await getUser(userName); // Obtiene el nombre del usuario
+            const user = await getUser(email); // Obtiene los datos del usuario
             console.log('Bienvenido', user.userName); // Muestra un mensaje de bienvenida en la consola
             return {status: 200, message:user}; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
         }

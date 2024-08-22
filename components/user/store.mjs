@@ -1,10 +1,10 @@
 import User from './model.mjs';
 
-export const isCorrectPassword = async (userName, password) => {
+export const isCorrectPassword = async (email, password) => {
     try {
-        const foundUser = await User.findOne({ userName });
+        const foundUser = await User.findOne({ email });
         if (!foundUser) {
-            return "Usuario no encontrado"; // Devuelve un mensaje si el usuario no existe
+            return "Correo no encontrado"; // Devuelve un mensaje si el usuario no existe
         }
         try {
             const isMatch = await foundUser.comparePassword(password); // Compara la contraseña ingresada con la contraseña almacenada
@@ -19,9 +19,9 @@ export const isCorrectPassword = async (userName, password) => {
     }
 };
 
-export const getUser = async (userName) => {
+export const getUser = async (email) => {
     try {
-        const foundUser = await User.findOne({ userName });
+        const foundUser = await User.findOne({ email });
         if (!foundUser) {
             return false; // Usuario no encontrado
         }
