@@ -3,54 +3,51 @@ import { add, get, update, remove } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
+
 const controller = { add, get, update, remove };
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
 router.post('/addAnoun', (req, res) => {
-    // controller.addAnoun(req.body)
-    //     .then(data => {
-    //         success(req, res, data, 201);
-    //     })
-    //     .catch(err => {
-    //         error(req, res, err, 500);
-    //     });
-    success(req, res, 'Anuncio creado', 201);
+    controller.add(req, res)
+        .then(({ status, message, data }) => {
+            success(req, res, message, status, data);
+        })
+        .catch(({ status, message }) => {
+            error(req, res, 'Error interno', status || 500, message);
+        });
 });
 
 // Ruta para el método GET en /anouncements/getAnouns (R)
 router.get('/getAnouns', (req, res) => {
-    // controller.getAnouns()
-    //     .then(data => {
-    //         success(req, res, data, 200);
-    //     })
-    //     .catch(err => {
-    //         error(req, res, err, 500);
-    //     });
-    success(req, res, 'Anuncios obtenidos', 200);
+    controller.get(req, res)
+        .then(({ status, message }) => {
+            success(req, res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(req, res, 'Error interno', status || 500, message);
+        });
 });
 
 // Ruta para el método POST en /anouncements/updateAnoun (U)
 router.post('/updateAnoun', (req, res) => {
-    // controller.updateAnoun(req.body)
-    //     .then(data => {
-    //         success(req, res, data, 200);
-    //     })
-    //     .catch(err => {
-    //         error(req, res, err, 500);
-    //     });
-    success(req, res, 'Anuncio actualizado', 200);
+    controller.update(req, res)
+        .then(({ status, message, data }) => {
+            success(req, res, message, status, data);
+        })
+        .catch(({ status, message }) => {
+            error(req, res, 'Error interno', status || 500, message);
+        });
 });
 
 // Ruta para el método DELETE en /anouncements/deleteAnoun (D)
 router.delete('/deleteAnoun', (req, res) => {
-    // controller.deleteAnoun(req.body)
-    //     .then(data => {
-    //         success(req, res, data, 200);
-    //     })
-    //     .catch(err => {
-    //         error(req, res, err, 500);
-    //     });
-    success(req, res, 'Anuncio eliminado', 200);
+    controller.remove(req, res)
+        .then(({ status, message, data }) => {
+            success(req, res, message, status, data);
+        })
+        .catch(({ status, message }) => {
+            error(req, res, 'Error interno', status || 500, message);
+        });
 });
 
 export { router };
