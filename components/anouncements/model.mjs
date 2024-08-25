@@ -48,17 +48,17 @@ anounSchema.pre('save', async function(next) {
     this.Date = new Date().toISOString();
     this.LastModify = new Date().toISOString();
 
-    if (!this.CreatedBy) {
-        try {
-            const user = await User.findById(this.User);
-            if (user) {
-                this.CreatedBy = user.userName;
-            } else {
-                throw new Error('User not found');
-            }
-        } catch (error) {
-            return next(error);
+    try {
+        const user = await User.findById(this.User);
+        if (user) {
+            this.CreatedBy = user.userName;
+            this.isAdmin = user.role === 'ADMIN';
+            this.Complex = user.idComplex;
+        } else {
+            throw new Error('User not found');
         }
+    } catch (error) {
+        return next(error);
     }
 
     next();

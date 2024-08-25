@@ -20,6 +20,7 @@ export const error = (res, message, status, details) => {
     if (res.headersSent) { // Verificar si ya se han enviado las cabeceras
         return; // Si ya se enviaron, se detiene la ejecución
     }
+    console.log('res object:', res)
     res.status(status || 500).send({
         error: message,
         body: ''
