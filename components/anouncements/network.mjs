@@ -8,12 +8,21 @@ const controller = { add, get, update, remove };
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
 router.post('/addAnoun', (req, res) => {
+    const { User } = req.body;
+
+    // Validate required fields
+    if (!User) {
+        return error(res, 'Missing required fields', 400, {
+            User: 'User is required'
+        });
+    }
+
     controller.add(req, res)
         .then(({ status, message, data }) => {
-            success(req, res, message, status, data);
+            success(res, message, status, data); // Pass only res
         })
         .catch(({ status, message }) => {
-            error(req, res, 'Error interno', status || 500, message);
+            error(res, 'Error interno', status || 500, message); // Pass only res
         });
 });
 
@@ -21,21 +30,21 @@ router.post('/addAnoun', (req, res) => {
 router.get('/getAnouns', (req, res) => {
     controller.get(req, res)
         .then(({ status, message }) => {
-            success(req, res, message, status);
+            success(res, message, status); // Pass only res
         })
         .catch(({ status, message }) => {
-            error(req, res, 'Error interno', status || 500, message);
+            error(res, 'Error interno', status || 500, message); // Pass only res
         });
 });
 
 // Ruta para el método POST en /anouncements/updateAnoun (U)
-router.post('/updateAnoun', (req, res) => {
+router.put('/updateAnoun', (req, res) => {
     controller.update(req, res)
         .then(({ status, message, data }) => {
-            success(req, res, message, status, data);
+            success(res, message, status, data); // Pass only res
         })
         .catch(({ status, message }) => {
-            error(req, res, 'Error interno', status || 500, message);
+            error(res, 'Error interno', status || 500, message); // Pass only res
         });
 });
 
@@ -43,10 +52,10 @@ router.post('/updateAnoun', (req, res) => {
 router.delete('/deleteAnoun', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message, data }) => {
-            success(req, res, message, status, data);
+            success(res, message, status, data); // Pass only res
         })
         .catch(({ status, message }) => {
-            error(req, res, 'Error interno', status || 500, message);
+            error(res, 'Error interno', status || 500, message); // Pass only res
         });
 });
 

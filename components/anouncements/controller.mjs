@@ -47,11 +47,11 @@ const update = async (req, res) => {
 // Delete (D)
 const remove = async (req, res) => {
     try {
-        const { id } = req.params;
-        if (!id) {
+        const { _id } = req.query;
+        if (!_id) {
             throw { status: 400, message: 'ID is required' };
         }
-        const deletedAnuncio = await deleteAnoun(id);
+        const deletedAnuncio = await deleteAnoun(_id);
         if (!deletedAnuncio) {
             throw { status: 404, message: 'Announcement not found' };
         }

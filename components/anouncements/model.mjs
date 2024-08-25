@@ -12,8 +12,7 @@ const anounSchema = new mongoose.Schema({
         required: true 
     },
     Complex: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Complex', 
+        type: String,
         required: true 
     },
     Title: { 
@@ -43,8 +42,8 @@ const anounSchema = new mongoose.Schema({
     }
 });
 
-// Pre-save middleware to set dates to UTC and set CreatedBy
-anounSchema.pre('save', async function(next) {
+// Pre-validate middleware to set dates to UTC and set CreatedBy
+anounSchema.pre('validate', async function(next) {
     this.Date = new Date().toISOString();
     this.LastModify = new Date().toISOString();
 
