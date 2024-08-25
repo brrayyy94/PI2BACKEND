@@ -1,21 +1,11 @@
-import { ServerResponse } from 'http';
-
 // Success response function
-export const success = (res, message, status = 200, data = null) => {
-    if (!(res instanceof ServerResponse)) {
-        console.error('Invalid response object passed to success function:', res);
-        return;
-    }
-    res.status(status).json({
-        error: false,
-        status,
-        message,
-        data
-    });
+export const success = (res, message, status) => {
+    res.status(status || 200).send(message);
 };
 
+
 // Error response function
-export const error = (res, message, status = 500, details = null) => {
+export const error = (res, message, status, details) => {
     const getCircularReplacer = () => {
         const seen = new WeakSet();
         return (key, value) => {
@@ -29,34 +19,12 @@ export const error = (res, message, status = 500, details = null) => {
         };
     };
 
-    console.error('[response error] ' + (details?.message || JSON.stringify(details, getCircularReplacer())));
-    if (!(res instanceof ServerResponse)) {
-        console.error('Invalid response object passed to error function:', res);
-        return;
+    console.error('[response error] ' + (details.message || JSON.stringify(details, getCircularReplacer())));
+    if (res.headersSent) { // Verificar si ya se han enviado las cabeceras
+        return; // Si ya se enviaron, se detiene la ejecución
     }
-    if (res.headersSent) { // Check if headers have already been sent
-        return; // If they have, stop execution
-    }
-
-    // Ensure status is a valid HTTP status code
-    if (typeof status !== 'number' || status < 100 || status > 599) {
-        status = 500; // Default to internal server error
-    }
-
-    // Ensure message is a string
-    if (typeof message !== 'string') {
-        message = 'An error occurred';
-    }
-
-    // Ensure details is an object or null
-    if (typeof details !== 'object' || details === null) {
-        details = {};
-    }
-
-    res.status(status).json({
-        error: true,
-        status,
-        message,
-        details
+    res.status(status || 500).send({
+        error: message,
+        body: ''
     });
 };

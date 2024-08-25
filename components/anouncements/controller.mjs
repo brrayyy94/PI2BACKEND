@@ -38,7 +38,7 @@ const update = async (req, res) => {
         if (!updatedAnuncio) {
             throw { status: 404, message: 'Announcement not found' };
         }
-        return { status: 200, message: 'Anuncio actualizado', data: updatedAnuncio };
+        return { status: 201, message: 'Anuncio actualizado', data: updatedAnuncio };
     } catch (err) {
         throw { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
     }
@@ -55,7 +55,7 @@ const remove = async (req, res) => {
         if (!deletedAnuncio) {
             throw { status: 404, message: 'Announcement not found' };
         }
-        return { status: 200, message: 'Anuncio eliminado', data: deletedAnuncio };
+        return { status: 201, message: 'Anuncio eliminado', data: deletedAnuncio };
     } catch (err) {
         throw { status: err.status || 500, message: `Error deleting announcement: ${err.message}` };
     }
