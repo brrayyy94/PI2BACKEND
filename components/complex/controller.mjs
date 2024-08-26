@@ -1,9 +1,13 @@
-import { addComplex, getComplex, updateComplex, deleteComplex } from "./store.mjs";
-import Complex from "./model.mjs";
+import { addComplex, getComplex, updateComplex, deleteComplex, getComplexColors } from "./store.mjs";
+import mongoose from "mongoose";
 
 // Create (C)
 const add = async (req, res) => {
+    const {name, address, config } = req.body;
     try {
+        if (!name || !address || !config) {
+            return { status: 400, message: 'Faltan datos obligatorios' };
+        }
         const complex = await addComplex(req.body);
         return { status: 201, message: complex };
     } catch (error) {
@@ -15,7 +19,11 @@ const add = async (req, res) => {
 const get = async (req, res) => {
     const { complex } = req.params;
     try {
-        const complex_res = await Complex.findById(complex);
+        // Validar si el ID es un ObjectId válido
+        if (!mongoose.Types.ObjectId.isValid(complex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const complex_res = await getComplex(complex);
         if (!complex_res) {
             return { status: 404, message: 'Conjunto no encontrado' };
         }
@@ -29,7 +37,11 @@ const get = async (req, res) => {
 const getConfigColors = async (req, res) => {
     const { complex } = req.params;
     try {
-        const complex_res = await Complex.findById(complex).select('config');
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(complex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const complex_res = await getComplexColors(complex);
         if (!complex_res) {
             return { status: 404, message: 'Conjunto no encontrado' };
         }

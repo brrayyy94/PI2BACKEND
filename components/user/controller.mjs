@@ -39,8 +39,8 @@ const add = async (req, res) => {
 
 // Read (R)
 const get = async (req, res) => {
+    const { idComplex } = req.params;
     try {
-        const { idComplex } = req.query;
         const users = await getUsersByComplex(idComplex);
         return { status: 200, message: users };
     } catch (error) {
@@ -49,8 +49,8 @@ const get = async (req, res) => {
 };
 
 const getById = async (req, res) => {
+    const { idUser } = req.params;
     try {
-        const { idUser } = req.query;
         const user = await getUserById(idUser);
         return { status: 200, message: user };
     } catch (error) {

@@ -37,7 +37,7 @@ const anounSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        enum: ['Fumigacion', 'ServiciosPublicos', 'Asamblea'], 
+        enum: ['Mantenimiento', 'Servicios', 'Reuniones'], 
         required: true 
     }
 });

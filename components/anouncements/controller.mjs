@@ -1,9 +1,10 @@
-import { addAnoun, getAnouns, updateAnoun, deleteAnoun } from './store.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById } from './store.mjs';
+import mongoose from 'mongoose';
 
 // Helper function to validate request body
 const validateAnuncio = (anuncio) => {
     if (!anuncio || Object.values(anuncio).some(field => !field)) {
-        throw { status: 400, message: 'All fields are required' };
+        return { status: 400, message: 'All fields are required' };
     }
 };
 
@@ -13,19 +14,42 @@ const add = async (req, res) => {
         const anuncio = req.body;
         validateAnuncio(anuncio);
         const newAnuncio = await addAnoun(anuncio);
-        return { status: 201, message: 'Anuncio creado', data: newAnuncio };
+        return { status: 201, message: newAnuncio };
     } catch (err) {
         throw { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
     }
 };
 
 // Read (R)
-const get = async (req, res) => {
+const getByComplex = async (req, res) => {
+    const { idComplex } = req.params; 
     try {
-        const anuncios = await getAnouns();
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idComplex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncios = await getAnounsByComplex( idComplex );
         return { status: 200, message: anuncios };
     } catch (err) {
         throw { status: 500, message: `Error fetching announcements: ${err.message}` };
+    }
+};
+
+// Read (R) by Anuncio ID
+const getById = async (req, res) => {
+    const { _id } = req.params;
+    try {
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncio = await getAnounById(_id);
+        if (!anuncio) {
+            return { status: 404, message: 'Announcement not found' };
+        }
+        return { status: 200, message: anuncio };
+    } catch (err) {
+        throw { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
     }
 };
 
@@ -36,7 +60,7 @@ const update = async (req, res) => {
         validateAnuncio(anuncio);
         const updatedAnuncio = await updateAnoun(anuncio);
         if (!updatedAnuncio) {
-            throw { status: 404, message: 'Announcement not found' };
+            return { status: 404, message: 'Announcement not found' };
         }
         return { status: 201, message: 'Anuncio actualizado', data: updatedAnuncio };
     } catch (err) {
@@ -46,14 +70,18 @@ const update = async (req, res) => {
 
 // Delete (D)
 const remove = async (req, res) => {
+    const { idAnoun } = req.params;
     try {
-        const { _id } = req.query;
-        if (!_id) {
-            throw { status: 400, message: 'ID is required' };
+        if (!idAnoun) {
+            return { status: 400, message: 'ID is required' };
         }
-        const deletedAnuncio = await deleteAnoun(_id);
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idAnoun)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const deletedAnuncio = await deleteAnoun(idAnoun);
         if (!deletedAnuncio) {
-            throw { status: 404, message: 'Announcement not found' };
+            return { status: 404, message: 'Announcement not found' };
         }
         return { status: 201, message: 'Anuncio eliminado', data: deletedAnuncio };
     } catch (err) {
@@ -61,4 +89,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, get, update, remove };
+export { add, getByComplex, update, remove, getById };

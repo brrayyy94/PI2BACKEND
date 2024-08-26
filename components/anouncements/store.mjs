@@ -7,8 +7,20 @@ export const addAnoun = async (anoun) => {
 }; 
 
 // Read (R)
-export const getAnouns = async () => {
-    return await Anoun.find();
+export const getAnounsByComplex = async (idComplex) => {
+    const foundAnoun = await Anoun.find({ Complex: idComplex });
+    if (!foundAnoun) {
+        return { status: 404, message: "No se han encontrado anuncios" };
+    }
+    return foundAnoun;
+};
+
+export const getAnounById = async (_id) => {
+    const foundAnoun = await Anoun.findById(_id);
+    if (!foundAnoun) {
+        return { status: 404, message: "Anuncio no encontrado" };
+    }
+    return foundAnoun;
 };
 
 // Update (U)
@@ -18,5 +30,11 @@ export const updateAnoun = async (anoun) => {
 
 // Delete (D)
 export const deleteAnoun = async (anounId) => {
-    return await Anoun.findByIdAndDelete(anounId);
-}
+    try {
+        const deletedAnuncio = await Anoun.findByIdAndDelete(anounId);
+        return deletedAnuncio;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+};

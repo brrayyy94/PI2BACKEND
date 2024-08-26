@@ -1,34 +1,22 @@
 import { Router } from "express";
-import { add, get, update, remove } from "./controller.mjs";
+import { add, getByComplex, update, remove, getById } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { add, get, update, remove };
+const controller = { add, getByComplex, update, remove, getById };
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
 router.post('/addAnoun', (req, res) => {
-    const { User } = req.body;
+    const { User, Title, Body, category } = req.body;
 
     // Validate required fields
-    if (!User) {
-        return error(res, 'Missing required fields', 400, {
-            User: 'User is required'
+    if (!User || !Title || !Body || !category) {
+        return error(res, 'Missing required fields', 400, { User, Title, Body, category 
         });
     }
 
     controller.add(req, res)
-        .then(({ status, message, data }) => {
-            success(res, message, status, data); // Pass only res
-        })
-        .catch(({ status, message }) => {
-            error(res, 'Error interno', status || 500, message); // Pass only res
-        });
-});
-
-// Ruta para el método GET en /anouncements/getAnouns (R)
-router.get('/getAnouns', (req, res) => {
-    controller.get(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
         })
@@ -37,6 +25,27 @@ router.get('/getAnouns', (req, res) => {
         });
 });
 
+// Ruta para el método GET en /anouncements/getAnounsByComplex/:idComplex (R)
+router.get('/getAnounsByComplex/:idComplex', (req, res) => {
+    controller.getByComplex(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status); // Pass only res
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message); // Pass only res
+        });
+});
+
+// Ruta para el método GET en /anouncements/getAnounById/:_id (R)
+router.get('/getAnounById/:_id', (req, res) => {
+    controller.getById(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status); // Pass only res
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message); // Pass only res
+        });
+});
 // Ruta para el método POST en /anouncements/updateAnoun (U)
 router.put('/updateAnoun', (req, res) => {
     controller.update(req, res)
@@ -48,8 +57,8 @@ router.put('/updateAnoun', (req, res) => {
         });
 });
 
-// Ruta para el método DELETE en /anouncements/deleteAnoun (D)
-router.delete('/deleteAnoun', (req, res) => {
+// Ruta para el método DELETE en /anouncements/deleteAnoun/idAnoun (D)
+router.delete('/deleteAnoun/:idAnoun', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message, data }) => {
             success(res, message, status, data); // Pass only res
