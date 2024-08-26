@@ -2,6 +2,8 @@ import { addUser, getUsersByComplex, updateUser, deleteUser, getUserById, isCorr
 
 import User from './model.mjs';
 
+const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
+
 // Login
 const login = async (req, res) => {
     try {
@@ -27,9 +29,11 @@ const add = async (req, res) => {
 
         // Validate required fields
         if (!idDocument || !userName || !idComplex || !email || !password || !phone || !apartment || !role) {
-            throw { status: 400, message: "Los espacios están vacios" };
+            return { status: 400, message: "Los espacios están vacios" };
         }
-
+        if (!isNotEmptyOrWhitespace(idDocument) || !isNotEmptyOrWhitespace(userName) || !isNotEmptyOrWhitespace(idComplex) || !isNotEmptyOrWhitespace(email) || !isNotEmptyOrWhitespace(password) || !isNotEmptyOrWhitespace(phone) || !isNotEmptyOrWhitespace(apartment) || !isNotEmptyOrWhitespace(role)) {
+            return { status: 400, message: "Los espacios no pueden estar vacios o contener solo espacios en blanco" };
+        }
         const user = await addUser(req.body);
         return { status: 201, message: user };
     } catch (error) {
@@ -61,6 +65,15 @@ const getById = async (req, res) => {
 // Update (U)
 const update = async (req, res) => {
     try {
+        const { _id, idDocument, userName, idComplex, email, password, phone, apartment, role } = req.body;
+
+        // Validate required fields
+        if (!_id || !idDocument || !userName || !idComplex || !email || !password || !phone || !apartment || !role) {
+            return { status: 400, message: "Missing required fields" };
+        }
+        if (!isNotEmptyOrWhitespace(_id) || !isNotEmptyOrWhitespace(idDocument) || !isNotEmptyOrWhitespace(userName) || !isNotEmptyOrWhitespace(idComplex) || !isNotEmptyOrWhitespace(email) || !isNotEmptyOrWhitespace(password) || !isNotEmptyOrWhitespace(phone) || !isNotEmptyOrWhitespace(apartment) || !isNotEmptyOrWhitespace(role)) {
+            return { status: 400, message: "Fields cannot empty or contain only whitespace" };
+        }
         await updateUser(req.body);
         return { status: 200, message: 'Usuario actualizado' };
     } catch (error) {

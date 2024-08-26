@@ -5,6 +5,7 @@ import { success, error } from "../../network/response.mjs";
 const router = Router();
 
 const controller = { add, getByComplex, update, remove, getById };
+const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
 router.post('/addAnoun', (req, res) => {
@@ -16,6 +17,10 @@ router.post('/addAnoun', (req, res) => {
         });
     }
 
+    if (!isNotEmptyOrWhitespace(User) || !isNotEmptyOrWhitespace(Title) || !isNotEmptyOrWhitespace(Body) || !isNotEmptyOrWhitespace(category)) {
+        return error(res, 'Fields cannot be empty or contain only whitespace', 400, { User, Title, Body, category 
+        });
+    }
     controller.add(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
@@ -48,6 +53,17 @@ router.get('/getAnounById/:_id', (req, res) => {
 });
 // Ruta para el método POST en /anouncements/updateAnoun (U)
 router.put('/updateAnoun', (req, res) => {
+    const { _id, Title, Body, category } = req.body;
+
+    // Validate required fields
+    if (!_id || !Title || !Body || !category) {
+        return error(res, 'Missing required fields', 400, { _id, Title, Body, category 
+        });
+    }
+    if (!isNotEmptyOrWhitespace(_id) || !isNotEmptyOrWhitespace(Title) || !isNotEmptyOrWhitespace(Body) || !isNotEmptyOrWhitespace(category)) {
+        return error(res, 'Fields cannot be empty or contain only whitespace', 400, { _id, Title, Body, category 
+        });
+    }
     controller.update(req, res)
         .then(({ status, message, data }) => {
             success(res, message, status, data); // Pass only res

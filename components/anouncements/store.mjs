@@ -8,7 +8,7 @@ export const addAnoun = async (anoun) => {
 
 // Read (R)
 export const getAnounsByComplex = async (idComplex) => {
-    const foundAnoun = await Anoun.find({ Complex: idComplex });
+    const foundAnoun = await Anoun.find({ Complex: idComplex }).sort({ Date: 1});
     if (!foundAnoun) {
         return { status: 404, message: "No se han encontrado anuncios" };
     }
