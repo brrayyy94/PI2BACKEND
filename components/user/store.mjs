@@ -55,7 +55,7 @@ export const getUsersByComplex = async (idComplex) => {
 export const getUserById = async (idUser) => {
     try {
         const user = await User.findById(idUser);
-        return "usuario encontrado" + user;
+        return user;
     }
     catch (error) {
         throw new Error(error);
