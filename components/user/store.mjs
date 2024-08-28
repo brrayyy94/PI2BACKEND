@@ -45,7 +45,7 @@ export const addUser = async (user) => {
 // Read (R)
 export const getUsersByComplex = async (idComplex) => {
     try {
-        const users = await User.findOne({ idComplex });
+        const users = await User.find({ idComplex });
         return users;
     } catch (error) {
         throw new Error(error);
