@@ -58,6 +58,10 @@ const update = async (req, res) => {
     try {
         const anuncio = req.body;
         validateAnuncio(anuncio);
+
+        // Actualizacion manualmente el campo LastModify
+        anuncio.LastModify = new Date().toISOString();
+
         const updatedAnuncio = await updateAnoun(anuncio);
         if (!updatedAnuncio) {
             return { status: 404, message: 'Announcement not found' };
