@@ -1,9 +1,21 @@
-import { addComplex, getComplex, updateComplex, deleteComplex } from "./store.mjs";
-import Complex from "./model.mjs";
+import { addComplex, getComplex, updateComplex, deleteComplex, getComplexColors } from "./store.mjs";
+import mongoose from "mongoose";
+
+const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Create (C)
 const add = async (req, res) => {
+    const {name, address, config } = req.body;
     try {
+        const primaryColor = config.primaryColor;
+        const secondaryColor = config.secondaryColor;
+
+        if (!name || !address || !primaryColor || !secondaryColor) {
+            return { status: 400, message: 'Missing required fields' };
+        }
+        if (!isNotEmptyOrWhitespace(name) || !isNotEmptyOrWhitespace(address) || !isNotEmptyOrWhitespace(primaryColor) || !isNotEmptyOrWhitespace(secondaryColor)) {
+            return { status: 400, message: 'Fields cannot be empty or contain only whitespace' };
+        }
         const complex = await addComplex(req.body);
         return { status: 201, message: complex };
     } catch (error) {
@@ -15,7 +27,11 @@ const add = async (req, res) => {
 const get = async (req, res) => {
     const { complex } = req.params;
     try {
-        const complex_res = await Complex.findById(complex);
+        // Validar si el ID es un ObjectId válido
+        if (!mongoose.Types.ObjectId.isValid(complex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const complex_res = await getComplex(complex);
         if (!complex_res) {
             return { status: 404, message: 'Conjunto no encontrado' };
         }
@@ -29,7 +45,11 @@ const get = async (req, res) => {
 const getConfigColors = async (req, res) => {
     const { complex } = req.params;
     try {
-        const complex_res = await Complex.findById(complex).select('config');
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(complex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const complex_res = await getComplexColors(complex);
         if (!complex_res) {
             return { status: 404, message: 'Conjunto no encontrado' };
         }
@@ -41,7 +61,16 @@ const getConfigColors = async (req, res) => {
 
 // Update (U)
 const update = async (req, res) => {
+    const {_id, name, address, config } = req.body;
     try {
+        const primaryColor = config.primaryColor;
+        const secondaryColor = config.secondaryColor;
+        if (!_id || !name || !address || !primaryColor || !secondaryColor) {
+            return { status: 400, message: 'Missing required fields' };
+        }
+        if (!isNotEmptyOrWhitespace(_id) || !isNotEmptyOrWhitespace(name) || !isNotEmptyOrWhitespace(address) || !isNotEmptyOrWhitespace(primaryColor) || !isNotEmptyOrWhitespace(secondaryColor)) {
+            return { status: 400, message: 'Fields cannot be empty or contain only whitespace' };
+        }
         await updateComplex(req.body);
         return { status: 200, message: 'Conjunto actualizado' };
     } catch (error) {

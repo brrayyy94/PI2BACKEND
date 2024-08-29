@@ -1,7 +1,10 @@
+// Success response function
 export const success = (res, message, status) => {
     res.status(status || 200).send(message);
 };
 
+
+// Error response function
 export const error = (res, message, status, details) => {
     const getCircularReplacer = () => {
         const seen = new WeakSet();

@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
 });
 
 // Route GET /user/getUsersByComplex
-router.get('/getUsersByComplex', (req, res) => {
+router.get('/getUsersByComplex/:idComplex', (req, res) => {
     controller.get(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -40,7 +40,7 @@ router.get('/getUsersByComplex', (req, res) => {
 });
 
 // Route GET /user/getUserById
-router.get('/getUserById', (req, res) => {
+router.get('/getUserById/:idUser', (req, res) => {
     controller.getById(req, res)
         .then(({ status, message }) => {
             success(res, message, status);

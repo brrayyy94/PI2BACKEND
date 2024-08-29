@@ -23,7 +23,7 @@ export const getUser = async (email) => {
     try {
         const foundUser = await User.findOne({ email });
         if (!foundUser) {
-            return false; // Usuario no encontrado
+            return "Usuario no encontrado"; // Usuario no encontrado
         }
         return foundUser; // Devuelve los datos del usuario
     } catch (error) {
@@ -36,7 +36,7 @@ export const addUser = async (user) => {
     try {
         const newUser = new User(user);
         await newUser.save();
-        return 'Usuario creado';
+        return 'Usuario creado\n' + newUser;
     } catch (error) {
         throw new Error(error);
     }

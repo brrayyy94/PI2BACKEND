@@ -1,47 +1,96 @@
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById } from './store.mjs';
+import mongoose from 'mongoose';
 
+// Helper function to validate request body
+const validateAnuncio = (anuncio) => {
+    if (!anuncio || Object.values(anuncio).some(field => !field)) {
+        return { status: 400, message: 'All fields are required' };
+    }
+};
 
 // Create (C)
 const add = async (req, res) => {
     try {
-        const anuncio = new Anuncio(req.body);
-        await anuncio.save();
-        success(req, res, 'Anuncio creado', 201);
-    } catch (error) {
-        error(req, res, error, 500);
+        const anuncio = req.body;
+        validateAnuncio(anuncio);
+        const newAnuncio = await addAnoun(anuncio);
+        return { status: 201, message: newAnuncio };
+    } catch (err) {
+        throw { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
     }
 };
 
 // Read (R)
-const get = async (req, res) => {
+const getByComplex = async (req, res) => {
+    const { idComplex } = req.params; 
     try {
-        const anuncios = await Anuncio.find();
-        success(req, res, anuncios, 200);
-    } catch (error) {
-        error(req, res, error, 500);
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idComplex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncios = await getAnounsByComplex( idComplex );
+        return { status: 200, message: anuncios };
+    } catch (err) {
+        throw { status: 500, message: `Error fetching announcements: ${err.message}` };
+    }
+};
+
+// Read (R) by Anuncio ID
+const getById = async (req, res) => {
+    const { _id } = req.params;
+    try {
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(_id)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncio = await getAnounById(_id);
+        if (!anuncio) {
+            return { status: 404, message: 'Announcement not found' };
+        }
+        return { status: 200, message: anuncio };
+    } catch (err) {
+        throw { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
     }
 };
 
 // Update (U)
 const update = async (req, res) => {
     try {
-        await Anuncio.findByIdAndUpdate(req.body._id, req.body);
-        success(req, res, 'Anuncio actualizado', 200);
+        const anuncio = req.body;
+        validateAnuncio(anuncio);
+
+        // Actualizacion manualmente el campo LastModify
+        anuncio.LastModify = new Date().toISOString();
+
+        const updatedAnuncio = await updateAnoun(anuncio);
+        if (!updatedAnuncio) {
+            return { status: 404, message: 'Announcement not found' };
+        }
+        return { status: 201, message: 'Anuncio actualizado', data: updatedAnuncio };
+    } catch (err) {
+        throw { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
     }
-    catch (error) {
-        error(req, res, error, 500);
-    }
-}
+};
 
 // Delete (D)
 const remove = async (req, res) => {
+    const { idAnoun } = req.params;
     try {
-        await Anuncio.findByIdAndDelete(req.body._id);
-        success(req, res, 'Anuncio eliminado', 200);
+        if (!idAnoun) {
+            return { status: 400, message: 'ID is required' };
+        }
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idAnoun)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const deletedAnuncio = await deleteAnoun(idAnoun);
+        if (!deletedAnuncio) {
+            return { status: 404, message: 'Announcement not found' };
+        }
+        return { status: 201, message: 'Anuncio eliminado', data: deletedAnuncio };
+    } catch (err) {
+        throw { status: err.status || 500, message: `Error deleting announcement: ${err.message}` };
     }
-    catch (error) {
-        error(req, res, error, 500);
-    }
-}
+};
 
-export { add, get, update, remove };
-
+export { add, getByComplex, update, remove, getById };
