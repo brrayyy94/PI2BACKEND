@@ -16,7 +16,7 @@ const add = async (req, res) => {
         const newAnuncio = await addAnoun(anuncio);
         return { status: 201, message: newAnuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
     }
 };
 
@@ -31,7 +31,7 @@ const getByComplex = async (req, res) => {
         const anuncios = await getAnounsByComplex( idComplex );
         return { status: 200, message: anuncios };
     } catch (err) {
-        throw { status: 500, message: `Error fetching announcements: ${err.message}` };
+        return { status: 500, message: `Error fetching announcements: ${err.message}` };
     }
 };
 
@@ -49,7 +49,7 @@ const getById = async (req, res) => {
         }
         return { status: 200, message: anuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
     }
 };
 
@@ -68,7 +68,7 @@ const update = async (req, res) => {
         }
         return { status: 201, message: 'Anuncio actualizado', data: updatedAnuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
     }
 };
 
@@ -89,7 +89,7 @@ const remove = async (req, res) => {
         }
         return { status: 201, message: 'Anuncio eliminado', data: deletedAnuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error deleting announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error deleting announcement: ${err.message}` };
     }
 };
 

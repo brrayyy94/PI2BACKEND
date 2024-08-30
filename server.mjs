@@ -4,6 +4,8 @@ import routes from './network/routes.mjs';
 import cors from 'cors';
 import { startConnection } from './db.mjs';
 import dotenv from 'dotenv';
+import swaggerUIPath from "swagger-ui-express";
+import swaggerjsonFilePath from './docs/swagger.json' assert { type: 'json' };
 
 dotenv.config();
 
@@ -19,6 +21,9 @@ app.use(cors({
   }));
 
 app.use(bodyParser.json());
+
+//endpoint para la documentación de la API
+app.use("/api-docs", swaggerUIPath.serve, swaggerUIPath.setup(swaggerjsonFilePath));
 
 router(app);
 

@@ -1,6 +1,5 @@
 import { addUser, getUsersByComplex, updateUser, deleteUser, getUserById, isCorrectPassword, getUser} from './store.mjs';
-
-import User from './model.mjs';
+import mongoose from 'mongoose';
 
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
@@ -32,12 +31,12 @@ const add = async (req, res) => {
             return { status: 400, message: "Los espacios están vacios" };
         }
         if (!isNotEmptyOrWhitespace(idDocument) || !isNotEmptyOrWhitespace(userName) || !isNotEmptyOrWhitespace(idComplex) || !isNotEmptyOrWhitespace(email) || !isNotEmptyOrWhitespace(password) || !isNotEmptyOrWhitespace(phone) || !isNotEmptyOrWhitespace(apartment) || !isNotEmptyOrWhitespace(role)) {
-            return { status: 400, message: "Los espacios no pueden estar vacios o contener solo espacios en blanco" };
+            return { status: 400, message: "Fields cannot empty or contain only whitespace" };
         }
         const user = await addUser(req.body);
         return { status: 201, message: user };
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 };
 
@@ -45,20 +44,40 @@ const add = async (req, res) => {
 const get = async (req, res) => {
     const { idComplex } = req.params;
     try {
+        if (!idComplex) {
+            return { status: 400, message: 'ID is required' };
+        }
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idComplex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
         const users = await getUsersByComplex(idComplex);
+        if (!users) {
+            return { status: 404, message: 'Users not found' };
+        }
         return { status: 200, message: users };
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 };
 
 const getById = async (req, res) => {
     const { idUser } = req.params;
     try {
+        if (!idUser) {
+            return { status: 400, message: 'ID is required' };
+        }
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(idUser)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
         const user = await getUserById(idUser);
+        if (!user) {
+            return { status: 404, message: 'User not found' };
+        }
         return { status: 200, message: user };
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 }
 
@@ -77,17 +96,28 @@ const update = async (req, res) => {
         await updateUser(req.body);
         return { status: 200, message: 'Usuario actualizado' };
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 }
 
 // Delete (D)
 const remove = async (req, res) => {
+    const { id } = req.params;
     try {
-        await deleteUser(req.body);
+        if (!id) {
+            return { status: 400, message: 'ID is required' };
+        }
+        // Validar si el ID es un ObjectId válido
+         if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const deletedUser = await deleteUser(id);
+        if (!deletedUser) {
+            return { status: 404, message: 'User not found' };
+        }
         return { status: 200, message: 'Usuario eliminado' };
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 };
 

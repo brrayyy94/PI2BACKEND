@@ -36,7 +36,7 @@ export const addUser = async (user) => {
     try {
         const newUser = new User(user);
         await newUser.save();
-        return 'Usuario creado\n' + newUser;
+        return 'Usuario creado\n', newUser;
     } catch (error) {
         throw new Error(error);
     }
@@ -74,10 +74,10 @@ export const updateUser = async (user) => {
 };
 
 // Delete (D)
-export const deleteUser = async (user) => {
+export const deleteUser = async (_id) => {
     try {
-        await User.findByIdAndDelete(user._id);
-        return 'Usuario eliminado';
+        const deletedUser = await User.findByIdAndDelete(_id);
+        return deletedUser;
     }
     catch (error) {
         throw new Error(error);

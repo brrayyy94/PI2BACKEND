@@ -44,8 +44,8 @@ export const updateComplex = async (complex) => {
 // Delete (D)
 export const deleteComplex = async (complex) => {
     try {
-        await Complex.findByIdAndDelete(complex._id);
-        return 'Conjunto eliminado';
+        const deletedComplex = await Complex.findByIdAndDelete(complex._id);
+        return deletedComplex;
     }
     catch (error) {
         throw new Error(error);

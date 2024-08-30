@@ -18,7 +18,7 @@ router.post('/addComplex', (req, res) => {
 });
 
 // Route GET /complex/getComplexColors
-router.get('/getComplexColors/:complex', (req, res) => {
+router.get('/getComplexColors/:idComplex', (req, res) => {
     controller.getConfigColors(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -29,7 +29,7 @@ router.get('/getComplexColors/:complex', (req, res) => {
 });
 
 // Route GET /complex/getComplex
-router.get('/getComplex/:complex', (req, res) => {
+router.get('/getComplex/:idComplex', (req, res) => {
     controller.get(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -51,7 +51,7 @@ router.put('/updateComplex', (req, res) => {
 });
 
 // Route DELETE /complex/deleteComplex
-router.delete('/deleteComplex', (req, res) => {
+router.delete('/deleteComplex/:id', (req, res) => {
     controller.remove(req, res)
     .then(({status, message}) => {
         success(res, message, status);
