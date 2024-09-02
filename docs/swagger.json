@@ -424,6 +424,37 @@
         }
       }
     },
+    "/anouncements/getAnounsByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Get anouncements by userId",
+        "description": "Get anouncements by complex id in params",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
     "/anouncements/getAnounById/{_id}": {
       "get": {
         "tags": [
