@@ -74,7 +74,7 @@ router.put('/updateAnoun', (req, res) => {
 });
 
 // Ruta para el método DELETE en /anouncements/deleteAnoun/idAnoun (D)
-router.delete('/deleteAnoun/:idAnoun', (req, res) => {
+router.delete('/deleteAnoun/:idAnoun/:userId', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message, data }) => {
             success(res, message, status, data); // Pass only res
