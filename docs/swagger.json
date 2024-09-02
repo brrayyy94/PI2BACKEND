@@ -517,7 +517,7 @@
         }
       }
     },
-    "/anouncements/deleteAnoun/{idAnoun}": {
+    "/anouncements/deleteAnoun/{idAnoun}/{idUser}": {
       "delete": {
         "tags": [
           "Anouncements"
@@ -527,6 +527,12 @@
         "parameters": [
           {
             "name": "idAnoun",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idUser",
             "in": "path",
             "required": true,
             "type": "string"

@@ -1,4 +1,4 @@
-import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById } from './store.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser } from './store.mjs';
 import mongoose from 'mongoose';
 import User from '../user/model.mjs';
 
@@ -51,6 +51,23 @@ const getById = async (req, res) => {
         return { status: 200, message: anuncio };
     } catch (err) {
         return { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
+    }
+};
+
+// Read (R) by User ID
+const getByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncios = await getAnounsByUser(userId);
+        if (!anuncios || anuncios.length === 0) {
+            return res.status(404).json({ message: 'No announcements found for this user' });
+        }
+        return { status: 200, message: anuncios };
+    } catch (err) {
+        return { message: `Error fetching announcements: ${err.message}` };
     }
 };
 
@@ -116,4 +133,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, getByComplex, update, remove, getById };
+export { add, getByComplex, update, remove, getById, getByUser };

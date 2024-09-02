@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { add, getByComplex, update, remove, getById } from "./controller.mjs";
+import { add, getByComplex, getById, getByUser, update, remove } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { add, getByComplex, update, remove, getById };
+const controller = { add, getByComplex, update, remove, getById, getByUser };
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
@@ -33,6 +33,17 @@ router.post('/addAnoun', (req, res) => {
 // Ruta para el método GET en /anouncements/getAnounsByComplex/:idComplex (R)
 router.get('/getAnounsByComplex/:idComplex', (req, res) => {
     controller.getByComplex(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status); // Pass only res
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message); // Pass only res
+        });
+});
+
+// Ruta para el método GET en /anouncements/getAnounsByUser/:userId (R)
+router.get('/getAnounsByUser/:userId', (req, res) => {
+    controller.getByUser(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
         })

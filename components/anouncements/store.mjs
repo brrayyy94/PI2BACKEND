@@ -23,6 +23,14 @@ export const getAnounById = async (_id) => {
     return foundAnoun;
 };
 
+export const getAnounsByUser = async (userId) => {
+    const foundAnouns = await Anoun.find({ User: userId }).sort({ Date: 1 });
+    if (!foundAnouns || foundAnouns.length === 0) {
+        return { status: 404, message: "No se han encontrado anuncios para este usuario" };
+    }
+    return foundAnouns;
+};
+
 // Update (U)
 export const updateAnoun = async (anoun) => {
     return await Anoun.findByIdAndUpdate(anoun._id, anoun, { new: true });
