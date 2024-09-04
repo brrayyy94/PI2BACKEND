@@ -33,6 +33,7 @@ const add = async (req, res) => {
         if (!isNotEmptyOrWhitespace(idDocument) || !isNotEmptyOrWhitespace(userName) || !isNotEmptyOrWhitespace(idComplex) || !isNotEmptyOrWhitespace(email) || !isNotEmptyOrWhitespace(password) || !isNotEmptyOrWhitespace(phone) || !isNotEmptyOrWhitespace(apartment) || !isNotEmptyOrWhitespace(role)) {
             return { status: 400, message: "Fields cannot empty or contain only whitespace" };
         }
+        req.body.role = req.body.role.toUpperCase();
         const user = await addUser(req.body);
         return { status: 201, message: user };
     } catch (error) {
