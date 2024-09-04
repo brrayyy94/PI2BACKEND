@@ -116,7 +116,7 @@ const remove = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Check if the user is the creator or an admin
+// Check if the user is neither the creator nor an admin
         if (anuncio.CreatedBy !== user.userName && user.role !== 'ADMIN') {
             return res.status(403).json({ message: 'Unauthorized to delete this announcement' });
         }
