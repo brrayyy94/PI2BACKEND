@@ -73,22 +73,26 @@ const getByUser = async (req, res) => {
 
 // Update (U)
 const update = async (req, res) => {
+    const { idUser } = req.params;
     try {
         const anuncio = req.body;
-        validateAnuncio(anuncio);
-
         // Actualizacion manualmente el campo LastModify
         anuncio.LastModify = new Date().toISOString();
 
         // Fetch the user
-        const user = await User.findById(anuncio.User);
+        const user = await User.findById(idUser);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        const foundAnoun = await getAnounById(anuncio._id);
+        if (!foundAnoun) {
+            return { status: 404, message: 'Announcement not found' };
+        }
         // Check if the user is the creator or an admin
-        if (anuncio.CreatedBy !== user.userName || user.role !== 'ADMIN') {
+        if (foundAnoun.CreatedBy !== user.userName && user.role !== 'ADMIN') {
             return res.status(403).json({ message: 'Unauthorized to delete this announcement' });
         }
+        validateAnuncio(anuncio);
         const updatedAnuncio = await updateAnoun(anuncio);
         if (!updatedAnuncio) {
             return { status: 404, message: 'Announcement not found' };

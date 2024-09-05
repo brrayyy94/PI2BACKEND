@@ -63,7 +63,7 @@ router.get('/getAnounById/:_id', (req, res) => {
         });
 });
 // Ruta para el método POST en /anouncements/updateAnoun (U)
-router.put('/updateAnoun', (req, res) => {
+router.put('/updateAnoun/:idUser', (req, res) => {
     const { _id, Title, Body, category } = req.body;
 
     // Validate required fields
