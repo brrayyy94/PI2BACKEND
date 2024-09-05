@@ -342,7 +342,7 @@
           "Anouncements"
         ],
         "summary": "Add a new anouncement",
-        "description": "add a new announcement",
+        "description": "add a new announcement, the field category will be Publicidad if the user is not an admin",
         "parameters": [
           {
             "name": "body",
@@ -364,7 +364,7 @@
                 },
                 "category": {
                   "type":"String",
-                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General"],
+                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General, Publicidad"],
                   "example": "Mantimiento"
                 }
               },
@@ -486,7 +486,7 @@
         }
       }
     },
-    "/anouncements/updateAnoun": {
+    "/anouncements/updateAnoun/{idUser}": {
       "put": {
         "tags": [
           "Anouncements"
@@ -504,10 +504,6 @@
                   "type":"String",
                   "example": "uuid de mongo"
                 },
-                "User": {
-                  "type":"String",
-                  "example": "brrayyy"
-                },
                 "Title": {
                   "type":"String",
                   "example": "Servicio del aseo del hogar"
@@ -524,12 +520,17 @@
               },
               "required": [
                 "_id",
-                "User",
                 "Title",
                 "Body",
                 "category"
               ]
             }
+          },
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
