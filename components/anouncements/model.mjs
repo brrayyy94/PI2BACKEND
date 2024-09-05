@@ -37,7 +37,7 @@ const anounSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        enum: ['Mantenimiento', 'Servicios', 'Reuniones', 'General'], 
+        enum: ['Mantenimiento', 'Servicios', 'Reuniones', 'General', 'Publicidad'], 
         required: true 
     }
 });
@@ -54,7 +54,12 @@ anounSchema.pre('validate', async function(next) {
             this.isAdmin = user.role === 'ADMIN';
             this.Complex = user.idComplex;
         } else {
-            throw new Error('User not found');
+            return { status: 404, message: 'User not found' };
+        }
+
+          // Set the category based on user role
+        if (!this.isAdmin) {
+            this.category = 'Publicidad';
         }
     } catch (error) {
         return next(error);

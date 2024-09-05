@@ -1,0 +1,917 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "WeTo Apis",
+    "description": "API for Managing WeTo calls",
+    "contact": {
+      "name": "API Support",
+      "email": "brayan.maca@uao.edu.co"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "User related apis"
+    },
+    {
+      "name": "Anouncements",
+      "description": "Anouncements related apis"
+    },
+    {
+      "name": "Complex",
+      "description": "Complex related apis"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user/addUser": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add a new user",
+        "description": "Endpoint to add a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "idDocument": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "userName": {
+                  "type": "string",
+                  "example": "JohnDoe"
+                },
+                "idComplex": {
+                  "type": "string",
+                  "example": "complexId123"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "user@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "StrongPassword123!"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+1234567890"
+                },
+                "apartment": {
+                  "type": "string",
+                  "example": "Apt 101"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": ["ADMIN", "RESIDENT"],
+                  "example": "RESIDENT"
+                }
+              },
+              "required": [
+                "idDocument",
+                "userName",
+                "idComplex",
+                "email",
+                "password",
+                "phone",
+                "apartment",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Authenticate a user",
+        "description": "Endpoint to authenticate a user with email and password",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "brayan@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/user/getUsersByComplex/{idComplex}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get users by complex",
+        "description": "get users by id complex in the params",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/user/getUserById/{idUser}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by id",
+        "description": "Get user by id",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/user/updateUser": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user",
+        "description": "Endpoint to update a user",
+        "parameters":[
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "uuid de mongo"
+                },
+                "idDocument": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "userName": {
+                  "type": "string",
+                  "example": "JohnDoe"
+                },
+                "idComplex": {
+                  "type": "string",
+                  "example": "complexId123"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "user@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "StrongPassword123!"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+1234567890"
+                },
+                "apartment": {
+                  "type": "string",
+                  "example": "Apt 101"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": ["ADMIN", "RESIDENT"],
+                  "example": "RESIDENT"
+                }
+              },
+              "required": [
+                "idDocument",
+                "userName",
+                "idComplex",
+                "email",
+                "password",
+                "phone",
+                "apartment",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/user/deleteUser/:id": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/addAnoun": {
+      "post": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Add a new anouncement",
+        "description": "add a new announcement",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "User": {
+                  "type":"String",
+                  "example": "Admin"
+                },
+                "Title": {
+                  "type":"String",
+                  "example": "Mantenimiento de la piscina"
+                },
+                "Body": {
+                  "type":"String",
+                  "example": "Mantenimiento de la piscina todos los lunes"
+                },
+                "category": {
+                  "type":"String",
+                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General"],
+                  "example": "Mantimiento"
+                }
+              },
+              "required": [
+                "User",
+                "Title",
+                "Body",
+                "category"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/getAnounsByComplex/{idComplex}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Get anouncements by idComplex",
+        "description": "Get anouncements by complex id in params",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/getAnounsByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Get anouncements by userId",
+        "description": "Get anouncements by complex id in params",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/getAnounById/{_id}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Get anouncement by id",
+        "description": "Get anouncement by id in the params",
+        "parameters": [
+          {
+            "name": "_id Anoun",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/updateAnoun": {
+      "put": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Update anouncement",
+        "description": "update anouncement",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type":"String",
+                  "example": "uuid de mongo"
+                },
+                "User": {
+                  "type":"String",
+                  "example": "brrayyy"
+                },
+                "Title": {
+                  "type":"String",
+                  "example": "Servicio del aseo del hogar"
+                },
+                "Body": {
+                  "type":"String",
+                  "example": "Se hace aseo todos los dias"
+                },
+                "category": {
+                  "type":"String",
+                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General"],
+                  "example": "Servicios"
+                }
+              },
+              "required": [
+                "_id",
+                "User",
+                "Title",
+                "Body",
+                "category"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/deleteAnoun/{idAnoun}/{idUser}": {
+      "delete": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Delete anouncement",
+        "description": "detelet anouncement by its id in the params",
+        "parameters": [
+          {
+            "name": "idAnoun",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/addComplex": {
+      "post": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Add a new complex",
+        "description": "Required fields: name, address, config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type":"string",
+                  "example": "Colinas del sur"
+                },
+                "admins":{
+                  "type":"array",
+                  "example": ["admin1", "admin2"]
+                },
+                "residents": {
+                  "type": "array",
+                  "example": ["resident1", "resident2"]
+                },
+                "address": {
+                  "type":"string",
+                  "example": "Cra 122 # 12-12"
+                },
+                "config": {
+                  "type":"object",
+                  "example": {
+                    "primaryColor": {
+                      "type":"string",
+                      "example": "#000000"
+                    },
+                    "secondaryColor": {
+                      "type":"string",
+                      "example": "#000000"
+                    }
+                  }
+                },
+                "emergencyNumbers": {
+                  "type":"Array",
+                  "example": {
+                    "name": "Policia",
+                    "number": "123"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "address",
+                "config"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/getComplexColors/{idComplex}": {
+      "get": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Get complex colors",
+        "description": "get config complex colors by complex id in the params", 
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/getComplex/{idComplex}": {
+      "get": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Get complex by id",
+        "description": "get complex by its id in the params",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/updateComplex": {
+      "put": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Update complex",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "uuid de mongo"
+                },
+                "name": {
+                  "type":"string",
+                  "example": "Colinas del sur"
+                },
+                "admins":{
+                  "type":"array",
+                  "example": ["admin1", "admin2"]
+                },
+                "residents": {
+                  "type": "array",
+                  "example": ["resident1", "resident2"]
+                },
+                "address": {
+                  "type":"string",
+                  "example": "Cra 122 # 12-12"
+                },
+                "config": {
+                  "type":"object",
+                  "example": {
+                    "primaryColor": {
+                      "type":"string",
+                      "example": "#000000"
+                    },
+                    "secondaryColor": {
+                      "type":"string",
+                      "example": "#000000"
+                    }
+                  }
+                },
+                "emergencyNumbers": {
+                  "type":"Array",
+                  "example": {
+                    "name": "Policia",
+                    "number": "123"
+                  }
+                }
+              },
+              "required": [
+                "_id",
+                "name",
+                "address",
+                "config"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/deleteComplex/:id": {
+      "delete": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Delete complex",
+        "description": "delete complex by its id in the params",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "WeToResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 200
+        },
+        "message": {
+          "type": "string",
+          "example": "Success"
+        }
+      }
+    },
+    "errorResponse.400": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 400
+        },
+        "message": {
+          "type": "string",
+          "example": "The request was malformed or invalid. Please check the request parameters."
+        }
+      }
+    },
+    "errorResponse.401": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 401
+        },
+        "message": {
+          "type": "string",
+          "example": "Authentication failed or user lacks proper authorization."
+        }
+      }
+    },
+    "errorResponse.403": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 403
+        },
+        "message": {
+          "type": "string",
+          "example": "You do not have permission to access this resource."
+        }
+      }
+    },
+    "errorResponse.404": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "404"
+        },
+        "message": {
+          "type": "string",
+          "example": "The requested resource could not be found on the server."
+        }
+      }
+    },
+    "errorResponse.500": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 500
+        },
+        "message": {
+          "type": "string",
+          "example": "An unexpected error occurred on the server. Please try again later."
+        }
+      }
+    }
+  }
+}

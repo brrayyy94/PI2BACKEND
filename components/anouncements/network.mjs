@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { add, getByComplex, update, remove, getById } from "./controller.mjs";
+import { add, getByComplex, getById, getByUser, update, remove } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { add, getByComplex, update, remove, getById };
+const controller = { add, getByComplex, update, remove, getById, getByUser };
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
@@ -41,6 +41,17 @@ router.get('/getAnounsByComplex/:idComplex', (req, res) => {
         });
 });
 
+// Ruta para el método GET en /anouncements/getAnounsByUser/:userId (R)
+router.get('/getAnounsByUser/:userId', (req, res) => {
+    controller.getByUser(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status); // Pass only res
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message); // Pass only res
+        });
+});
+
 // Ruta para el método GET en /anouncements/getAnounById/:_id (R)
 router.get('/getAnounById/:_id', (req, res) => {
     controller.getById(req, res)
@@ -52,7 +63,7 @@ router.get('/getAnounById/:_id', (req, res) => {
         });
 });
 // Ruta para el método POST en /anouncements/updateAnoun (U)
-router.put('/updateAnoun', (req, res) => {
+router.put('/updateAnoun/:idUser', (req, res) => {
     const { _id, Title, Body, category } = req.body;
 
     // Validate required fields
@@ -74,7 +85,7 @@ router.put('/updateAnoun', (req, res) => {
 });
 
 // Ruta para el método DELETE en /anouncements/deleteAnoun/idAnoun (D)
-router.delete('/deleteAnoun/:idAnoun', (req, res) => {
+router.delete('/deleteAnoun/:idAnoun/:userId', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message, data }) => {
             success(res, message, status, data); // Pass only res

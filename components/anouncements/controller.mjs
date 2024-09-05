@@ -1,5 +1,6 @@
-import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById } from './store.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser } from './store.mjs';
 import mongoose from 'mongoose';
+import User from '../user/model.mjs';
 
 // Helper function to validate request body
 const validateAnuncio = (anuncio) => {
@@ -16,7 +17,7 @@ const add = async (req, res) => {
         const newAnuncio = await addAnoun(anuncio);
         return { status: 201, message: newAnuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error creating announcement: ${err.message}` };
     }
 };
 
@@ -31,7 +32,7 @@ const getByComplex = async (req, res) => {
         const anuncios = await getAnounsByComplex( idComplex );
         return { status: 200, message: anuncios };
     } catch (err) {
-        throw { status: 500, message: `Error fetching announcements: ${err.message}` };
+        return { status: 500, message: `Error fetching announcements: ${err.message}` };
     }
 };
 
@@ -49,48 +50,100 @@ const getById = async (req, res) => {
         }
         return { status: 200, message: anuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error fetching announcement: ${err.message}` };
+    }
+};
+
+// Read (R) by User ID
+const getByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        const anuncios = await getAnounsByUser(userId);
+        if (!anuncios || anuncios.length === 0) {
+            return res.status(404).json({ message: 'No announcements found for this user' });
+        }
+        return { status: 200, message: anuncios };
+    } catch (err) {
+        return { message: `Error fetching announcements: ${err.message}` };
     }
 };
 
 // Update (U)
 const update = async (req, res) => {
+    const { idUser } = req.params;
     try {
         const anuncio = req.body;
-        validateAnuncio(anuncio);
-
         // Actualizacion manualmente el campo LastModify
         anuncio.LastModify = new Date().toISOString();
 
+        // Fetch the user
+        const user = await User.findById(idUser);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const foundAnoun = await getAnounById(anuncio._id);
+        if (!foundAnoun) {
+            return { status: 404, message: 'Announcement not found' };
+        }
+        // Check if the user is the creator or an admin
+        if (foundAnoun.CreatedBy !== user.userName && user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Unauthorized to delete this announcement' });
+        }
+        validateAnuncio(anuncio);
         const updatedAnuncio = await updateAnoun(anuncio);
         if (!updatedAnuncio) {
             return { status: 404, message: 'Announcement not found' };
         }
         return { status: 201, message: 'Anuncio actualizado', data: updatedAnuncio };
     } catch (err) {
-        throw { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
+        return { status: err.status || 500, message: `Error updating announcement: ${err.message}` };
     }
 };
 
 // Delete (D)
 const remove = async (req, res) => {
-    const { idAnoun } = req.params;
+    const { idAnoun, userId } = req.params;
+
     try {
-        if (!idAnoun) {
-            return { status: 400, message: 'ID is required' };
+        if (!idAnoun || !userId) {
+            return res.status(400).json({ message: 'Announcement ID and User ID are required' });
         }
-        // Validar si el ID es un ObjectId válido
-         if (!mongoose.Types.ObjectId.isValid(idAnoun)) {
+
+        // Validate if the IDs are valid ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(idAnoun) || !mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Invalid ID format' });
         }
+
+        // Fetch the announcement
+        const anuncio = await getAnounById(idAnoun);
+        if (!anuncio) {
+            return res.status(404).json({ message: 'Announcement not found' });
+        }
+
+        // Fetch the user
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+// Check if the user is neither the creator nor an admin
+        if (anuncio.CreatedBy !== user.userName && user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Unauthorized to delete this announcement' });
+        }
+
+        // Proceed with deletion
         const deletedAnuncio = await deleteAnoun(idAnoun);
         if (!deletedAnuncio) {
-            return { status: 404, message: 'Announcement not found' };
+            return res.status(404).json({ message: 'Announcement not found' });
         }
-        return { status: 201, message: 'Anuncio eliminado', data: deletedAnuncio };
+
+        return res.status(200).json({ message: 'Announcement deleted', data: deletedAnuncio });
     } catch (err) {
-        throw { status: err.status || 500, message: `Error deleting announcement: ${err.message}` };
+        return res.status(500).json({ message: `Error deleting announcement: ${err.message}` });
     }
 };
 
-export { add, getByComplex, update, remove, getById };
+export { add, getByComplex, update, remove, getById, getByUser };

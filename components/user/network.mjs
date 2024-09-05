@@ -62,7 +62,7 @@ router.put('/updateUser', (req, res) => {
 });
 
 // Route DELETE /user/deleteUser
-router.delete('/deleteUser', (req, res) => {
+router.delete('/deleteUser/:id', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
