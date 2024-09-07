@@ -586,6 +586,68 @@
         }
       }
     },
+    "/anouncements/searchAnnouncements/{keyword}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Search anouncements by keyword",
+        "description": "Search anouncements by keyword that can be Title or Body of the anouncement in the params",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/filterAnnouncementsByCategory/{category}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Filter anouncements by category",
+        "description": "Filter anouncements by category in the params",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
     "/complex/addComplex": {
       "post": {
         "tags": [

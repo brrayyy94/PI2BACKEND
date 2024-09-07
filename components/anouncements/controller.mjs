@@ -1,4 +1,4 @@
-import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser } from './store.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser, searchAnnouncementsByKeyword, searchAnnouncementsByCategory } from './store.mjs';
 import mongoose from 'mongoose';
 import User from '../user/model.mjs';
 
@@ -70,6 +70,43 @@ const getByUser = async (req, res) => {
         return { message: `Error fetching announcements: ${err.message}` };
     }
 };
+
+// Search (R) by keyword
+const searchAnnouncements = async (req, res) => {
+    const { keyword } = req.params;
+    try {
+        if (!keyword) {
+            return { status: 400, message: 'Keyword is required' };
+        }
+        const announcements = await searchAnnouncementsByKeyword(keyword);
+        if (!announcements || announcements.length === 0) {
+            return { status: 404, message: 'No announcements found' };
+        }
+        return { status: 200, message: announcements };
+    } catch (error) {
+        return { status: 500, message: error.message };
+    }
+};
+
+// Search (R) by category
+export const filterAnnouncementsByCategory = async (req, res) => {
+    const { category } = req.params;
+    try {
+        if (!category) {
+            return res.status(400).json({ message: 'Category is required' });
+        }
+
+        const announcements = await searchAnnouncementsByCategory(category);
+        if (!announcements || announcements.length === 0) {
+            return res.status(404).json({ message: 'No announcements found for this category' });
+        }
+
+        return res.status(200).json(announcements);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 
 // Update (U)
 const update = async (req, res) => {
@@ -146,4 +183,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, getByComplex, update, remove, getById, getByUser };
+export { add, getByComplex, update, remove, getById, getByUser, searchAnnouncements };

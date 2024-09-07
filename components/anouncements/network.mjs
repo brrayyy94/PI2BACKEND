@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { add, getByComplex, getById, getByUser, update, remove } from "./controller.mjs";
+import { add, getByComplex, getById, getByUser, searchAnnouncements, update, remove, filterAnnouncementsByCategory } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { add, getByComplex, update, remove, getById, getByUser };
+const controller = { add, getByComplex, searchAnnouncements, update, remove, getById, getByUser, filterAnnouncementsByCategory };
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Ruta para el método POST en /anouncements/addAnoun (C)
@@ -62,6 +62,30 @@ router.get('/getAnounById/:_id', (req, res) => {
             error(res, 'Error interno', status || 500, message); // Pass only res
         });
 });
+
+//Ruta para el método GET en /anouncements/searchAnnouncements/:keyword (R)
+router.get('/searchAnnouncements/:keyword', (req, res) => {
+    controller.searchAnnouncements(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message);
+        });
+});
+
+// Ruta para el método GET en /anouncements/filterAnnouncements (R)
+router.get('/filterAnnouncementsByCategory/:category', (req, res) => {
+    controller.filterAnnouncementsByCategory(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message);
+        });
+});
+
+
 // Ruta para el método POST en /anouncements/updateAnoun (U)
 router.put('/updateAnoun/:idUser', (req, res) => {
     const { _id, Title, Body, category } = req.body;

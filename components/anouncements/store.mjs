@@ -31,6 +31,32 @@ export const getAnounsByUser = async (userId) => {
     return foundAnouns;
 };
 
+export const searchAnnouncementsByKeyword = async (keyword) => {
+    try {
+        const announcements = await Anoun.find({
+            $or: [
+                { Title: { $regex: keyword, $options: 'i' } },
+                { Body: { $regex: keyword, $options: 'i' } }
+            ]
+        });
+        return announcements;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+};
+
+// Search (R) by category
+export const searchAnnouncementsByCategory = async (category) => {
+    try {
+        const announcements = await Anoun.find({ category });
+        return announcements;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+
 // Update (U)
 export const updateAnoun = async (anoun) => {
     return await Anoun.findByIdAndUpdate(anoun._id, anoun, { new: true });
