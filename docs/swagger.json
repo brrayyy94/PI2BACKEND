@@ -592,13 +592,14 @@
           "Anouncements"
         ],
         "summary": "Search anouncements by keyword",
-        "description": "Search anouncements by keyword that can be Title or Body of the anouncement in the params",
+        "description": "Search anouncements by keyword that can be Title or Body of the anouncement in the params, if the keyword has spaces use %20 to replace them",
         "parameters": [
           {
             "name": "keyword",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "example": "Mantenimiento%20de%20la%20escaleras"
           }
         ],
         "responses": {
