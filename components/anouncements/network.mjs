@@ -64,7 +64,7 @@ router.get('/getAnounById/:_id', (req, res) => {
 });
 
 //Ruta para el método GET en /anouncements/searchAnnouncements/:keyword (R)
-router.get('/searchAnnouncements/:keyword', (req, res) => {
+router.get('/searchAnnouncements/:keyword/:idComplex', (req, res) => {
     controller.searchAnnouncements(req, res)
         .then(({ status, message }) => {
             success(res, message, status);

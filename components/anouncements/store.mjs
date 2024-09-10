@@ -31,9 +31,10 @@ export const getAnounsByUser = async (userId) => {
     return foundAnouns;
 };
 
-export const searchAnnouncementsByKeyword = async (keyword) => {
+export const searchAnnouncementsByKeyword = async (keyword, idComplex) => {
     try {
         const announcements = await Anoun.find({
+            Complex: idComplex,
             $or: [
                 { Title: { $regex: keyword, $options: 'i' } },
                 { Body: { $regex: keyword, $options: 'i' } }

@@ -73,14 +73,21 @@ const getByUser = async (req, res) => {
 
 // Search (R) by keyword
 const searchAnnouncements = async (req, res) => {
-    const { keyword } = req.params;
+    const { keyword, idComplex } = req.params;
     try {
+        // Validar si el ID es un ObjectId válido
+        if (!mongoose.Types.ObjectId.isValid(idComplex)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+        if (!idComplex) {
+            return { status: 400, message: 'idComplex is required' };
+        }
         if (!keyword) {
             return { status: 400, message: 'Keyword is required' };
         }
-        const announcements = await searchAnnouncementsByKeyword(keyword);
+        const announcements = await searchAnnouncementsByKeyword(keyword, idComplex);
         if (!announcements || announcements.length === 0) {
-            return { status: 404, message: 'No announcements found' };
+            return { status: 200, message: announcements };
         }
         return { status: 200, message: announcements };
     } catch (error) {
