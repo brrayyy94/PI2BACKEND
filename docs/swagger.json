@@ -342,7 +342,7 @@
           "Anouncements"
         ],
         "summary": "Add a new anouncement",
-        "description": "add a new announcement",
+        "description": "add a new announcement, the field category will be Publicidad if the user is not an admin",
         "parameters": [
           {
             "name": "body",
@@ -364,7 +364,7 @@
                 },
                 "category": {
                   "type":"String",
-                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General"],
+                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General, Publicidad"],
                   "example": "Mantimiento"
                 }
               },
@@ -486,7 +486,7 @@
         }
       }
     },
-    "/anouncements/updateAnoun": {
+    "/anouncements/updateAnoun/{idUser}": {
       "put": {
         "tags": [
           "Anouncements"
@@ -504,10 +504,6 @@
                   "type":"String",
                   "example": "uuid de mongo"
                 },
-                "User": {
-                  "type":"String",
-                  "example": "brrayyy"
-                },
                 "Title": {
                   "type":"String",
                   "example": "Servicio del aseo del hogar"
@@ -524,12 +520,17 @@
               },
               "required": [
                 "_id",
-                "User",
                 "Title",
                 "Body",
                 "category"
               ]
             }
+          },
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -564,6 +565,69 @@
           },
           {
             "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/searchAnnouncements/{keyword}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Search anouncements by keyword",
+        "description": "Search anouncements by keyword that can be Title or Body of the anouncement in the params, if the keyword has spaces use %20 to replace them",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "Mantenimiento%20de%20la%20escaleras"
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/anouncements/filterAnnouncementsByCategory/{category}": {
+      "get": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Filter anouncements by category",
+        "description": "Filter anouncements by category in the params",
+        "parameters": [
+          {
+            "name": "category",
             "in": "path",
             "required": true,
             "type": "string"

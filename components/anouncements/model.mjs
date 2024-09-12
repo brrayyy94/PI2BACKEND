@@ -42,6 +42,8 @@ const anounSchema = new mongoose.Schema({
     }
 });
 
+anounSchema.index({ Title: 'text', Body: 'text' });
+
 // Pre-validate middleware to set dates to UTC and set CreatedBy
 anounSchema.pre('validate', async function(next) {
     this.Date = new Date().toISOString();
