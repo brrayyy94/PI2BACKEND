@@ -795,7 +795,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "complex data to update",
             "in": "body",
             "schema": {
               "type": "object",
@@ -848,6 +848,58 @@
                 "config"
               ]
             }
+          }
+        ],
+        "responses": {
+          "200": {
+          "description": "OK",
+          "schema": {
+            "$ref": "#/definitions/WeToResponse"
+          }
+          },
+          "400": {
+          "description": "Bad Request",
+          "schema": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+          }
+        }
+      }
+    },
+    "/complex/updateComplexColors": {
+      "put": {
+        "tags": [
+          "Complex"
+        ],
+        "summary": "Update complex colors",
+        "description": "The colors of the field config will be updated",
+        "parameters": [
+          {
+            "name": "configColors",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "primaryColor": {
+                  "type": "string",
+                  "example": "#FFFFFF"
+                },
+                "secondaryColor": {
+                  "type":"string",
+                  "example": "#000000"
+                }
+              },
+              "required": [
+                "primaryColor",
+                "secondaryColor"
+              ]
+            }
+          },
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

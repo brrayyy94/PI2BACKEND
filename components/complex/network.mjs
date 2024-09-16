@@ -1,10 +1,10 @@
 import {Router} from "express";
 import {success, error} from "../../network/response.mjs";
-import {add, get, getConfigColors, update, remove} from "./controller.mjs";
+import {add, get, getConfigColors, update, remove, updateColors} from "./controller.mjs";
 
 const router = Router();
 
-const controller = {add, get, getConfigColors, update, remove};
+const controller = {add, get, getConfigColors, update, remove, updateColors};
 
 // Route POST /complex/addComplex
 router.post('/addComplex', (req, res) => {
@@ -42,6 +42,17 @@ router.get('/getComplex/:idComplex', (req, res) => {
 // Route PUT /complex/updateComplex
 router.put('/updateComplex', (req, res) => {
     controller.update(req, res)
+    .then(({status, message}) => {
+        success(res, message, status);
+    })
+    .catch(({status, message}) => {
+        error(res, 'Error interno', status || 500, message);
+    });
+});
+
+// Route PUT /complex/:idComplex/updateColors
+router.put('/updateComplexColors/:idComplex', (req, res) => {
+    controller.updateColors(req, res)
     .then(({status, message}) => {
         success(res, message, status);
     })
