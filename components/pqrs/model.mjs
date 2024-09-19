@@ -24,6 +24,10 @@ const pqrsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+        required: true
+    },
     complex: {
         type: String,
         required: true

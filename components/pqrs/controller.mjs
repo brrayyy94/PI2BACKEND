@@ -28,7 +28,8 @@ const add = async (req, res) => {
         // Prepare PQRS data
         const pqrsData = {
             user,
-            complex: userData.idComplex, // Assuming the user's complex ID is stored in user.complex
+            userName: userData.userName,
+            complex: userData.idComplex,
             case: caseType,
             description,
             category,
