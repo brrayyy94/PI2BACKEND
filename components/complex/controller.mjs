@@ -1,4 +1,4 @@
-import { addComplex, getComplex, updateComplex, deleteComplex, getComplexColors } from "./store.mjs";
+import { addComplex, getComplex, updateComplex, deleteComplex, getComplexColors, updateComplexColors } from "./store.mjs";
 import mongoose from "mongoose";
 
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
@@ -84,6 +84,28 @@ const update = async (req, res) => {
     }
 }
 
+//Update (U) complexColors
+const updateColors = async (req, res) => {
+    const { idComplex } = req.params;
+    const { primaryColor, secondaryColor } = req.body;
+
+    try {
+        if (!primaryColor || !secondaryColor) {
+            return {status: 400, message: 'Both primaryColor and secondaryColor are required' };
+        }
+
+        const complex = await updateComplexColors(idComplex, primaryColor, secondaryColor);
+
+        if (!complex) {
+            return {status: 404, message: 'Complex not found' };
+        }
+
+        return {status: 200, message: complex};
+    } catch (error) {
+        return {status: 500, message: error.message };
+    }
+};
+
 // Delete (D)
 const remove = async (req, res) => {
     const { id } = req.params;
@@ -104,4 +126,4 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, get, getConfigColors, update, remove };
+export { add, get, getConfigColors, update, remove, updateColors };
