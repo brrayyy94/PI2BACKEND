@@ -1124,7 +1124,7 @@
         }
       }
     },
-    "/pqrs/cerrar/:id": {
+    "/pqrs/closePqrs/:id": {
       "put": {
         "tags": [
           "PQRS"

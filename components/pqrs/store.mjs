@@ -34,7 +34,7 @@ export const getPqrsByComplex = async (idComplex) => {
 };
 
 // Update (U)
-export const cerrarPqrs = async (id) => {
+export const closePqrs = async (id) => {
     try {
 
         const pqrs = await Pqrs.findById(id);

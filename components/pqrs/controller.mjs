@@ -1,4 +1,4 @@
-import { createPqrs, addAnswer, getPqrsByComplex, cerrarPqrs } from "./store.mjs";
+import { createPqrs, addAnswer, getPqrsByComplex, closePqrs } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -137,7 +137,7 @@ const get = async (req, res) => {
 };
 
 // Close (U)
-const cerrar = async (req, res) => {
+const close = async (req, res) => {
     const { id } = req.params;
     try {
         // Validate the PQRS ID
@@ -145,12 +145,12 @@ const cerrar = async (req, res) => {
             return res.status(400).json({ message: 'Invalid PQRS ID' });
         }
 
-        const pqrs = await cerrarPqrs(id);
+        const pqrs = await closePqrs(id);
 
-        return res.status(200).json({ message: 'PQRS cerrada exitosamente', data: pqrs });
+        return { status: 200, message: pqrs };
     } catch (error) {
-        return res.status(500).json({ message: 'Error al cerrar la PQRS', error: error.message });
+        return { status: 500, message: 'Error al cerrar la PQRS', error: error.message };
     }
 };
 
-export { add, answer, get, cerrar };
+export { add, answer, get, close };
