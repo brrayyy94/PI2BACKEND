@@ -67,6 +67,25 @@ const answer = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Fetch PQRS entry
+        const pqrs = await Pqrs.findById(id);
+        if (!pqrs) {
+            return res.status(404).json({ message: "PQRS entry not found" });
+        }
+
+        // Ensure the first answer is from an admin
+        if (pqrs.answer.length === 0 && userData.role !== 'ADMIN') {
+            return res.status(400).json({ message: "The first answer must be from an admin" });
+        }
+
+        // Prevent residents from sending consecutive answers
+        if (pqrs.answer.length > 0) {
+            const lastAnswer = pqrs.answer[pqrs.answer.length - 1];
+            if (lastAnswer.resident && userData.role === 'RESIDENT') {
+                return res.status(400).json({ message: "Residents cannot send consecutive answers" });
+            }
+        }
+
         // Prepare answer data based on user role
         const answerData = {
             comment: answer,
@@ -75,13 +94,19 @@ const answer = async (req, res) => {
 
         if (userData.role === 'ADMIN') {
             answerData.admin = userId;
+            // Change PQRS state to "tramite" after admin's first answer
+            if (pqrs.answer.length === 0) {
+                pqrs.state = 'tramite';
+            }
         } else if (userData.role === 'RESIDENT') {
             answerData.resident = userId;
         } else {
             return res.status(400).json({ message: "Invalid user role" });
         }
 
-        const pqrs = await addAnswer(id, answerData);
+        pqrs.answer.push(answerData);
+        await pqrs.save();
+
         return res.status(200).json({ message: "Answer added successfully", data: pqrs });
     } catch (error) {
         return res.status(500).json({ message: error.message });
