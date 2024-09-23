@@ -85,7 +85,10 @@
                 },
                 "role": {
                   "type": "string",
-                  "enum": ["ADMIN", "RESIDENT"],
+                  "enum": [
+                    "ADMIN",
+                    "RESIDENT"
+                  ],
                   "example": "RESIDENT"
                 }
               },
@@ -104,16 +107,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -125,7 +128,7 @@
         ],
         "summary": "Authenticate a user",
         "description": "Endpoint to authenticate a user with email and password",
-        "parameters":[
+        "parameters": [
           {
             "name": "body",
             "in": "body",
@@ -151,16 +154,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -182,16 +185,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -213,16 +216,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -234,7 +237,7 @@
         ],
         "summary": "Update user",
         "description": "Endpoint to update a user",
-        "parameters":[
+        "parameters": [
           {
             "name": "body",
             "in": "body",
@@ -276,7 +279,10 @@
                 },
                 "role": {
                   "type": "string",
-                  "enum": ["ADMIN", "RESIDENT"],
+                  "enum": [
+                    "ADMIN",
+                    "RESIDENT"
+                  ],
                   "example": "RESIDENT"
                 }
               },
@@ -295,16 +301,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -326,16 +332,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -355,20 +361,25 @@
               "type": "object",
               "properties": {
                 "User": {
-                  "type":"String",
+                  "type": "String",
                   "example": "Admin"
                 },
                 "Title": {
-                  "type":"String",
+                  "type": "String",
                   "example": "Mantenimiento de la piscina"
                 },
                 "Body": {
-                  "type":"String",
+                  "type": "String",
                   "example": "Mantenimiento de la piscina todos los lunes"
                 },
                 "category": {
-                  "type":"String",
-                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General, Publicidad"],
+                  "type": "String",
+                  "enum": [
+                    "Mantimiento",
+                    "Servicios",
+                    "Reuniones",
+                    "General, Publicidad"
+                  ],
                   "example": "Mantimiento"
                 }
               },
@@ -383,16 +394,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -414,16 +425,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -445,16 +456,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -476,16 +487,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -505,20 +516,25 @@
               "type": "object",
               "properties": {
                 "_id": {
-                  "type":"String",
+                  "type": "String",
                   "example": "uuid de mongo"
                 },
                 "Title": {
-                  "type":"String",
+                  "type": "String",
                   "example": "Servicio del aseo del hogar"
                 },
                 "Body": {
-                  "type":"String",
+                  "type": "String",
                   "example": "Se hace aseo todos los dias"
                 },
                 "category": {
-                  "type":"String",
-                  "enum": ["Mantimiento", "Servicios", "Reuniones", "General"],
+                  "type": "String",
+                  "enum": [
+                    "Mantimiento",
+                    "Servicios",
+                    "Reuniones",
+                    "General"
+                  ],
                   "example": "Servicios"
                 }
               },
@@ -539,16 +555,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -576,16 +592,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -608,16 +624,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -639,16 +655,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -668,36 +684,42 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "type":"string",
+                  "type": "string",
                   "example": "Colinas del sur"
                 },
-                "admins":{
-                  "type":"array",
-                  "example": ["admin1", "admin2"]
+                "admins": {
+                  "type": "array",
+                  "example": [
+                    "admin1",
+                    "admin2"
+                  ]
                 },
                 "residents": {
                   "type": "array",
-                  "example": ["resident1", "resident2"]
+                  "example": [
+                    "resident1",
+                    "resident2"
+                  ]
                 },
                 "address": {
-                  "type":"string",
+                  "type": "string",
                   "example": "Cra 122 # 12-12"
                 },
                 "config": {
-                  "type":"object",
+                  "type": "object",
                   "example": {
                     "primaryColor": {
-                      "type":"string",
+                      "type": "string",
                       "example": "#000000"
                     },
                     "secondaryColor": {
-                      "type":"string",
+                      "type": "string",
                       "example": "#000000"
                     }
                   }
                 },
                 "emergencyNumbers": {
-                  "type":"Array",
+                  "type": "Array",
                   "example": {
                     "name": "Policia",
                     "number": "123"
@@ -714,16 +736,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -734,7 +756,7 @@
           "Complex"
         ],
         "summary": "Get complex colors",
-        "description": "get config complex colors by complex id in the params", 
+        "description": "get config complex colors by complex id in the params",
         "parameters": [
           {
             "name": "idComplex",
@@ -745,16 +767,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -776,16 +798,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -809,36 +831,42 @@
                   "example": "uuid de mongo"
                 },
                 "name": {
-                  "type":"string",
+                  "type": "string",
                   "example": "Colinas del sur"
                 },
-                "admins":{
-                  "type":"array",
-                  "example": ["admin1", "admin2"]
+                "admins": {
+                  "type": "array",
+                  "example": [
+                    "admin1",
+                    "admin2"
+                  ]
                 },
                 "residents": {
                   "type": "array",
-                  "example": ["resident1", "resident2"]
+                  "example": [
+                    "resident1",
+                    "resident2"
+                  ]
                 },
                 "address": {
-                  "type":"string",
+                  "type": "string",
                   "example": "Cra 122 # 12-12"
                 },
                 "config": {
-                  "type":"object",
+                  "type": "object",
                   "example": {
                     "primaryColor": {
-                      "type":"string",
+                      "type": "string",
                       "example": "#000000"
                     },
                     "secondaryColor": {
-                      "type":"string",
+                      "type": "string",
                       "example": "#000000"
                     }
                   }
                 },
                 "emergencyNumbers": {
-                  "type":"Array",
+                  "type": "Array",
                   "example": {
                     "name": "Policia",
                     "number": "123"
@@ -856,16 +884,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -889,7 +917,7 @@
                   "example": "#FFFFFF"
                 },
                 "secondaryColor": {
-                  "type":"string",
+                  "type": "string",
                   "example": "#000000"
                 }
               },
@@ -908,16 +936,16 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
@@ -939,74 +967,132 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
     },
-"/pqrs/addPqrs": {
-  "post": {
-    "tags": [
-      "PQRS"
-    ],
-    "summary": "Add a new pqrs",
-    "description": "Add a new pqrs",
-    "parameters": [
-      {
-        "in": "body",
-        "name": "body",
-        "description": "PQRS object that needs to be added",
-        "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-            "user": {
-              "type": "string",
-              "example": "UUID-USER"
-            },
-            "case": {
-              "type": "string",
-              "example": "Example Case"
-            },
-            "description": {
-              "type": "string",
-              "example": "This is an example description for the PQRS entry."
-            },
-            "category": {
-              "type": "string",
-              "enum": ["P", "Q", "R", "S"],
-              "example": "P"
+    "/pqrs/addPqrs": {
+      "post": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Add a new pqrs",
+        "description": "Add a new pqrs",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "PQRS object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "string",
+                  "example": "UUID-USER"
+                },
+                "case": {
+                  "type": "string",
+                  "example": "Example Case"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "This is an example description for the PQRS entry."
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "P",
+                    "Q",
+                    "R",
+                    "S"
+                  ],
+                  "example": "P"
+                }
+              },
+              "required": [
+                "user",
+                "case",
+                "description",
+                "category"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
             }
           },
-          "required": ["user", "case", "description", "category"]
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
         }
       }
-    ],
-    "responses": {
-      "200": {
-        "description": "OK",
-        "schema": {
-          "$ref": "#/definitions/WeToResponse"
-        }
-      },
-      "400": {
-        "description": "Bad Request",
-        "schema": {
-          "$ref": "#/definitions/errorResponse.400"
+    },
+    "/pqrs/answerPqrs/:idPqrs": {
+      "put": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Add a new pqrs",
+        "description": "Add a new pqrs",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "PQRS object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "UUID-USER"
+                },
+                "answer": {
+                  "type": "string",
+                  "example": "Example Answer"
+                }
+              },
+              "required": [
+                "userId",
+                "answer"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
         }
       }
-    }
-  }
-},
+    },
     "/pqrs/getPqrsByComplex/{idComplex}": {
       "get": {
         "tags": [
@@ -1024,51 +1110,51 @@
         ],
         "responses": {
           "200": {
-          "description": "OK",
-          "schema": {
-            "$ref": "#/definitions/WeToResponse"
-          }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
           },
           "400": {
-          "description": "Bad Request",
-          "schema": {
-            "$ref": "#/definitions/errorResponse.400"
-          }
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
           }
         }
       }
     },
     "/pqrs/cerrar/:id": {
-  "put": {
-    "tags": [
-      "PQRS"
-    ],
-    "summary": "Close a PQRS",
-    "description": "Close a PQRS by its id in the params",
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "required": true,
-        "type": "string"
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "OK",
-        "schema": {
-          "$ref": "#/definitions/WeToResponse"
-        }
-      },
-      "400": {
-        "description": "Bad Request",
-        "schema": {
-          "$ref": "#/definitions/errorResponse.400"
+      "put": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Close a PQRS",
+        "description": "Close a PQRS by its id in the params",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
         }
       }
     }
-  }
-}
   },
   "definitions": {
     "WeToResponse": {
