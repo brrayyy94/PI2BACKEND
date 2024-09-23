@@ -1,4 +1,4 @@
-import { createPqrs, getPqrsByComplex } from "./store.mjs";
+import { createPqrs, addAnswer, getPqrsByComplex } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -45,6 +45,49 @@ const add = async (req, res) => {
     }
 };
 
+// Add Answer (U)
+const answer = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { userId, answer } = req.body;
+
+        // Validate the PQRS ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid PQRS ID" });
+        }
+
+        // Validate the answer
+        if (!answer || !isNotEmptyOrWhitespace(answer)) {
+            return res.status(400).json({ message: "Answer cannot be empty or contain only whitespace" });
+        }
+
+        // Fetch user data to get role
+        const userData = await User.findById(userId);
+        if (!userData) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Prepare answer data based on user role
+        const answerData = {
+            comment: answer,
+            date: new Date()
+        };
+
+        if (userData.role === 'ADMIN') {
+            answerData.admin = userId;
+        } else if (userData.role === 'RESIDENT') {
+            answerData.resident = userId;
+        } else {
+            return res.status(400).json({ message: "Invalid user role" });
+        }
+
+        const pqrs = await addAnswer(id, answerData);
+        return res.status(200).json({ message: "Answer added successfully", data: pqrs });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 // Read (R)
 const get = async (req, res) => {
     try {
@@ -68,4 +111,4 @@ const get = async (req, res) => {
     }
 };
 
-export { add, get };
+export { add, answer, get };
