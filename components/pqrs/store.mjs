@@ -32,3 +32,25 @@ export const getPqrsByComplex = async (idComplex) => {
         throw new Error(error);
     }
 };
+
+// Update (U)
+export const cerrarPqrs = async (id) => {
+    try {
+
+        const pqrs = await Pqrs.findById(id);
+
+        if (!pqrs) {
+            return { status: 404, message: 'PQRS no encontrada' };
+        }
+
+        // Verificar si la solicitud ya está cerrada
+        if (pqrs.state === 'cerrado') {
+            return { status: 400, message: 'La PQRS ya está cerrada' };
+        }
+
+        const pqrsClosed = await Pqrs.findByIdAndUpdate(id, { state: 'cerrado' }, { new: true });
+        return pqrsClosed;
+    } catch (error) {
+        return new Error(error);
+    }
+};
