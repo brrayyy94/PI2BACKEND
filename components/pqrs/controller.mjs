@@ -1,4 +1,4 @@
-import { createPqrs, getPqrsByComplex } from "./store.mjs";
+import { createPqrs, getPqrsByComplex, cerrarPqrs } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -13,16 +13,16 @@ const add = async (req, res) => {
 
         // Validate required fields
         if (!user || !caseType || !description || !category) {
-            return res.status(400).json({ message: "Los espacios están vacios" });
+            return { status: 400, message: "Los espacios están vacios" };
         }
         if (!isNotEmptyOrWhitespace(user) || !isNotEmptyOrWhitespace(caseType) || !isNotEmptyOrWhitespace(description) || !isNotEmptyOrWhitespace(category)) {
-            return res.status(400).json({ message: "Fields cannot be empty or contain only whitespace" });
+            return { status:400, message: "Fields cannot be empty or contain only whitespace" };
         }
 
         // Fetch user data to get complex ID
         const userData = await User.findById(user);
         if (!userData) {
-            return res.status(404).json({ message: "User not found" });
+            return { status: 404, message: "User not found" };
         }
 
         // Prepare PQRS data
@@ -39,9 +39,9 @@ const add = async (req, res) => {
         };
 
         const pqrs = await createPqrs(pqrsData);
-        return res.status(201).json({ message: "PQRS created successfully", data: pqrs });
+        return { status: 201, message: "PQRS created successfully", data: pqrs };
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return { status: 500, message: error.message };
     }
 };
 
@@ -68,4 +68,20 @@ const get = async (req, res) => {
     }
 };
 
-export { add, get };
+const cerrar = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Validate the complex ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return { status: 400, message: 'Invalid complex ID' };
+        }
+
+        const pqrs = await cerrarPqrs(id);
+
+        return { status: 200, message: 'PQRS cerrada exitosamente', pqrs };
+    } catch (error) {
+        return { status: 500, message: 'Error al cerrar la PQRS' };
+    }
+};
+
+export { add, get, cerrar };

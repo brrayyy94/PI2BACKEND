@@ -1037,7 +1037,38 @@
           }
         }
       }
+    },
+    "/pqrs/cerrar/:id": {
+  "put": {
+    "tags": [
+      "PQRS"
+    ],
+    "summary": "Close a PQRS",
+    "description": "Close a PQRS by its id in the params",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK",
+        "schema": {
+          "$ref": "#/definitions/WeToResponse"
+        }
+      },
+      "400": {
+        "description": "Bad Request",
+        "schema": {
+          "$ref": "#/definitions/errorResponse.400"
+        }
+      }
     }
+  }
+}
   },
   "definitions": {
     "WeToResponse": {
