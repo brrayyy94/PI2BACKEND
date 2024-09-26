@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { success, error } from "../../network/response.mjs";
-import { add, get } from "./controller.mjs";
+import { add, answer, get, close, pqrsAnswers } from "./controller.mjs";
 
 const router = Router();
 
-const controller = { add, get };
+const controller = { add, get, close, pqrsAnswers };
 
 // Route POST /pqrs/addPqrs
 router.post('/addPqrs', (req, res) => {
@@ -17,9 +17,42 @@ router.post('/addPqrs', (req, res) => {
         });
 });
 
+// Route PUT /pqrs/answerPqrs
+router.put('/answerPqrs/:id', (req, res) => {
+    answer(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
 // Route GET /pqrs/getPqrsByComplex
 router.get('/getPqrsByComplex/:idComplex', (req, res) => {
     controller.get(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Route PUT /pqrs/closePqrs/:id
+router.put('/closePqrs/:id', (req, res) => {
+    controller.close(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Route GET /pqrs/getPqrsAnswers
+router.get('/getPqrsAnswers/:id', (req, res) => {
+    controller.pqrsAnswers(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
         })

@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const answerSchema = new mongoose.Schema({
     admin: {
         type: String,
-        required: function() { return !this.user; } // Required if user is not present
+        required: function() { return !this.resident; } // Required if user is not present
     },
-    user: {
+    resident: {
         type: String,
         required: function() { return !this.admin; } // Required if admin is not present
     },
