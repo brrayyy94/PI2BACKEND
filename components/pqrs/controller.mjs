@@ -1,4 +1,4 @@
-import { createPqrs, addAnswer, getPqrsByComplex, closePqrs } from "./store.mjs";
+import { createPqrs, addAnswer, getPqrsByComplex, closePqrs, getPqrsAnswers } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -153,4 +153,22 @@ const close = async (req, res) => {
     }
 };
 
-export { add, answer, get, close };
+// getPqrsAnswers (R)
+const pqrsAnswers = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validate the PQRS ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid PQRS ID' });
+        }
+
+        const answers = await getPqrsAnswers(id);
+
+        return res.status(200).json(answers);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export { add, answer, get, close, pqrsAnswers };

@@ -1154,6 +1154,37 @@
           }
         }
       }
+    },
+    "/pqrs/getPqrsAnswers/:id": {
+      "get": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Get PQRS's answers by PQRS's id",
+        "description": "Get PQRS's answers by PQRS's id in the params",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

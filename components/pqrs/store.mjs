@@ -54,3 +54,13 @@ export const closePqrs = async (id) => {
         return new Error(error);
     }
 };
+
+// getPqrsAnswers (R)
+export const getPqrsAnswers = async (id) => {
+    try {
+        const pqrs = await Pqrs.findById(id);
+        return pqrs.answer;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
