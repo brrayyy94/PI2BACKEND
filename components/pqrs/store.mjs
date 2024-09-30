@@ -1,5 +1,29 @@
 import Pqrs from "./model.mjs";
 
+// Send notification
+export const notifyPqrs = async (pendingPqrs) => {
+    try {
+        const now = new Date();
+        const twoDaysAgo = new Date(now.setDate(now.getDate() - 2)); // Fecha de hace 2 días
+        
+        // Buscar PQRS que tengan más de 2 días y no tengan respuestas
+        const pendingPqrs = await Pqrs.find({
+            user: userId,
+            date: { $lte: twoDaysAgo },
+            state: 'pendiente',
+            answer: { $size: 0 }  // Asegura que no haya respuestas
+        });    
+        
+        return await Promise.all(pendingPqrs.map(async (pqrs) => {
+            pqrs.answer.push('La PQRS no ha sido respondida después de 2 días');
+            await pqrs.save(); // Guardar los cambios en la base de datos
+            return pqrs;
+        }));
+    } catch (error) {
+        return new Error(error);
+    }
+};
+
 // Create (C)
 export const createPqrs = async (pqrs) => {
     try {
@@ -7,7 +31,7 @@ export const createPqrs = async (pqrs) => {
         await newPqrs.save();
         return 'PQRS created\n', newPqrs;
     } catch (error) {
-        throw new Error(error);
+        return new Error(error);
     }
 };
 

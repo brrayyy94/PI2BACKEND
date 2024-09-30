@@ -13,6 +13,11 @@ const answerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        enum: ['System', 'Normal'],
+        required: true
+    },
     date: {
         type: Date,
         required: true

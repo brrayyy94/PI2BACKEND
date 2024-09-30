@@ -1,7 +1,8 @@
-import { createPqrs, addAnswer, getPqrsByComplex, closePqrs, getPqrsAnswers } from "./store.mjs";
+import { createPqrs, addAnswer, getPqrsByComplex, closePqrs, getPqrsAnswers, notifyPqrs } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
+import cron from "node-cron";
 
 // Utility function to check if a string is not empty or whitespace
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
@@ -89,6 +90,7 @@ const answer = async (req, res) => {
         // Prepare answer data based on user role
         const answerData = {
             comment: answer,
+            type:'Normal',
             date: new Date()
         };
 
@@ -112,6 +114,22 @@ const answer = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+const notify = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        // Validate the PQRS ID
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid User Id' });
+        }
+
+        const pqrs = await notifyPqrs(userId);
+
+        return { status: 200, message: pqrs };
+    } catch (error) {
+        return { status: 500, message: `Error al notificar la PQRS ${error.message}`};
+    }
+}
 
 // Read (R)
 const get = async (req, res) => {
@@ -171,4 +189,4 @@ const pqrsAnswers = async (req, res) => {
     }
 };
 
-export { add, answer, get, close, pqrsAnswers };
+export { add, answer, get, close, pqrsAnswers, notify };
