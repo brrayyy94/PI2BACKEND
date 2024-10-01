@@ -40,7 +40,7 @@
     "application/json"
   ],
   "paths": {
-    "/user/addUser": {
+    "/user/add": {
       "post": {
         "tags": [
           "User"
@@ -168,7 +168,7 @@
         }
       }
     },
-    "/user/getUsersByComplex/{idComplex}": {
+    "/user/getByComplex/{idComplex}": {
       "get": {
         "tags": [
           "User"
@@ -199,7 +199,7 @@
         }
       }
     },
-    "/user/getUserById/{idUser}": {
+    "/user/getById/{idUser}": {
       "get": {
         "tags": [
           "User"
@@ -230,7 +230,7 @@
         }
       }
     },
-    "/user/updateUser": {
+    "/user/update": {
       "put": {
         "tags": [
           "User"
@@ -315,7 +315,7 @@
         }
       }
     },
-    "/user/deleteUser/:id": {
+    "/user/delete/:id": {
       "delete": {
         "tags": [
           "User"
@@ -346,7 +346,7 @@
         }
       }
     },
-    "/anouncements/addAnoun": {
+    "/anouncements/add": {
       "post": {
         "tags": [
           "Anouncements"
@@ -408,7 +408,7 @@
         }
       }
     },
-    "/anouncements/getAnounsByComplex/{idComplex}": {
+    "/anouncements/getByComplex/{idComplex}": {
       "get": {
         "tags": [
           "Anouncements"
@@ -439,7 +439,7 @@
         }
       }
     },
-    "/anouncements/getAnounsByUser/{userId}": {
+    "/anouncements/getByUser/{userId}": {
       "get": {
         "tags": [
           "Anouncements"
@@ -470,7 +470,7 @@
         }
       }
     },
-    "/anouncements/getAnounById/{_id}": {
+    "/anouncements/getById/{_id}": {
       "get": {
         "tags": [
           "Anouncements"
@@ -501,7 +501,7 @@
         }
       }
     },
-    "/anouncements/updateAnoun/{idUser}": {
+    "/anouncements/update/{idUser}": {
       "put": {
         "tags": [
           "Anouncements"
@@ -569,7 +569,7 @@
         }
       }
     },
-    "/anouncements/deleteAnoun/{idAnoun}/{idUser}": {
+    "/anouncements/delete/{idAnoun}/{idUser}": {
       "delete": {
         "tags": [
           "Anouncements"
@@ -606,7 +606,7 @@
         }
       }
     },
-    "/anouncements/searchAnnouncements/{keyword}": {
+    "/anouncements/search/{keyword}": {
       "get": {
         "tags": [
           "Anouncements"
@@ -638,7 +638,7 @@
         }
       }
     },
-    "/anouncements/filterAnnouncementsByCategory/{category}": {
+    "/anouncements/filterByCategory/{category}": {
       "get": {
         "tags": [
           "Anouncements"
@@ -669,7 +669,7 @@
         }
       }
     },
-    "/complex/addComplex": {
+    "/complex/add": {
       "post": {
         "tags": [
           "Complex"
@@ -750,7 +750,7 @@
         }
       }
     },
-    "/complex/getComplexColors/{idComplex}": {
+    "/complex/getColors/{idComplex}": {
       "get": {
         "tags": [
           "Complex"
@@ -781,7 +781,7 @@
         }
       }
     },
-    "/complex/getComplex/{idComplex}": {
+    "/complex/get/{idComplex}": {
       "get": {
         "tags": [
           "Complex"
@@ -812,7 +812,7 @@
         }
       }
     },
-    "/complex/updateComplex": {
+    "/complex/update": {
       "put": {
         "tags": [
           "Complex"
@@ -898,7 +898,7 @@
         }
       }
     },
-    "/complex/updateComplexColors": {
+    "/complex/updateColors": {
       "put": {
         "tags": [
           "Complex"
@@ -950,7 +950,7 @@
         }
       }
     },
-    "/complex/deleteComplex/:id": {
+    "/complex/delete/:id": {
       "delete": {
         "tags": [
           "Complex"
@@ -981,7 +981,7 @@
         }
       }
     },
-    "/pqrs/addPqrs": {
+    "/pqrs/add": {
       "post": {
         "tags": [
           "PQRS"
@@ -1045,7 +1045,7 @@
         }
       }
     },
-    "/pqrs/answerPqrs/:idPqrs": {
+    "/pqrs/answer/:idPqrs": {
       "put": {
         "tags": [
           "PQRS"
@@ -1093,7 +1093,7 @@
         }
       }
     },
-    "/pqrs/getPqrsByComplex/{idComplex}": {
+    "/pqrs/getByComplex/{idComplex}": {
       "get": {
         "tags": [
           "PQRS"
@@ -1124,7 +1124,7 @@
         }
       }
     },
-    "/pqrs/closePqrs/:id": {
+    "/pqrs/close/:id": {
       "put": {
         "tags": [
           "PQRS"
@@ -1155,7 +1155,7 @@
         }
       }
     },
-    "/pqrs/getPqrsAnswers/:id": {
+    "/pqrs/getAnswers/:id": {
       "get": {
         "tags": [
           "PQRS"

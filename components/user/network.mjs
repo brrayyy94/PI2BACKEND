@@ -7,7 +7,7 @@ const router = Router();
 const controller = { add, get, update, remove, getById, login };
 
 // Route POST /user/addUser
-router.post('/addUser', (req, res) => {
+router.post('/add', (req, res) => {
     controller.add(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
 });
 
 // Route GET /user/getUsersByComplex
-router.get('/getUsersByComplex/:idComplex', (req, res) => {
+router.get('/getByComplex/:idComplex', (req, res) => {
     controller.get(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -40,7 +40,7 @@ router.get('/getUsersByComplex/:idComplex', (req, res) => {
 });
 
 // Route GET /user/getUserById
-router.get('/getUserById/:idUser', (req, res) => {
+router.get('/getById/:idUser', (req, res) => {
     controller.getById(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -51,7 +51,7 @@ router.get('/getUserById/:idUser', (req, res) => {
 });
 
 // Route PUT /user/updateUser
-router.put('/updateUser', (req, res) => {
+router.put('/update', (req, res) => {
     controller.update(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -62,7 +62,7 @@ router.put('/updateUser', (req, res) => {
 });
 
 // Route DELETE /user/deleteUser
-router.delete('/deleteUser/:id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message }) => {
             success(res, message, status);

@@ -7,7 +7,7 @@ const router = Router();
 const controller = { add, get, close, pqrsAnswers, notify };
 
 // Route POST /pqrs/addPqrs
-router.post('/addPqrs', (req, res) => {
+router.post('/add', (req, res) => {
     controller.add(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -18,7 +18,7 @@ router.post('/addPqrs', (req, res) => {
 });
 
 // Route PUT /pqrs/answerPqrs
-router.put('/answerPqrs/:id', (req, res) => {
+router.put('/answer/:id', (req, res) => {
     answer(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -29,7 +29,7 @@ router.put('/answerPqrs/:id', (req, res) => {
 });
 
 // Route PUT /pqrs/notifyPqrs/userId
-router.put('/notifyPqrs/:userId', (req, res) => {
+router.put('/notify/:userId', (req, res) => {
     notify(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -40,7 +40,7 @@ router.put('/notifyPqrs/:userId', (req, res) => {
 });
 
 // Route GET /pqrs/getPqrsByComplex
-router.get('/getPqrsByComplex/:idComplex', (req, res) => {
+router.get('/getByComplex/:idComplex', (req, res) => {
     controller.get(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -51,7 +51,7 @@ router.get('/getPqrsByComplex/:idComplex', (req, res) => {
 });
 
 // Route PUT /pqrs/closePqrs/:id
-router.put('/closePqrs/:id', (req, res) => {
+router.put('/close/:id', (req, res) => {
     controller.close(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -62,7 +62,7 @@ router.put('/closePqrs/:id', (req, res) => {
 });
 
 // Route GET /pqrs/getPqrsAnswers
-router.get('/getPqrsAnswers/:id', (req, res) => {
+router.get('/getAnswers/:id', (req, res) => {
     controller.pqrsAnswers(req, res)
         .then(({ status, message }) => {
             success(res, message, status);

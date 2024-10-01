@@ -7,8 +7,8 @@ const router = Router();
 const controller = { add, getByComplex, searchAnnouncements, update, remove, getById, getByUser, filterAnnouncementsByCategory };
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
-// Ruta para el método POST en /anouncements/addAnoun (C)
-router.post('/addAnoun', (req, res) => {
+// Ruta para el método POST en /anouncements/add (C)
+router.post('/add', (req, res) => {
     const { User, Title, Body, category } = req.body;
 
     // Validate required fields
@@ -30,8 +30,8 @@ router.post('/addAnoun', (req, res) => {
         });
 });
 
-// Ruta para el método GET en /anouncements/getAnounsByComplex/:idComplex (R)
-router.get('/getAnounsByComplex/:idComplex', (req, res) => {
+// Ruta para el método GET en /anouncements/getByComplex/:idComplex (R)
+router.get('/getByComplex/:idComplex', (req, res) => {
     controller.getByComplex(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
@@ -41,8 +41,8 @@ router.get('/getAnounsByComplex/:idComplex', (req, res) => {
         });
 });
 
-// Ruta para el método GET en /anouncements/getAnounsByUser/:userId (R)
-router.get('/getAnounsByUser/:userId', (req, res) => {
+// Ruta para el método GET en /anouncements/getByUser/:userId (R)
+router.get('/getByUser/:userId', (req, res) => {
     controller.getByUser(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
@@ -52,8 +52,8 @@ router.get('/getAnounsByUser/:userId', (req, res) => {
         });
 });
 
-// Ruta para el método GET en /anouncements/getAnounById/:_id (R)
-router.get('/getAnounById/:_id', (req, res) => {
+// Ruta para el método GET en /anouncements/getById/:_id (R)
+router.get('/getById/:_id', (req, res) => {
     controller.getById(req, res)
         .then(({ status, message }) => {
             success(res, message, status); // Pass only res
@@ -63,8 +63,8 @@ router.get('/getAnounById/:_id', (req, res) => {
         });
 });
 
-//Ruta para el método GET en /anouncements/searchAnnouncements/:keyword (R)
-router.get('/searchAnnouncements/:keyword/:idComplex', (req, res) => {
+// Ruta para el método GET en /anouncements/search/:keyword/:idComplex (R)
+router.get('/search/:keyword/:idComplex', (req, res) => {
     controller.searchAnnouncements(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -74,8 +74,8 @@ router.get('/searchAnnouncements/:keyword/:idComplex', (req, res) => {
         });
 });
 
-// Ruta para el método GET en /anouncements/filterAnnouncements (R)
-router.get('/filterAnnouncementsByCategory/:category', (req, res) => {
+// Ruta para el método GET en /anouncements/filterByCategory/:category (R)
+router.get('/filterByCategory/:category', (req, res) => {
     controller.filterAnnouncementsByCategory(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -86,8 +86,8 @@ router.get('/filterAnnouncementsByCategory/:category', (req, res) => {
 });
 
 
-// Ruta para el método POST en /anouncements/updateAnoun (U)
-router.put('/updateAnoun/:idUser', (req, res) => {
+// Ruta para el método PUT en /anouncements/update/:idUser (U)
+router.put('/update/:idUser', (req, res) => {
     const { _id, Title, Body, category } = req.body;
 
     // Validate required fields
@@ -108,8 +108,8 @@ router.put('/updateAnoun/:idUser', (req, res) => {
         });
 });
 
-// Ruta para el método DELETE en /anouncements/deleteAnoun/idAnoun (D)
-router.delete('/deleteAnoun/:idAnoun/:userId', (req, res) => {
+// Ruta para el método DELETE en /anouncements/delete/:idAnoun/:userId (D)
+router.delete('/delete/:idAnoun/:userId', (req, res) => {
     controller.remove(req, res)
         .then(({ status, message, data }) => {
             success(res, message, status, data); // Pass only res
