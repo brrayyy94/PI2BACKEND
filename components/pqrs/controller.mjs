@@ -1,4 +1,5 @@
-import { createPqrs, addAnswer, getPqrsByComplex, closePqrs, getPqrsAnswers, notifyPqrs } from "./store.mjs";
+import { createPqrs, addAnswer, getPqrsByUser, getPqrsByComplex, closePqrs, reopenPqrs, 
+    getPqrsAnswers, notifyPqrs } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -40,6 +41,70 @@ const add = async (req, res) => {
 
         const pqrs = await createPqrs(pqrsData);
         return res.status(201).json({ message: "PQRS created successfully", data: pqrs });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// Read (R)
+const get = async (req, res) => {
+    try {
+        const { idComplex } = req.params;
+
+        // Validate the complex ID
+        if (!mongoose.Types.ObjectId.isValid(idComplex)) {
+            return res.status(400).json({ message: 'Invalid complex ID' });
+        }
+
+        // Fetch PQRS entries by complex ID
+        const pqrsEntries = await Pqrs.find({ complex: idComplex });
+
+        if (pqrsEntries.length === 0) {
+            return res.status(404).json({ message: 'No PQRS entries found for this complex' });
+        }
+
+        return res.status(200).json(pqrsEntries);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// Read (R)
+const getByUser = async (req, res) => {
+    try {
+        const { idUser } = req.params;
+
+        // Validate the user ID
+        if (!mongoose.Types.ObjectId.isValid(idUser)) {
+            return res.status(400).json({ message: 'Invalid user ID' });
+        }
+
+        // Fetch PQRS entries by user ID
+        const pqrsEntries = await getPqrsByUser(idUser);
+
+        if (pqrsEntries.length === 0) {
+            return res.status(404).json({ message: 'No PQRS entries found for this user' });
+        }
+
+        return res.status(200).json(pqrsEntries);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// getPqrsAnswers (R)
+const pqrsAnswers = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validate the PQRS ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid PQRS ID' });
+        }
+
+        const answers = await getPqrsAnswers(id);
+
+        return res.status(200).json(answers);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -128,29 +193,6 @@ const notify = async (req, res) => {
     } catch (error) {
         return { status: 500, message: ` Error when reporting the PQRS ${error.message}`};
     }
-}
-
-// Read (R)
-const get = async (req, res) => {
-    try {
-        const { idComplex } = req.params;
-
-        // Validate the complex ID
-        if (!mongoose.Types.ObjectId.isValid(idComplex)) {
-            return res.status(400).json({ message: 'Invalid complex ID' });
-        }
-
-        // Fetch PQRS entries by complex ID
-        const pqrsEntries = await Pqrs.find({ complex: idComplex });
-
-        if (pqrsEntries.length === 0) {
-            return res.status(404).json({ message: 'No PQRS entries found for this complex' });
-        }
-
-        return res.status(200).json(pqrsEntries);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
 };
 
 // Close (U)
@@ -170,22 +212,21 @@ const close = async (req, res) => {
     }
 };
 
-// getPqrsAnswers (R)
-const pqrsAnswers = async (req, res) => {
+// Reopen (U)
+const reopen = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-
         // Validate the PQRS ID
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'Invalid PQRS ID' });
         }
 
-        const answers = await getPqrsAnswers(id);
+        const pqrs = await reopenPqrs(id);
 
-        return res.status(200).json(answers);
+        return { status: 200, message: pqrs };
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return { status: 500, message: 'Error al reabrir la PQRS', error: error.message };
     }
 };
 
-export { add, answer, get, close, pqrsAnswers, notify };
+export { add, answer, get, getByUser, close, pqrsAnswers, notify, reopen };

@@ -1124,6 +1124,37 @@
         }
       }
     },
+    "/pqrs/getByUser/{idUser}": {
+      "get": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Get PQRS's by user's id",
+        "description": "Get PQRS's by user's id in the params",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
     "/pqrs/getByComplex/{idComplex}": {
       "get": {
         "tags": [
@@ -1165,6 +1196,37 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/pqrs/reopen/{pqrsId}": {
+      "put": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Reopen ",
+        "description": "Reopen an already close PQRS",
+        "parameters": [
+          {
+            "name": "pqrsId",
             "in": "path",
             "required": true,
             "type": "string"
