@@ -1045,7 +1045,7 @@
         }
       }
     },
-    "/pqrs/answer/:idPqrs": {
+    "/pqrs/answer/{idPqrs}": {
       "put": {
         "tags": [
           "PQRS"
@@ -1075,6 +1075,37 @@
                 "answer"
               ]
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/pqrs/notify/{userId}": {
+      "put": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Notify ",
+        "description": "Notify when two days have passed without responding to the PQRS",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1124,7 +1155,7 @@
         }
       }
     },
-    "/pqrs/close/:id": {
+    "/pqrs/close/{id}": {
       "put": {
         "tags": [
           "PQRS"
@@ -1155,7 +1186,7 @@
         }
       }
     },
-    "/pqrs/getAnswers/:id": {
+    "/pqrs/getAnswers/{id}": {
       "get": {
         "tags": [
           "PQRS"

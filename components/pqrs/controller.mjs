@@ -2,7 +2,6 @@ import { createPqrs, addAnswer, getPqrsByComplex, closePqrs, getPqrsAnswers, not
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
-import cron from "node-cron";
 
 // Utility function to check if a string is not empty or whitespace
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
@@ -123,11 +122,11 @@ const notify = async (req, res) => {
             return res.status(400).json({ message: 'Invalid User Id' });
         }
 
-        const pqrs = await notifyPqrs(userId);
+        await notifyPqrs(userId);
 
-        return { status: 200, message: pqrs };
+        return { status: 200, message: 'The notification has been sent' };
     } catch (error) {
-        return { status: 500, message: `Error al notificar la PQRS ${error.message}`};
+        return { status: 500, message: ` Error when reporting the PQRS ${error.message}`};
     }
 }
 

@@ -1,7 +1,7 @@
 import Pqrs from "./model.mjs";
 
 // Send notification
-export const notifyPqrs = async (pendingPqrs) => {
+export const notifyPqrs = async (userId) => {
     try {
         const now = new Date();
         const twoDaysAgo = new Date(now.setDate(now.getDate() - 2)); // Fecha de hace 2 días
@@ -12,13 +12,19 @@ export const notifyPqrs = async (pendingPqrs) => {
             date: { $lte: twoDaysAgo },
             state: 'pendiente',
             answer: { $size: 0 }  // Asegura que no haya respuestas
-        });    
+        });
+
+        const systemMessage = {
+            resident: userId,
+            comment: 'The PQRS has not been answered after 2 days',
+            type: 'System',
+            date: new Date()
+        };
         
-        return await Promise.all(pendingPqrs.map(async (pqrs) => {
-            pqrs.answer.push('La PQRS no ha sido respondida después de 2 días');
-            await pqrs.save(); // Guardar los cambios en la base de datos
-            return pqrs;
-        }));
+        pendingPqrs.forEach(async pqrs => {
+            pqrs.answer.push(systemMessage);
+            await pqrs.save();
+        });
     } catch (error) {
         return new Error(error);
     }
