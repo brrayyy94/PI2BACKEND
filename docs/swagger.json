@@ -1093,7 +1093,7 @@
         }
       }
     },
-    "/pqrs/notify/{userId}": {
+    "/pqrs/notify/{idUser}": {
       "put": {
         "tags": [
           "PQRS"
@@ -1102,7 +1102,44 @@
         "description": "Notify when two days have passed without responding to the PQRS",
         "parameters": [
           {
-            "name": "userId",
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/pqrs/notifyOne/{idUser}/{idPqrs": {
+      "put": {
+        "tags": [
+          "PQRS"
+        ],
+        "summary": "Notify ",
+        "description": "Notify when two days have passed without responding to the PQRS",
+        "parameters": [
+          {
+            "name": "idUser",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idPqrs",
             "in": "path",
             "required": true,
             "type": "string"

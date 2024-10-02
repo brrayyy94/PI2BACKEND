@@ -61,7 +61,7 @@ export const notifyPqrs = async (userId) => {
 
         const systemMessage = {
             resident: userId,
-            comment: 'The PQRS has not been answered after 2 days',
+            comment: `You haven't responded to this case for a while, remember to attend to the residents' PQRS.`,
             type: 'System',
             date: new Date()
         };
@@ -70,6 +70,35 @@ export const notifyPqrs = async (userId) => {
             pqrs.answer.push(systemMessage);
             await pqrs.save();
         });
+    } catch (error) {
+        return new Error(error);
+    }
+};
+
+// Send notification to ona pqrs
+export const notifyOnePqrs = async (idUser, idPqrs) => {
+    try {
+        const now = new Date();
+        const twoDaysAgo = new Date(now.setDate(now.getDate() - 2)); // Fecha de hace 2 días
+        
+        // Buscar PQRS que tengan más de 2 días y no tengan respuestas
+        const pqrs = await Pqrs.findById(idPqrs);
+
+        if (!pqrs) {
+            return { status: 404, message: 'PQRS no encontrada' };
+        }
+
+        if (pqrs.state === 'pendiente') {
+            const systemMessage = {
+                resident: idUser,
+                comment: `You haven't responded to this case for a while, remember to attend to the residents' PQRS.`,
+                type: 'System',
+                date: new Date()
+            };
+            pqrs.answer.push(systemMessage);
+            pqrs.save();
+        }
+       
     } catch (error) {
         return new Error(error);
     }

@@ -1,5 +1,5 @@
 import { createPqrs, addAnswer, getPqrsByUser, getPqrsByComplex, closePqrs, reopenPqrs, 
-    getPqrsAnswers, notifyPqrs } from "./store.mjs";
+    getPqrsAnswers, notifyPqrs, notifyOnePqrs } from "./store.mjs";
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
@@ -180,14 +180,34 @@ const answer = async (req, res) => {
 };
 
 const notify = async (req, res) => {
-    const { userId } = req.params;
+    const { idUser } = req.params;
     try {
-        // Validate the PQRS ID
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
+        // Validate the user ID
+        if (!mongoose.Types.ObjectId.isValid(idUser)) {
             return res.status(400).json({ message: 'Invalid User Id' });
         }
 
-        await notifyPqrs(userId);
+        await notifyPqrs(idUser);
+
+        return { status: 200, message: 'The notification has been sent' };
+    } catch (error) {
+        return { status: 500, message: ` Error when reporting the PQRS ${error.message}`};
+    }
+};
+
+const notifyOne = async (req, res) => {
+    const { idUser, idPqrs } = req.params;
+    try {
+        // Validate the user ID
+        if (!mongoose.Types.ObjectId.isValid(idUser)) {
+            return res.status(400).json({ message: 'Invalid User Id' });
+        }
+        // Validate the PQRS ID
+        if (!mongoose.Types.ObjectId.isValid(idPqrs)) {
+            return res.status(400).json({ message: 'Invalid User Id' });
+        }
+
+        await notifyOnePqrs(idUser, idPqrs);
 
         return { status: 200, message: 'The notification has been sent' };
     } catch (error) {
@@ -229,4 +249,4 @@ const reopen = async (req, res) => {
     }
 };
 
-export { add, answer, get, getByUser, close, pqrsAnswers, notify, reopen };
+export { add, answer, get, getByUser, close, pqrsAnswers, notify, reopen, notifyOne };
