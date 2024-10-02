@@ -6,8 +6,8 @@ const router = Router();
 
 const controller = {add, get, getConfigColors, update, remove, updateColors};
 
-// Route POST /complex/addComplex
-router.post('/addComplex', (req, res) => {
+// Post (C) complex
+router.post('/add', (req, res) => {
     controller.add(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -17,8 +17,8 @@ router.post('/addComplex', (req, res) => {
     });
 });
 
-// Route GET /complex/getComplexColors
-router.get('/getComplexColors/:idComplex', (req, res) => {
+// Get (R) colors of complex
+router.get('/getColors/:idComplex', (req, res) => {
     controller.getConfigColors(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -28,8 +28,8 @@ router.get('/getComplexColors/:idComplex', (req, res) => {
     });
 });
 
-// Route GET /complex/getComplex
-router.get('/getComplex/:idComplex', (req, res) => {
+// Get (R) complex
+router.get('/get/:idComplex', (req, res) => {
     controller.get(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -39,8 +39,8 @@ router.get('/getComplex/:idComplex', (req, res) => {
     });
 });
 
-// Route PUT /complex/updateComplex
-router.put('/updateComplex', (req, res) => {
+// Update (U) complex
+router.put('/update', (req, res) => {
     controller.update(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -50,8 +50,8 @@ router.put('/updateComplex', (req, res) => {
     });
 });
 
-// Route PUT /complex/:idComplex/updateColors
-router.put('/updateComplexColors/:idComplex', (req, res) => {
+// Update (U) colors of complex
+router.put('/updateColors/:idComplex', (req, res) => {
     controller.updateColors(req, res)
     .then(({status, message}) => {
         success(res, message, status);
@@ -61,8 +61,8 @@ router.put('/updateComplexColors/:idComplex', (req, res) => {
     });
 });
 
-// Route DELETE /complex/deleteComplex
-router.delete('/deleteComplex/:id', (req, res) => {
+// Delete (D) complex
+router.delete('/delete/:id', (req, res) => {
     controller.remove(req, res)
     .then(({status, message}) => {
         success(res, message, status);

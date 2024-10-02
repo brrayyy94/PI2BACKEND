@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { success, error } from "../../network/response.mjs";
-import { add, answer, get, close, pqrsAnswers } from "./controller.mjs";
+import { add, answer, get, getByUser, close, pqrsAnswers, notify, reopen, notifyOne } from "./controller.mjs";
 
 const router = Router();
 
-const controller = { add, get, close, pqrsAnswers };
+const controller = {  add, answer, get, getByUser, close, pqrsAnswers, notify, reopen, notifyOne };
 
-// Route POST /pqrs/addPqrs
-router.post('/addPqrs', (req, res) => {
+// Create (C) /pqrs/add
+router.post('/add', (req, res) => {
     controller.add(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -17,9 +17,9 @@ router.post('/addPqrs', (req, res) => {
         });
 });
 
-// Route PUT /pqrs/answerPqrs
-router.put('/answerPqrs/:id', (req, res) => {
-    answer(req, res)
+// Get (R) /pqrs/getByUser/:idUser
+router.get('/getByUser/:idUser', (req, res) => {
+    controller.getByUser(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
         })
@@ -28,8 +28,8 @@ router.put('/answerPqrs/:id', (req, res) => {
         });
 });
 
-// Route GET /pqrs/getPqrsByComplex
-router.get('/getPqrsByComplex/:idComplex', (req, res) => {
+// Get (R) /pqrs/getByComplex/:idComplex
+router.get('/getByComplex/:idComplex', (req, res) => {
     controller.get(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -39,8 +39,52 @@ router.get('/getPqrsByComplex/:idComplex', (req, res) => {
         });
 });
 
-// Route PUT /pqrs/closePqrs/:id
-router.put('/closePqrs/:id', (req, res) => {
+// Get (R) /pqrs/getAnswers/:id
+router.get('/getAnswers/:id', (req, res) => {
+    controller.pqrsAnswers(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Update (U) /pqrs/answer/:id
+router.put('/answer/:id', (req, res) => {
+    controller.answer(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Update (U) /pqrs/notify/:userId
+router.put('/notify/:userId', (req, res) => {
+    controller.notify(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Update (U) /pqrs/notify/:userId
+router.put('/notifyOne/:idUser/:idPqrs', (req, res) => {
+    controller.notifyOne(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+// Update (U) /pqrs/close/:id
+router.put('/close/:id', (req, res) => {
     controller.close(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -50,9 +94,9 @@ router.put('/closePqrs/:id', (req, res) => {
         });
 });
 
-// Route GET /pqrs/getPqrsAnswers
-router.get('/getPqrsAnswers/:id', (req, res) => {
-    controller.pqrsAnswers(req, res)
+// Update (U) /pqrs/reopen/:id
+router.put('/reopen/:id', (req, res) => {
+    controller.reopen(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
         })
