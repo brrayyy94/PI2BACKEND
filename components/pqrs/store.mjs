@@ -61,7 +61,7 @@ export const notifyPqrs = async (userId) => {
 
         const systemMessage = {
             resident: userId,
-            comment: `You haven't responded to this case for a while, remember to attend to the residents' PQRS.`,
+            comment: `No has respondido a este caso por un tiempo, los residentes valoran mucho una respuesta oportuna`,
             type: 'System',
             date: new Date()
         };
@@ -91,7 +91,7 @@ export const notifyOnePqrs = async (idUser, idPqrs) => {
         if (pqrs.state === 'pendiente') {
             const systemMessage = {
                 resident: idUser,
-                comment: `You haven't responded to this case for a while, remember to attend to the residents' PQRS.`,
+                comment: `No has respondido a este caso por un tiempo, los residentes valoran mucho una respuesta oportuna`,
                 type: 'System',
                 date: new Date()
             };
