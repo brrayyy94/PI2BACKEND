@@ -161,7 +161,7 @@ const answer = async (req, res) => {
         if (userData.role === 'ADMIN') {
             answerData.admin = userId;
             // Change PQRS state to "tramite" after admin's first answer
-            if (pqrs.answer.length === 0) {
+            if (pqrs.answer.length === 0  || pqrs.answer[pqrs.answer.length -1].type != "system") {
                 pqrs.state = 'tramite';
             }
         } else if (userData.role === 'RESIDENT') {
