@@ -59,10 +59,6 @@ const get = async (req, res) => {
         // Fetch PQRS entries by complex ID
         const pqrsEntries = await Pqrs.find({ complex: idComplex });
 
-        if (pqrsEntries.length === 0) {
-            return res.status(404).json({ message: 'No PQRS entries found for this complex' });
-        }
-
         return res.status(200).json(pqrsEntries);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -81,10 +77,6 @@ const getByUser = async (req, res) => {
 
         // Fetch PQRS entries by user ID
         const pqrsEntries = await getPqrsByUser(idUser);
-
-        if (pqrsEntries.length === 0) {
-            return res.status(404).json({ message: 'No PQRS entries found for this user' });
-        }
 
         return res.status(200).json(pqrsEntries);
     } catch (error) {
