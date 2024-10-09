@@ -61,10 +61,9 @@ const getByUser = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Invalid ID format' });
         }
+
         const anuncios = await getAnounsByUser(userId);
-        if (!anuncios || anuncios.length === 0) {
-            return res.status(404).json({ message: 'No announcements found for this user' });
-        }
+
         return { status: 200, message: anuncios };
     } catch (err) {
         return { message: `Error fetching announcements: ${err.message}` };
@@ -86,9 +85,7 @@ const searchAnnouncements = async (req, res) => {
             return { status: 400, message: 'Keyword is required' };
         }
         const announcements = await searchAnnouncementsByKeyword(keyword, idComplex);
-        if (!announcements || announcements.length === 0) {
-            return { status: 200, message: announcements };
-        }
+
         return { status: 200, message: announcements };
     } catch (error) {
         return { status: 500, message: error.message };
