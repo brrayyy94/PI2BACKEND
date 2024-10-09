@@ -62,6 +62,8 @@ const getByUser = async (req, res) => {
             return res.status(400).json({ message: 'Invalid ID format' });
         }
 
+        const anuncios = await getAnounsByUser(userId);
+
         return { status: 200, message: anuncios };
     } catch (err) {
         return { message: `Error fetching announcements: ${err.message}` };
