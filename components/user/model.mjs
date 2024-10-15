@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     idComplex: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Complex',
         required: true
     },
     email: {
