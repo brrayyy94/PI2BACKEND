@@ -67,7 +67,7 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 // Zones
-router.post('/:idComplex/addZone', (req, res) => {
+router.post('/addZone/:idComplex', (req, res) => {
     addZone(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -77,7 +77,7 @@ router.post('/:idComplex/addZone', (req, res) => {
         });
 });
 
-router.get('/:idComplex/zone/:idZone', (req, res) => {
+router.get('/zone/:idComplex/:idZone', (req, res) => {
     getZone(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -87,7 +87,7 @@ router.get('/:idComplex/zone/:idZone', (req, res) => {
         });
 });
 
-router.put('/:idComplex/zone/:idZone', (req, res) => {
+router.put('/zone/:idComplex/:idZone', (req, res) => {
     updateZone(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -97,7 +97,7 @@ router.put('/:idComplex/zone/:idZone', (req, res) => {
         });
 });
 
-router.delete('/:idComplex/zone/:idZone', (req, res) => {
+router.delete('/zone/:idComplex/:idZone', (req, res) => {
     deleteZone(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
@@ -107,7 +107,7 @@ router.delete('/:idComplex/zone/:idZone', (req, res) => {
         });
 });
 
-router.get('/:idComplex/getAllZones', (req, res) => {
+router.get('/getAllZones/:idComplex', (req, res) => {
     getZones(req, res)
         .then(({ status, message }) => {
             success(res, message, status);

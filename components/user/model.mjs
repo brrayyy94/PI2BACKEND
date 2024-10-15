@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     idComplex: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Complex',
         required: true
     },

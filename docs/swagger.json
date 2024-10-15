@@ -27,10 +27,6 @@
     {
       "name": "PQRS",
       "description": "PQRS related apis"
-    },
-    {
-      "name": "Zone",
-      "description": "Zone related apis"
     }
   ],
   "schemes": [
@@ -985,9 +981,9 @@
         }
       }
     },
-    "/complex/{idComplex}/addZone": {
+    "/complex/addZone/{idComplex}": {
       "post": {
-        "tags": ["Zone"],
+        "tags": ["Complex"],
         "summary": "Add a new zone",
         "parameters": [
           {
@@ -1021,9 +1017,9 @@
         }
       }
     },
-    "/complex/{idComplex}/zone/{idZone}": {
+    "/complex/zone/{idComplex}/{idZone}": {
       "get": {
-        "tags": ["Zone"],
+        "tags": ["Complex"],
         "summary": "Get a zone by ID",
         "parameters": [
           {
@@ -1061,7 +1057,7 @@
         }
       },
       "put": {
-        "tags": ["Zone"],
+        "tags": ["Complex"],
         "summary": "Update a zone by ID",
         "parameters": [
           {
@@ -1107,7 +1103,7 @@
         }
       },
       "delete": {
-        "tags": ["Zone"],
+        "tags": ["Complex"],
         "summary": "Delete a zone by ID",
         "parameters": [
           {
@@ -1145,9 +1141,9 @@
         }
       }
     },
-    "/complex/{idComplex}/getAllZones": {
+    "/complex/getAllZones/{idComplex}": {
       "get": {
-        "tags": ["Zone"],
+        "tags": ["Complex"],
         "summary": "Get all zones for a complex",
         "parameters": [
           {
