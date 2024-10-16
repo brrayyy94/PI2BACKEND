@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     idComplex: {
         type: String,
+        ref: 'Complex',
         required: true
     },
     email: {

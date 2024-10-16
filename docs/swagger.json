@@ -981,6 +981,197 @@
         }
       }
     },
+    "/complex/addZone/{idComplex}": {
+      "post": {
+        "tags": ["Complex"],
+        "summary": "Add a new zone",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Zone added",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/complex/zone/{idComplex}/{idZone}": {
+      "get": {
+        "tags": ["Complex"],
+        "summary": "Get a zone by ID",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idZone",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "404": {
+            "description": "Zone not found",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.404"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Complex"],
+        "summary": "Update a zone by ID",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idZone",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Zone updated",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "404": {
+            "description": "Zone not found",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.404"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Complex"],
+        "summary": "Delete a zone by ID",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idZone",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Zone deleted",
+            "schema": {
+              "$ref": "#/definitions/Zone"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "404": {
+            "description": "Zone not found",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.404"
+            }
+          }
+        }
+      }
+    },
+    "/complex/getAllZones/{idComplex}": {
+      "get": {
+        "tags": ["Complex"],
+        "summary": "Get all zones for a complex",
+        "parameters": [
+          {
+            "name": "idComplex",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Zone"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
     "/pqrs/add": {
       "post": {
         "tags": [
@@ -1318,6 +1509,37 @@
     }
   },
   "definitions": {
+    "Zone": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "availableDays": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+          }
+        },
+        "availableHours": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
     "WeToResponse": {
       "type": "object",
       "properties": {
