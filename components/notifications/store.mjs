@@ -4,14 +4,15 @@ import { sendPushNotification } from "../../services/pushNotifications.mjs";
 
 export const saveSubscription = async (subscription) => {
     try {
-        const notification = new Notification(subscription);
-        await notification.save();
+        await Notification.findOneAndUpdate(
+            { userId: subscription.userId },
+            subscription,
+            { new: true, upsert: true }
+        );
 
-        const user = await User.findById(subscription.userId);
+        await sendPushNotification(subscription, '¡Hola@! ' + subscription.userName, '¡Ahora recibirás notificaciones en este dispositivo!');
 
-        await sendPushNotification(subscription, '¡Hola@! ' + user.userName, '¡Ahora recibirás notificaciones en este dispositivo!');
-
-        return 'Usuario ' + user.userName + ' suscrito a notificaciones';
+        return 'Usuario ' + subscription.userName + ' suscrito a notificaciones';
     } catch (error) {
         throw { status: 400, message: error.message };
     }

@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import { sendPushNotification } from "../../services/pushNotifications.mjs";
 
 const subscribe = async (req, res) => {
-    const { endpoint, expirationTime, keys, userId, userComplex } = req.body;
+    const { endpoint, expirationTime, keys, userId, userComplex, userName } = req.body;
 
-    if (!endpoint || !keys || !keys.p256dh || !keys.auth || !userId || !userComplex) {
+    if (!endpoint || !keys || !keys.p256dh || !keys.auth || !userId || !userComplex || !userName) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -20,6 +20,7 @@ const subscribe = async (req, res) => {
             keys,
             userId,
             userComplex,
+            userName,
         };
 
         const savedSubscription = await saveSubscription(subscription);
@@ -32,6 +33,7 @@ const subscribe = async (req, res) => {
 
 const testOne = async (req, res) => {
     const { userId } = req.params;
+    const { title, body } = req.body;
 
     if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: 'Invalid ID format' });
@@ -44,8 +46,8 @@ const testOne = async (req, res) => {
             return res.status(404).json({ message: 'Subscription not found' });
         }
 
-        const result = await sendPushNotification(subscription, '¡Exito!', '¡Notificación de prueba enviada!');
-        
+        const result = await sendPushNotification(subscription, title, body);
+
         if (!result) {
             return res.status(400).json({ message: 'Error al enviar la notificación' });
         }

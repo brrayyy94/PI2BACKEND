@@ -1551,6 +1551,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TestNotificationBody"
+            }
           }
         ],
         "responses": {
@@ -1628,6 +1636,18 @@
           }
         }
       }
+    },
+    "TestNotificationBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      },
+      "required": ["title", "body"]
     },
     "WeToResponse": {
       "type": "object",
