@@ -44,7 +44,11 @@ const testOne = async (req, res) => {
             return res.status(404).json({ message: 'Subscription not found' });
         }
 
-        await sendPushNotification(subscription, '¡Exito!', '¡Notificación de prueba enviada!');
+        const result = await sendPushNotification(subscription, '¡Exito!', '¡Notificación de prueba enviada!');
+        
+        if (!result) {
+            return res.status(400).json({ message: 'Error al enviar la notificación' });
+        }
 
         return res.status(200).json('Resultado: ' + 'usuario ' + subscription.userId + ' notificado');
     } catch (error) {
