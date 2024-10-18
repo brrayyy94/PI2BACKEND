@@ -27,6 +27,10 @@
     {
       "name": "PQRS",
       "description": "PQRS related apis"
+    },
+    {
+    "name": "Notification",
+    "description": "Push notification related apis"
     }
   ],
   "schemes": [
@@ -1506,6 +1510,91 @@
           }
         }
       }
+    },
+    "/notifications/subscribe": {
+      "post": {
+        "tags": ["Notification"],
+        "summary": "Subscribe to notifications",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subscription created",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/notifications/test/{userId}": {
+      "post": {
+        "tags": ["Notification"],
+        "summary": "Send a test notification",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test notification sent",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
+    },
+    "/notifications/unsubscribe/{userId}": {
+      "delete": {
+        "tags": ["Notification"],
+        "summary": "Unsubscribe from notifications",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription deleted",
+            "schema": {
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1550,19 +1639,6 @@
         "message": {
           "type": "string",
           "example": "Success"
-        }
-      }
-    },
-    "errorResponse.400": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 400
-        },
-        "message": {
-          "type": "string",
-          "example": "The request was malformed or invalid. Please check the request parameters."
         }
       }
     },
@@ -1615,6 +1691,43 @@
         "message": {
           "type": "string",
           "example": "An unexpected error occurred on the server. Please try again later."
+        }
+      }
+    },
+    "Subscription": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "expirationTime": {
+          "type": "number"
+        },
+        "keys": {
+          "type": "object",
+          "properties": {
+            "p256dh": {
+              "type": "string"
+            },
+            "auth": {
+              "type": "string"
+            }
+          }
+        },
+        "userId": {
+          "type": "string"
+        },
+        "userComplex": {
+          "type": "string"
+        }
+      },
+      "required": ["endpoint", "keys", "userId", "userComplex"]
+    },
+    "errorResponse.400": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     }

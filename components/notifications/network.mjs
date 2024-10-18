@@ -1,24 +1,39 @@
 import { Router } from "express";
-import webpush from "web-push";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { success, error } from "../../network/response.mjs";
+import { subscribe, testOne, unsubscribe } from "./controller.mjs";
 
 const router = Router();
 
-webpush.setVapidDetails(
-    "mailto:no-reply@wetogether.com",
-    process.env.VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY,
-);
-
-const controller = {  };
+const controller = { subscribe, testOne, unsubscribe };
 
 router.post("/subscribe", async (req, res) => {
-
-    console.log(req.body);
-    res.status(201).json();
+    controller.subscribe(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
 });
 
+router.post("/test/:userId", async (req, res) => {
+    testOne(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
+
+router.post("/unsubscribe/:userId", async (req, res) => {
+    controller.unsubscribe(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
+        });
+});
 
 export { router };
