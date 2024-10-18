@@ -9,7 +9,7 @@ export const saveSubscription = async (subscription) => {
 
         const user = await User.findById(subscription.userId);
 
-        await sendPushNotification(subscription, '¡Hola@! ' + user.userName, '¡Ahora recibirás notificaciones!');
+        await sendPushNotification(subscription, '¡Hola@! ' + user.userName, '¡Ahora recibirás notificaciones en este dispositivo!');
 
         return 'Usuario ' + user.userName + ' suscrito a notificaciones';
     } catch (error) {
@@ -28,6 +28,14 @@ export const getSubscription = async (userId) => {
 export const deleteSubscription = async (userId) => {
     try {
         return await Notification.findOneAndDelete({ userId });
+    } catch (error) {
+        throw { status: 400, message: error.message };
+    }
+}
+
+export const getSubscriptionsByComplex = async (complexId) => {
+    try {
+        return await Notification.find({ userComplex: complexId });
     } catch (error) {
         throw { status: 400, message: error.message };
     }

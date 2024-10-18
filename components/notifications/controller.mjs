@@ -1,6 +1,6 @@
 import { saveSubscription, getSubscription, deleteSubscription } from './store.mjs';
 import mongoose from "mongoose";
-import { sendPushNotification } from '../../services/pushNotifications.mjs';
+import { sendPushNotification } from "../../services/pushNotifications.mjs";
 
 const subscribe = async (req, res) => {
     const { endpoint, expirationTime, keys, userId, userComplex } = req.body;
@@ -46,7 +46,7 @@ const testOne = async (req, res) => {
 
         await sendPushNotification(subscription, '¡Exito!', '¡Notificación de prueba enviada!');
 
-        return res.status(200).json('Resultado: ' + 'usuario ' + subscriptions.userId + 'notificado');
+        return res.status(200).json('Resultado: ' + 'usuario ' + subscription.userId + ' notificado');
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }
