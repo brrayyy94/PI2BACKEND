@@ -40,7 +40,9 @@ const testOne = async (req, res) => {
     try {
         const subscription = await getSubscription(userId);
 
-        console.log(subscription);
+        if (!subscription) {
+            return res.status(404).json({ message: 'Subscription not found' });
+        }
 
         await sendPushNotification(subscription, '¡Exito!', '¡Notificación de prueba enviada!');
 
