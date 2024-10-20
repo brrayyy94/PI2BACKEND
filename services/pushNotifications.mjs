@@ -39,6 +39,10 @@ export const sendPushNotificationByUser = async (userId, title, body) => {
     try {
         const subscription = await getSubscription(userId);
 
+        if (!subscription) {
+            return false;
+        }
+
         await sendPushNotification(subscription, title, body);
         return true;
     } catch (error) {
@@ -67,7 +71,7 @@ export const sendPushNotificationByComplex = async (complexId, type, title, body
                 try {
                     await sendPushNotification(subscription, title, body);
                 } catch (error) {
-                    console.error(`Failed to send notification to ${subscription.userName}: ${error.message}`);
+                    console.error(`Failed to send notification to ${subscription.userId}: ${error.message}`);
                 }
             }
         };
