@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import { sendPushNotification } from "../../services/pushNotifications.mjs";
 
 const subscribe = async (req, res) => {
-    const { endpoint, expirationTime, keys, userId, userComplex, userName } = req.body;
+    const { endpoint, expirationTime, keys, userId, userComplex, userName, userRole } = req.body;
 
-    if (!endpoint || !keys || !keys.p256dh || !keys.auth || !userId || !userComplex || !userName) {
+    if (!endpoint || !keys || !keys.p256dh || !keys.auth || !userId || !userComplex || !userName || !userRole) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -21,6 +21,7 @@ const subscribe = async (req, res) => {
             userId,
             userComplex,
             userName,
+            userRole,
         };
 
         const savedSubscription = await saveSubscription(subscription);

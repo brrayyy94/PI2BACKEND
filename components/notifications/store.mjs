@@ -1,5 +1,4 @@
 import Notification from "./model.mjs";
-import User from "../user/model.mjs";
 import { sendPushNotification } from "../../services/pushNotifications.mjs";
 
 export const saveSubscription = async (subscription) => {
