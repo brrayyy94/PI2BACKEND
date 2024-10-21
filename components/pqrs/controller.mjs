@@ -3,6 +3,8 @@ import { createPqrs, addAnswer, getPqrsByUser, getPqrsByComplex, closePqrs, reop
 import User from "../user/model.mjs";
 import mongoose from "mongoose";
 import Pqrs from "./model.mjs";
+import { sendPushNotificationByUser, sendPushNotificationByComplex } from "../../services/pushNotifications.mjs";
+import { categoryToSpanish } from "../../constants.mjs";
 
 // Utility function to check if a string is not empty or whitespace
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
@@ -165,6 +167,21 @@ const answer = async (req, res) => {
 
         pqrs.answer.push(answerData);
         await pqrs.save();
+
+        if (answerData.admin) {
+            await sendPushNotificationByUser(
+                pqrs.user,
+                'Respuesta a tu ' + categoryToSpanish[pqrs.category] + ': ' + pqrs.case,
+                answerData.comment
+            );
+        } else if (answerData.resident) {
+            await sendPushNotificationByComplex(
+                pqrs.complex,
+                'ADMIN',
+                'Respuesta a el caso ' + categoryToSpanish[pqrs.category] + ' en tu unidad',
+                'answerData.comment'
+            );
+        }
 
         return res.status(200).json({ message: "Answer added successfully", data: pqrs });
     } catch (error) {

@@ -1,12 +1,20 @@
+import { sendPushNotificationByComplex, sendPushNotificationByUser } from "../../services/pushNotifications.mjs";
+import { categoryToSpanish } from "../../constants.mjs";
 import Pqrs from "./model.mjs";
-
-
 
 // Create (C)
 export const createPqrs = async (pqrs) => {
     try {
         const newPqrs = new Pqrs(pqrs);
         await newPqrs.save();
+
+        await sendPushNotificationByComplex(
+            newPqrs.complex,
+            'ADMIN',
+            'Nueva PQRS',
+            'Se ha creado un/a ' + categoryToSpanish[newPqrs.category] + ' en tu unidad de ' + newPqrs.userName + '. CASO: ' + newPqrs.case
+        );
+
         return 'PQRS created\n', newPqrs;
     } catch (error) {
         return new Error(error);
@@ -50,7 +58,7 @@ export const notifyPqrs = async (userId) => {
     try {
         const now = new Date();
         const twoDaysAgo = new Date(now.setDate(now.getDate() - 2)); // Fecha de hace 2 días
-        
+
         // Buscar PQRS que tengan más de 2 días y no tengan respuestas
         const pendingPqrs = await Pqrs.find({
             user: userId,
@@ -65,7 +73,7 @@ export const notifyPqrs = async (userId) => {
             type: 'System',
             date: new Date()
         };
-        
+
         pendingPqrs.forEach(async pqrs => {
             pqrs.answer.push(systemMessage);
             await pqrs.save();
@@ -78,10 +86,6 @@ export const notifyPqrs = async (userId) => {
 // Send notification to ona pqrs
 export const notifyOnePqrs = async (idUser, idPqrs) => {
     try {
-        const now = new Date();
-        const twoDaysAgo = new Date(now.setDate(now.getDate() - 2)); // Fecha de hace 2 días
-        
-        // Buscar PQRS que tengan más de 2 días y no tengan respuestas
         const pqrs = await Pqrs.findById(idPqrs);
 
         if (!pqrs) {
@@ -96,9 +100,15 @@ export const notifyOnePqrs = async (idUser, idPqrs) => {
                 date: new Date()
             };
             pqrs.answer.push(systemMessage);
-            pqrs.save();
+            sendPushNotificationByComplex( 
+                pqrs.complex,
+                'ADMIN',
+                'PQRS sin respuesta',
+                'Recuerda responder a la/el ' + categoryToSpanish[pqrs.category] + ' de ' + pqrs.userName + ' en tu unidad, CASO: ' + pqrs.case
+            );
+            await pqrs.save();
         }
-       
+
     } catch (error) {
         return new Error(error);
     }
@@ -120,6 +130,13 @@ export const closePqrs = async (id) => {
         }
 
         const pqrsClosed = await Pqrs.findByIdAndUpdate(id, { state: 'cerrado' }, { new: true });
+
+        sendPushNotificationByUser(
+            pqrs.user,
+            'Se ha cerrado tu ' + categoryToSpanish[pqrs.category] + ': ' + pqrs.case,
+            'Tu caso ha sido cerrado, ya no se pueden agregar más respuestas'
+        );
+
         return pqrsClosed;
     } catch (error) {
         return new Error(error);
@@ -141,6 +158,11 @@ export const reopenPqrs = async (id) => {
         }
 
         const pqrsReopened = await Pqrs.findByIdAndUpdate(id, { state: 'tramite' }, { new: true });
+        sendPushNotificationByUser(
+            pqrs.user,
+            'Se ha reabierto tu ' + categoryToSpanish[pqrs.category] + ': ' + pqrs.case,
+            'Tu caso ha sido reabierto, por favor revisa el estado de tu solicitud'
+        );
         return pqrsReopened;
     } catch (error) {
         return new Error(error);

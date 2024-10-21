@@ -1,14 +1,35 @@
+import { sendPushNotificationByComplex } from '../../services/pushNotifications.mjs';
 import Anoun from './model.mjs';
+import User from '../user/model.mjs';
 
 // Create (C)
 export const addAnoun = async (anoun) => {
     const newAnoun = new Anoun(anoun);
+
+    const owner = await User.findById(newAnoun.User);
+
+    if (owner.role === 'RESIDENT') {
+        sendPushNotificationByComplex(
+            owner.idComplex,
+            'ALL',
+            newAnoun.Title,
+            'Un residente ha publicado un nuevo anuncio'
+        );
+    } else {
+        sendPushNotificationByComplex(
+            owner.idComplex,
+            'RESIDENT',
+            newAnoun.Title,
+            'La administración ha publicado un nuevo anuncio'
+        );
+    }
+
     return await newAnoun.save();
-}; 
+};
 
 // Read (R)
 export const getAnounsByComplex = async (idComplex) => {
-    const foundAnoun = await Anoun.find({ Complex: idComplex }).sort({ Date: 1});
+    const foundAnoun = await Anoun.find({ Complex: idComplex }).sort({ Date: 1 });
     if (!foundAnoun) {
         return { status: 404, message: "No se han encontrado anuncios" };
     }
