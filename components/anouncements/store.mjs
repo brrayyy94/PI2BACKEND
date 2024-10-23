@@ -119,27 +119,30 @@ export const addReaction = async (anounId, userId, reactionType) => {
 
         const existingReaction = announcement.reactions.find(reaction => reaction.user.equals(userId));
 
-        if (existingReaction) {
-            existingReaction.type = reactionType;
-        } else {
-            announcement.reactions.push({ user: userId, type: reactionType });
-        }
-
-        const updatedAnoun = await announcement.save();
-
         if (reactionType !== 'removed') {
+            if (existingReaction) {
+                existingReaction.type = reactionType;
 
-            const userAnoun = await User.findById(announcement.User);
+                var updatedAnoun = await announcement.save();
+            } else {
+                announcement.reactions.push({ user: userId, type: reactionType });
 
-            if (userAnoun.role === 'RESIDENT') {
-                const reactUser = await User.findById(userId);
+                var updatedAnoun = await announcement.save();
 
-                sendPushNotificationByUser(
-                    announcement.User,
-                    'Alguien ha reaccionado a tu anuncio',
-                    reactUser.userName + ' ' + reactionsToSpanish[reactionType] + ' tu anuncio ' + announcement.Title
-                );
+                const userAnoun = await User.findById(announcement.User);
+
+                if (userAnoun.role === 'RESIDENT') {
+                    const reactUser = await User.findById(userId);
+
+                    sendPushNotificationByUser(
+                        announcement.User,
+                        'Alguien ha reaccionado a tu anuncio',
+                        reactUser.userName + ' ' + reactionsToSpanish[reactionType] + ' tu anuncio ' + announcement.Title
+                    );
+                }
             }
+        } else {
+            announcement.reactions = announcement.reactions.filter(reaction => !reaction.user.equals(userId));
         }
 
         return updatedAnoun;

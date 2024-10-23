@@ -208,7 +208,7 @@ const react = async (req, res) => {
 
         const updatedAnoun = await addReaction(anounId, userId, reactionType);
 
-        return res.status(200).json({ message: 'Reaction added/updated successfully', data: updatedAnoun });
+        return res.status(200).json(updatedAnoun);
     } catch (error) {
         return res.status(500).json({ message: `Error adding/updating reaction: ${error.message}` });
     }
