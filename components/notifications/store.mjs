@@ -15,7 +15,7 @@ export const saveSubscription = async (subscription) => {
             { new: true, upsert: true }
         );
 
-        await sendPushNotification(subscription, '¡Hola@! ' + subscription.userName, '¡Ahora recibirás notificaciones en este dispositivo!');
+        await sendPushNotification(subscription, '¡Hola ' + subscription.userName + '! ', 'Ahora recibirás notificaciones en este dispositivo');
 
         return 'Usuario ' + subscription.userName + ' suscrito a notificaciones';
     } catch (error) {

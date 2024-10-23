@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { add, getByComplex, getById, getByUser, searchAnnouncements, update, remove, filterAnnouncementsByCategory } from "./controller.mjs";
+import { add, getByComplex, getById, getByUser, searchAnnouncements, update, remove, filterAnnouncementsByCategory, react } from "./controller.mjs";
 import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { add, getByComplex, searchAnnouncements, update, remove, getById, getByUser, filterAnnouncementsByCategory };
+const controller = { add, getByComplex, searchAnnouncements, update, remove, getById, getByUser, filterAnnouncementsByCategory, react };
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Ruta para el método POST en /anouncements/add (C)
@@ -116,6 +116,17 @@ router.delete('/delete/:idAnoun/:userId', (req, res) => {
         })
         .catch(({ status, message }) => {
             error(res, 'Error interno', status || 500, message); // Pass only res
+        });
+});
+
+// Ruta para el método POST en /anouncements/react/:anounId/:userId (Reacción)
+router.post('/react/:anounId/:userId', (req, res) => {
+    react(req, res)
+        .then(({ status, message, data }) => {
+            success(res, message, status, data);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Internal error', status || 500, message);
         });
 });
 

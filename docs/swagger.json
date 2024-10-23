@@ -29,8 +29,8 @@
       "description": "PQRS related apis"
     },
     {
-    "name": "Notification",
-    "description": "Push notification related apis"
+      "name": "Notification",
+      "description": "Push notification related apis"
     }
   ],
   "schemes": [
@@ -673,6 +673,59 @@
         }
       }
     },
+    "/anouncements/react/{anounId}/{userId}": {
+      "post": {
+        "tags": [
+          "Anouncements"
+        ],
+        "summary": "Add or update a reaction to an announcement",
+        "description": "Endpoint to add or update a reaction to an announcement",
+        "parameters": [
+          {
+            "name": "anounId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the announcement"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Reaction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reaction added/updated successfully",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
     "/complex/add": {
       "post": {
         "tags": [
@@ -987,7 +1040,9 @@
     },
     "/complex/addZone/{idComplex}": {
       "post": {
-        "tags": ["Complex"],
+        "tags": [
+          "Complex"
+        ],
         "summary": "Add a new zone",
         "parameters": [
           {
@@ -1023,7 +1078,9 @@
     },
     "/complex/zone/{idComplex}/{idZone}": {
       "get": {
-        "tags": ["Complex"],
+        "tags": [
+          "Complex"
+        ],
         "summary": "Get a zone by ID",
         "parameters": [
           {
@@ -1061,7 +1118,9 @@
         }
       },
       "put": {
-        "tags": ["Complex"],
+        "tags": [
+          "Complex"
+        ],
         "summary": "Update a zone by ID",
         "parameters": [
           {
@@ -1107,7 +1166,9 @@
         }
       },
       "delete": {
-        "tags": ["Complex"],
+        "tags": [
+          "Complex"
+        ],
         "summary": "Delete a zone by ID",
         "parameters": [
           {
@@ -1147,7 +1208,9 @@
     },
     "/complex/getAllZones/{idComplex}": {
       "get": {
-        "tags": ["Complex"],
+        "tags": [
+          "Complex"
+        ],
         "summary": "Get all zones for a complex",
         "parameters": [
           {
@@ -1513,7 +1576,9 @@
     },
     "/notifications/subscribe": {
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "summary": "Subscribe to notifications",
         "parameters": [
           {
@@ -1543,7 +1608,9 @@
     },
     "/notifications/test/{userId}": {
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "summary": "Send a test notification",
         "parameters": [
           {
@@ -1579,7 +1646,9 @@
     },
     "/notifications/unsubscribe/{userId}": {
       "delete": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "summary": "Unsubscribe from notifications",
         "parameters": [
           {
@@ -1592,8 +1661,7 @@
         "responses": {
           "200": {
             "description": "Subscription deleted",
-            "schema": {
-            }
+            "schema": {}
           },
           "400": {
             "description": "Bad Request",
@@ -1619,7 +1687,15 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            "enum": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ]
           }
         },
         "availableHours": {
@@ -1647,7 +1723,10 @@
           "type": "string"
         }
       },
-      "required": ["title", "body"]
+      "required": [
+        "title",
+        "body"
+      ]
     },
     "WeToResponse": {
       "type": "object",
@@ -1661,6 +1740,26 @@
           "example": "Success"
         }
       }
+    },
+    "Reaction": {
+      "type": "object",
+      "properties": {
+        "reactionType": {
+          "type": "string",
+          "enum": [
+            "recommend",
+            "celebrate",
+            "support",
+            "love",
+            "interest",
+            "removed"
+          ],
+          "example": "recommend"
+        }
+      },
+      "required": [
+        "reactionType"
+      ]
     },
     "errorResponse.401": {
       "type": "object",
@@ -1741,7 +1840,12 @@
           "type": "string"
         }
       },
-      "required": ["endpoint", "keys", "userId", "userComplex"]
+      "required": [
+        "endpoint",
+        "keys",
+        "userId",
+        "userComplex"
+      ]
     },
     "errorResponse.400": {
       "type": "object",
