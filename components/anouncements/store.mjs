@@ -1,4 +1,5 @@
-import { sendPushNotificationByComplex } from '../../services/pushNotifications.mjs';
+import { sendPushNotificationByComplex, sendPushNotificationByUser } from '../../services/pushNotifications.mjs';
+import { reactionsToSpanish } from '../../constants.mjs';
 import Anoun from './model.mjs';
 import User from '../user/model.mjs';
 
@@ -92,5 +93,57 @@ export const deleteAnoun = async (anounId) => {
     }
     catch (error) {
         throw new Error(error);
+    }
+};
+
+/**
+ * Agrega o actualiza la reacción de un usuario en un anuncio.
+ * Si el usuario ya tiene una reacción, la actualiza al nuevo tipo de reacción.
+ * @param {string} anounId - El ID del anuncio.
+ * @param {string} userId - El ID del usuario.
+ * @param {'recommend' | 'celebrate' | 'support' | 'love' | 'interest' | 'removed'} reactionType - El tipo de reacción.
+ * @returns {Promise<Object>} - Retorna el anuncio actualizado.
+ * @throws {Object} - Retorna un objeto de error con el estado y el mensaje.
+ */
+export const addReaction = async (anounId, userId, reactionType) => {
+    try {
+        const announcement = await Anoun.findById(anounId);
+
+        if (!announcement) {
+            throw { status: 404, message: 'Announcement not found' };
+        }
+
+        if (!announcement.reactions) {
+            announcement.reactions = [];
+        }
+
+        const existingReaction = announcement.reactions.find(reaction => reaction.user.equals(userId));
+
+        if (existingReaction) {
+            existingReaction.type = reactionType;
+        } else {
+            announcement.reactions.push({ user: userId, type: reactionType });
+        }
+
+        const updatedAnoun = await announcement.save();
+
+        if (reactionType !== 'removed') {
+
+            const userAnoun = await User.findById(announcement.User);
+
+            if (userAnoun.role === 'RESIDENT') {
+                const reactUser = await User.findById(userId);
+
+                sendPushNotificationByUser(
+                    announcement.User,
+                    'Alguien ha reaccionado a tu anuncio',
+                    reactUser.userName + ' ' + reactionsToSpanish[reactionType] + ' tu anuncio ' + announcement.Title
+                );
+            }
+        }
+
+        return updatedAnoun;
+    } catch (error) {
+        throw { status: 400, message: error.message };
     }
 };

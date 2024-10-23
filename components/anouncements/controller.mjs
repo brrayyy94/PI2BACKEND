@@ -1,4 +1,4 @@
-import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser, searchAnnouncementsByKeyword, searchAnnouncementsByCategory } from './store.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun, getAnounById, getAnounsByUser, searchAnnouncementsByKeyword, searchAnnouncementsByCategory, addReaction } from './store.mjs';
 import mongoose from 'mongoose';
 import User from '../user/model.mjs';
 
@@ -187,4 +187,32 @@ const remove = async (req, res) => {
     }
 };
 
-export { add, getByComplex, update, remove, getById, getByUser, searchAnnouncements };
+/**
+ * Controlador para agregar o actualizar una reacción en un anuncio.
+ * @param {Object} req - La solicitud HTTP.
+ * @param {Object} res - La respuesta HTTP.
+ */
+const react = async (req, res) => {
+    const { anounId, userId } = req.params;
+    const { reactionType } = req.body;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(anounId) || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
+
+        const validReactions = ['recommend', 'celebrate', 'support', 'love', 'interest', 'removed'];
+        if (!validReactions.includes(reactionType)) {
+            return res.status(400).json({ message: 'Invalid reaction type' });
+        }
+
+        const updatedAnoun = await addReaction(anounId, userId, reactionType);
+
+        return res.status(200).json({ message: 'Reaction added/updated successfully', data: updatedAnoun });
+    } catch (error) {
+        return res.status(500).json({ message: `Error adding/updating reaction: ${error.message}` });
+    }
+};
+
+
+export { add, getByComplex, update, remove, getById, getByUser, searchAnnouncements, react };
