@@ -1,3 +1,4 @@
+import { sendPushNotificationByComplex } from "../../services/pushNotifications.mjs";
 import Complex from "./model.mjs";
 
 export const addComplex = async (complex) => {
@@ -49,6 +50,8 @@ export const updateComplexColors = async (idComplex, primaryColor, secondaryColo
             },
             { new: true }
         );
+
+        sendPushNotificationByComplex(complex._id, 'RESIDENT', '¡Nuevo look!', 'La admistración le ha dado un nuevos colores a tu aplicación');
 
         return complex;
     }
