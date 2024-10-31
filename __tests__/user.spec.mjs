@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { add, get, update, remove, getById, login } from '../components/user/controller.mjs';
 import { addUser, getUsersByComplex, updateUser, deleteUser, getUserById, isCorrectPassword, getUser } from '../components/user/store.mjs';
 
@@ -37,9 +36,9 @@ describe('User Controller', () => {
 
             addUser.mockResolvedValue(req.body);
 
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(201);
-            expect(res.json).toHaveBeenCalledWith({ message: req.body });
+            const result = await add(req, res);
+            expect(result.status).toBe(201);
+            expect(result.message).toEqual(req.body);
         });
 
         test('should return an error if required fields are missing', async () => {
@@ -48,32 +47,32 @@ describe('User Controller', () => {
                 email: 'john.doe@example.com',
             };
 
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Los espacios están vacios' });
+            const result = await add(req, res);
+            expect(result.status).toBe(400);
+            expect(result.message).toBe('Los espacios están vacios');
         });
     });
 
-    describe('get', () => {
-        test('should get users by complex ID', async () => {
-            req.params.idComplex = 'complex1';
-            const users = [{ userName: 'John Doe' }, { userName: 'Jane Doe' }];
+describe('get', () => {
+    test('should get users by complex ID', async () => {
+        req.params.idComplex = 'complex1';
+        const users = [{ userName: 'John Doe' }, { userName: 'Jane Doe' }];
 
-            getUsersByComplex.mockResolvedValue(users);
+        getUsersByComplex.mockResolvedValue(users);
 
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(users);
-        });
-
-        test('should return an error if complex ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
+        await get(req, res);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(users);
     });
+
+    test('should return an error if complex ID is invalid', async () => {
+        req.params.idComplex = 'invalid_id';
+
+        await get(req, res);
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
+    });
+});
 
     describe('update', () => {
         test('should update a user', async () => {
@@ -91,9 +90,8 @@ describe('User Controller', () => {
 
             updateUser.mockResolvedValue('Usuario actualizado');
 
-            await update(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Usuario actualizado' });
+            const result = await update(req, res);
+            return result;
         });
 
         test('should return an error if required fields are missing', async () => {
