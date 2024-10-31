@@ -350,6 +350,280 @@
         }
       }
     },
+    "/user/addPet/{userId}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add a pet to a user",
+        "description": "Endpoint to add a pet to a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pet"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pet added",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/user/updatePet/{userId}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a pet of a user",
+        "description": "Endpoint to update a pet of a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pet updated",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/user/removePet/{userId}/{petId}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove a pet from a user",
+        "description": "Endpoint to remove a pet from a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the pet"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pet removed",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/user/addVehicle/{userId}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add a vehicle to a user",
+        "description": "Endpoint to add a vehicle to a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehicle"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Vehicle added",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/user/updateVehicle/{userId}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a vehicle of a user",
+        "description": "Endpoint to update a vehicle of a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehicle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle updated",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/user/removeVehicle/{userId}/{vehicleId}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove a vehicle from a user",
+        "description": "Endpoint to remove a vehicle from a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          },
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the vehicle"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle removed",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
     "/anouncements/add": {
       "post": {
         "tags": [
@@ -1854,6 +2128,60 @@
           "type": "string"
         }
       }
+    },
+    "Pet": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Fido"
+        },
+        "type": {
+          "type": "string",
+          "example": "Dog"
+        },
+        "breed": {
+          "type": "string",
+          "example": "Labrador"
+        },
+        "color": {
+          "type": "string",
+          "example": "Yellow"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "breed",
+        "color"
+      ]
+    },
+    "Vehicle": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "example": "Toyota Corolla"
+        },
+        "plate": {
+          "type": "string",
+          "example": "ABC123"
+        },
+        "color": {
+          "type": "string",
+          "example": "Blue"
+        },
+        "year": {
+          "type": "string",
+          "example": "2020"
+        }
+      },
+      "required": [
+        "model",
+        "plate",
+        "color",
+        "year"
+      ]
     }
   }
 }

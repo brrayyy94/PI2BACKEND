@@ -42,10 +42,11 @@ app.get('/', (req, res) => {
 
 // Función para iniciar el servidor
 const startServer = async () => {
-    await startConnection(); // Inicia la conexión a la base de datos
-    app.listen(process.env.PORT, () => { // Inicia el servidor y escucha en el puerto especificado en la variable de entorno PORT
-      console.log(`La aplicación está escuchando en http://localhost:${process.env.PORT}`); // Imprime un mensaje en la consola indicando que el servidor ha comenzado a escuchar
+    await startConnection();
+    app.listen(process.env.PORT, () => {
+      console.log('\nLa aplicación está escuchando en http://localhost:' + process.env.PORT);
+      console.log('Documentación en http://localhost:' + process.env.PORT + '/api-docs\n');
     });
   };
   
-  startServer(); // Llama a la función startServer para iniciar el servidor
+  startServer();
