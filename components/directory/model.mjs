@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const directorySchema = new mongoose.Schema({
     userId: {
@@ -29,4 +29,4 @@ const directorySchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Directory', directorySchema);
+export default mongoose.model('Directory', directorySchema);

@@ -44,6 +44,205 @@
     "application/json"
   ],
   "paths": {
+    "/directory/getByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Get directories by user ID",
+        "description": "Endpoint to get directories by user ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directories retrieved",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/directory/getByComplex/{complexId}": {
+      "get": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Get directories by complex ID",
+        "description": "Endpoint to get directories by complex ID",
+        "parameters": [
+          {
+            "name": "complexId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the complex"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directories retrieved",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/directory/create": {
+      "post": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Create a new directory",
+        "description": "Endpoint to create a new directory",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Directory"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Directory created",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/directory/update/{id}": {
+      "put": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Update an existing directory",
+        "description": "Endpoint to update an existing directory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the directory"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Directory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directory updated",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
+    "/directory/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Delete a directory",
+        "description": "Endpoint to delete a directory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the directory"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directory deleted",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
     "/user/add": {
       "post": {
         "tags": [
@@ -2181,6 +2380,42 @@
         "plate",
         "color",
         "year"
+      ]
+    },
+    "Directory": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "60c72b2f9b1d8b3a4c8e4d2a"
+        },
+        "complexId": {
+          "type": "string",
+          "example": "60c72b2f9b1d8b3a4c8e4d2b"
+        },
+        "service": {
+          "type": "string",
+          "example": "Plumbing"
+        },
+        "phone": {
+          "type": "string",
+          "example": "123-456-7890"
+        },
+        "hasWhatsApp": {
+          "type": "boolean",
+          "example": true
+        },
+        "whatsAppNumber": {
+          "type": "string",
+          "example": "123-456-7890"
+        }
+      },
+      "required": [
+        "userId",
+        "complexId",
+        "service",
+        "phone",
+        "hasWhatsApp"
       ]
     }
   }
