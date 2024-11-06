@@ -243,6 +243,44 @@
         }
       }
     },
+    "/directory/getById/{id}": {
+      "get": {
+        "tags": [
+          "Directory"
+        ],
+        "summary": "Get a directory by ID",
+        "description": "Endpoint to get a directory by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the directory"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Directory retrieved",
+            "schema": {
+              "$ref": "#/definitions/WeToResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.400"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/errorResponse.500"
+            }
+          }
+        }
+      }
+    },
     "/user/add": {
       "post": {
         "tags": [

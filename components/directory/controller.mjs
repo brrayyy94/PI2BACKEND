@@ -1,4 +1,4 @@
-import { add, deleteDirectory, getByComplex, getByUser, update } from './store.mjs';
+import { add, deleteDirectory, getByComplex, getByUser, update, getById } from './store.mjs';
 
 const createDirectory = async (req, res) => {
     const { complexId, userId, service, phone } = req.body;
@@ -64,4 +64,15 @@ const getDirectoryByUser = async (req, res) => {
     }
 }
 
-export { createDirectory, updateDirectory, removeDirectory, getDirectoriesByComplex, getDirectoryByUser };
+const getDirectoryById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const directory = await getById(id);
+        res.status(200).json(directory);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export { createDirectory, updateDirectory, removeDirectory, getDirectoriesByComplex, getDirectoryByUser, getDirectoryById };

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { createDirectory, getDirectoriesByComplex, getDirectoryByUser, removeDirectory, updateDirectory } from "./controller.mjs";
-import { success, error } from "../../network/response.mjs";
+import { createDirectory, getDirectoriesByComplex, getDirectoryByUser, removeDirectory, updateDirectory, getDirectoryById } from "./controller.mjs";
+import { error } from "../../network/response.mjs";
 
 const router = Router();
 
-const controller = { createDirectory, getDirectoriesByComplex, getDirectoryByUser, removeDirectory, updateDirectory };
+const controller = { createDirectory, getDirectoriesByComplex, getDirectoryByUser, removeDirectory, updateDirectory, getDirectoryById };
 
 router.get('/getByUser/:userId', (req, res) => {
     controller.getDirectoryByUser(req, res)
@@ -48,6 +48,16 @@ router.put('/update/:id', (req, res) => {
 
 router.delete('/delete/:id', (req, res) => {
     controller.removeDirectory(req, res)
+        .then(({ status, message }) => {
+            success(res, message, status);
+        })
+        .catch(({ status, message }) => {
+            error(res, 'Error interno', status || 500, message);
+        });
+});
+
+router.get('/getById/:id', (req, res) => {
+    controller.getDirectoryById(req, res)
         .then(({ status, message }) => {
             success(res, message, status);
         })

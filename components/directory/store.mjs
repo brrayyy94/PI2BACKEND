@@ -82,3 +82,17 @@ export const getByUser = async (userId) => {
         throw new Error(error);
     }
 };
+
+/**
+ * Obtiene un directorio por su ID.
+ * @param {string} id - El ID del directorio.
+ * @returns {Promise<Object>} - Retorna el directorio.
+ * @throws {Error} - Retorna un error si ocurre algún problema.
+ */
+export const getById = async (id) => {
+    try {
+        return Directory.findById(id);
+    } catch (error) {
+        throw new Error(error);
+    }
+}
