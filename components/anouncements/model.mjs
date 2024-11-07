@@ -7,6 +7,10 @@ const reactionSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    userName: {
+        type: String,
+        required: true
+    },
     type: {
         type: String,
         enum: ['recommend', 'celebrate', 'support', 'love', 'interest', 'removed'],
