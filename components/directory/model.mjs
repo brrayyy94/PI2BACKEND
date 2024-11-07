@@ -15,13 +15,18 @@ const directorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    location: {
+        type: String,
+        required: true
+    },
     phone: {
         type: String,
         required: true
     },
     hasWhatsApp: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
     whatsAppNumber: {
         type: String,

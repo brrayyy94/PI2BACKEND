@@ -2435,6 +2435,10 @@
           "type": "string",
           "example": "Plumbing"
         },
+        "location": {
+          "type": "string",
+          "example": "near the supermarket"
+        },
         "phone": {
           "type": "string",
           "example": "123-456-7890"

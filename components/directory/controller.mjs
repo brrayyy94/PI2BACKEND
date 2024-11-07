@@ -1,9 +1,9 @@
 import { add, deleteDirectory, getByComplex, getByUser, update, getById } from './store.mjs';
 
 const createDirectory = async (req, res) => {
-    const { complexId, userId, service, phone } = req.body;
+    const { complexId, userId, service, phone, location } = req.body;
 
-    if (!complexId || !userId || !service || !phone ) {
+    if (!complexId || !userId || !service || !phone || !location) {
         return res.status(400).json({ message: 'Todos los campos son requeridos.' });
     }
 
@@ -17,9 +17,9 @@ const createDirectory = async (req, res) => {
 
 const updateDirectory = async (req, res) => {
     const { id } = req.params;
-    const { complexId, userId, service, phone } = req.body;
+    const { complexId, userId, service, phone, location } = req.body;
 
-    if (!complexId || !userId || !service || !phone ) {
+    if (!complexId || !userId || !service || !phone || !location) {
         return res.status(400).json({ message: 'Todos los campos son requeridos.' });
     }
 
