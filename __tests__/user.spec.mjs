@@ -109,9 +109,10 @@ describe('get', () => {
     describe('remove', () => {
         test('should delete a user', async () => {
             req.params.id = 'user1';
-
-            deleteUser.mockResolvedValue({ _id: 'user1' });
-
+    
+            deleteUser.mockResolvedValue({ acknowledged: true, deletedCount: 1 });
+            req.params.id = 'user1';
+    
             await remove(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({ message: 'Usuario eliminado' });

@@ -1,10 +1,23 @@
-import { add, get, getConfigColors, update, remove, updateColors, addZone, getZone, updateZone, deleteZone, getZones } from '../components/complex/controller.mjs';
-import { addComplex, getComplex, updateComplex, deleteComplex, getComplexColors, updateComplexColors, addComplexZone, getComplexZone, updateComplexZone, deleteComplexZone } from '../components/complex/store.mjs';
+import { validateAnuncio, add, getByComplex, update, remove } from '../components/anouncements/controller.mjs';
+import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun } from '../components/anouncements/store.mjs';
 import mongoose from 'mongoose';
 
-jest.mock('../components/complex/store.mjs');
+jest.mock('../components/anouncements/store.mjs', () => ({
+    addAnoun: jest.fn(),
+    getAnounsByComplex: jest.fn(),
+    updateAnoun: jest.fn(),
+    deleteAnoun: jest.fn(),
+}));
 
-describe('Complex Controller', () => {
+jest.mock('../components/anouncements/controller.mjs', () => ({
+    validateAnuncio: jest.fn(),
+    add: jest.requireActual('../components/anouncements/controller.mjs').add,
+    getByComplex: jest.requireActual('../components/anouncements/controller.mjs').getByComplex,
+    update: jest.requireActual('../components/anouncements/controller.mjs').update,
+    remove: jest.requireActual('../components/anouncements/controller.mjs').remove,
+}));
+
+describe('Announcements Controller', () => {
     let req, res;
 
     beforeEach(() => {
@@ -16,6 +29,9 @@ describe('Complex Controller', () => {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
         };
+
+        // Mock mongoose.Types.ObjectId.isValid to always return true
+        jest.spyOn(mongoose.Types.ObjectId, 'isValid').mockReturnValue(true);
     });
 
     afterEach(() => {
@@ -23,440 +39,124 @@ describe('Complex Controller', () => {
     });
 
     describe('add', () => {
-        test('should add a new complex', async () => {
+        test('should add a new announcement', async () => {
             req.body = {
-                name: 'Complex 1',
-                address: '123 Main St',
-                config: {
-                    primaryColor: '#FFFFFF',
-                    secondaryColor: '#000000',
-                },
+                title: 'Announcement 1',
+                content: 'This is the content of announcement 1',
+                date: '2023-10-01',
             };
 
-            const complex = { ...req.body };
-            addComplex.mockResolvedValue(complex);
+            const announcement = { ...req.body };
+            addAnoun.mockResolvedValue(announcement);
 
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(201);
-            expect(res.json).toHaveBeenCalledWith(complex);
+            const result = await add(req, res);
+            expect(result.status).toBe(201);
+            expect(result.message).toEqual(announcement);
         });
 
         test('should return an error if required fields are missing', async () => {
             req.body = {
-                name: 'Complex 1',
-                address: '123 Main St',
+                title: 'Announcement 1',
             };
-
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Missing required fields' });
-        });
-
-        test('should return an error if fields contain only whitespace', async () => {
-            req.body = {
-                name: '   ',
-                address: '   ',
-                config: {
-                    primaryColor: '   ',
-                    secondaryColor: '   ',
-                },
-            };
-
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Fields cannot be empty or contain only whitespace' });
-        });
+        
+            const error = new Error('All fields are required');
+            error.status = 400;
+        
+            // Hacemos que `validateAnuncio` simule lanzar el error
+            validateAnuncio.mockImplementation(() => {
+                throw error;
+            });
+        
+            // Llamamos a la función `add` directamente y verificamos el objeto devuelto
+            const result = await add(req, res);
+            
+            // Verificamos que el estado sea 400
+            expect(result.status).toBe(400);
+            // Verificamos que el mensaje sea el esperado
+            expect(result.message).toBe('Error creating announcement: All fields are required');
+        });        
     });
 
-    describe('get', () => {
-        test('should get a complex by ID', async () => {
+    describe('getByComplex', () => {
+        test('should get all announcements by complex ID', async () => {
             req.params.idComplex = 'complex1';
-            const complex = { name: 'Complex 1', address: '123 Main St' };
+            const announcements = [
+                { title: 'Announcement 1', content: 'Content 1', date: '2023-10-01' },
+                { title: 'Announcement 2', content: 'Content 2', date: '2023-10-02' },
+            ];
 
-            getComplex.mockResolvedValue(complex);
+            getAnounsByComplex.mockResolvedValue(announcements);
 
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(complex);
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
-
-        test('should return an error if complex is not found', async () => {
-            req.params.idComplex = 'complex1';
-
-            getComplex.mockResolvedValue(null);
-
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Conjunto no encontrado' });
-        });
-    });
-
-    describe('getConfigColors', () => {
-        test('should get complex colors by ID', async () => {
-            req.params.idComplex = 'complex1';
-            const colors = { primaryColor: '#FFFFFF', secondaryColor: '#000000' };
-
-            getComplexColors.mockResolvedValue(colors);
-
-            await getConfigColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(colors);
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-
-            await getConfigColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
-
-        test('should return an error if complex is not found', async () => {
-            req.params.idComplex = 'complex1';
-
-            getComplexColors.mockResolvedValue(null);
-
-            await getConfigColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Conjunto no encontrado' });
-        });
-    });
-
-    describe('update', () => {
-        test('should update a complex', async () => {
-            req.body = {
-                _id: 'complex1',
-                name: 'Complex 1',
-                address: '123 Main St',
-                config: {
-                    primaryColor: '#FFFFFF',
-                    secondaryColor: '#000000',
-                },
-            };
-
-            updateComplex.mockResolvedValue('Conjunto actualizado');
-
-            await update(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Conjunto actualizado' });
-        });
-
-        test('should return an error if required fields are missing', async () => {
-            req.body = {
-                _id: 'complex1',
-                name: 'Complex 1',
-            };
-
-            await update(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Missing required fields' });
-        });
-
-        test('should return an error if fields contain only whitespace', async () => {
-            req.body = {
-                _id: 'complex1',
-                name: '   ',
-                address: '   ',
-                config: {
-                    primaryColor: '   ',
-                    secondaryColor: '   ',
-                },
-            };
-
-            await update(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Fields cannot be empty or contain only whitespace' });
-        });
-    });
-
-    describe('updateColors', () => {
-        test('should update complex colors', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {
-                primaryColor: '#FFFFFF',
-                secondaryColor: '#000000',
-            };
-
-            const complex = { primaryColor: '#FFFFFF', secondaryColor: '#000000' };
-            updateComplexColors.mockResolvedValue(complex);
-
-            await updateColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(complex);
-        });
-
-        test('should return an error if required fields are missing', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {};
-
-            await updateColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Both primaryColor and secondaryColor are required' });
-        });
-
-        test('should return an error if complex is not found', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {
-                primaryColor: '#FFFFFF',
-                secondaryColor: '#000000',
-            };
-
-            updateComplexColors.mockResolvedValue(null);
-
-            await updateColors(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Complex not found' });
-        });
-    });
-
-    describe('remove', () => {
-        test('should delete a complex', async () => {
-            req.params.id = 'complex1';
-
-            deleteComplex.mockResolvedValue({ _id: 'complex1' });
-
-            await remove(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Conjunto eliminado' });
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.id = 'invalid_id';
-
-            await remove(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
-
-        test('should return an error if complex is not found', async () => {
-            req.params.id = 'complex1';
-
-            deleteComplex.mockResolvedValue(null);
-
-            await remove(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Conjunto no encontrado' });
-        });
-    });
-
-    describe('addZone', () => {
-        test('should add a new zone to a complex', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {
-                name: 'Zone 1',
-                availableDays: ['Monday', 'Tuesday'],
-                availableHours: {
-                    start: '08:00',
-                    end: '18:00',
-                },
-            };
-
-            const zone = { ...req.body, complex: 'complex1' };
-            addComplexZone.mockResolvedValue({ zones: [zone] });
-
-            await addZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(201);
-            expect(res.json).toHaveBeenCalledWith({ message: zone });
-        });
-
-        test('should return an error if required fields are missing', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {
-                name: 'Zone 1',
-            };
-
-            await addZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Missing required fields' });
-        });
-
-        test('should return an error if start time is after end time', async () => {
-            req.params.idComplex = 'complex1';
-            req.body = {
-                name: 'Zone 1',
-                availableDays: ['Monday', 'Tuesday'],
-                availableHours: {
-                    start: '18:00',
-                    end: '08:00',
-                },
-            };
-
-            await addZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Start time must be before end time' });
+            const result = await getByComplex(req, res);
+            expect(result.status).toBe(200);
+            expect(result.message).toEqual(announcements);
         });
 
         test('should return an error if complex ID is invalid', async () => {
             req.params.idComplex = 'invalid_id';
-            req.body = {
-                name: 'Zone 1',
-                availableDays: ['Monday', 'Tuesday'],
-                availableHours: {
-                    start: '08:00',
-                    end: '18:00',
-                },
-            };
 
-            await addZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid complex ID format' });
+            // Mock mongoose.Types.ObjectId.isValid to return false for invalid_id
+            mongoose.Types.ObjectId.isValid.mockReturnValueOnce(false);
+
+            const result = await getByComplex(req, res);
+            expect(result.status).toBe(400);
+            expect(result.message).toBe('Invalid ID format');
         });
     });
 
-    describe('getZone', () => {
-        test('should get a zone by ID', async () => {
-            req.params.idComplex = 'complex1';
-            req.params.idZone = 'zone1';
-            const zone = { name: 'Zone 1' };
-
-            getComplexZone.mockResolvedValue(zone);
-
-            await getZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(zone);
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-            req.params.idZone = 'zone1';
-
-            await getZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
-
-        test('should return an error if zone is not found', async () => {
-            req.params.idComplex = 'complex1';
-            req.params.idZone = 'zone1';
-
-            getComplexZone.mockResolvedValue(null);
-
-            await getZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Zone not found' });
-        });
-    });
-
-    describe('updateZone', () => {
-        test('should update a zone', async () => {
-            req.params.idComplex = 'complex1';
-            req.params.idZone = 'zone1';
+    describe('update', () => {
+        test('should update an announcement', async () => {
+            req.params.idUser = 'user1';
             req.body = {
-                name: 'Zone 1',
-                availableDays: ['Monday', 'Tuesday'],
-                availableHours: {
-                    start: '08:00',
-                    end: '18:00',
-                },
+                _id: 'announcement1',
+                title: 'Updated Announcement 1',
+                content: 'Updated content of announcement 1',
+                date: '2023-10-01',
             };
 
-            const zone = { ...req.body, _id: 'zone1' };
-            updateComplexZone.mockResolvedValue({ zones: [zone] });
+            updateAnoun.mockResolvedValue('Announcement updated');
 
-            await updateZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(zone);
+            const result = await update(req, res);
+            expect(result.status).toBe(201);
+            expect(result.message).toBe('Anuncio actualizado');
+            expect(result.data).toBe('Announcement updated');
         });
 
         test('should return an error if required fields are missing', async () => {
-            req.params.idComplex = 'complex1';
-            req.params.idZone = 'zone1';
-            req.body = {};
-
-            await updateZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Missing required fields' });
-        });
-
-        test('should return an error if start time is after end time', async () => {
-            req.params.idComplex = 'complex1';
-            req.params.idZone = 'zone1';
+            req.params.idUser = 'user1';
             req.body = {
-                availableHours: {
-                    start: '18:00',
-                    end: '08:00',
-                },
+                _id: 'announcement1',
+                title: 'Updated Announcement 1',
             };
 
-            await updateZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Start time must be before end time' });
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-            req.params.idZone = 'zone1';
-            req.body = {
-                name: 'Zone 1',
-                availableDays: ['Monday', 'Tuesday'],
-                availableHours: {
-                    start: '08:00',
-                    end: '18:00',
-                },
-            };
-
-            await updateZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
+            const result = await update(req, res);
+            expect(result.status).toBe(400);
+            expect(result.message).toBe('All fields are required');
         });
     });
 
-    describe('deleteZone', () => {
-        test('should delete a zone', async () => {
-            req.params.idZone = 'zone1';
+    describe('remove', () => {
+        test('should delete an announcement', async () => {
+            req.params.idAnoun = 'announcement1';
+            req.params.userId = 'user1';
 
-            deleteComplexZone.mockResolvedValue({ _id: 'zone1' });
+            deleteAnoun.mockResolvedValue({ acknowledged: true, deletedCount: 1 });
 
-            await deleteZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Zone deleted' });
+            const result = await remove(req, res);
+            expect(result.status).toBe(200);
+            expect(result.message).toBe('Announcement deleted');
         });
 
-        test('should return an error if ID is invalid', async () => {
-            req.params.idZone = 'invalid_id';
+        test('should return an error if announcement ID is invalid', async () => {
+            req.params.idAnoun = 'invalid_id';
+            req.params.userId = 'user1';
 
-            await deleteZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
+            // Mock mongoose.Types.ObjectId.isValid to return false for invalid_id
+            mongoose.Types.ObjectId.isValid.mockReturnValueOnce(false);
 
-        test('should return an error if zone is not found', async () => {
-            req.params.idZone = 'zone1';
-
-            deleteComplexZone.mockResolvedValue(null);
-
-            await deleteZone(req, res);
-            expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Zone not found' });
-        });
-    });
-
-    describe('getZones', () => {
-        test('should get all zones for a complex', async () => {
-            req.params.idComplex = 'complex1';
-            const zones = [{ name: 'Zone 1' }, { name: 'Zone 2' }];
-
-            getComplex.mockResolvedValue({ zones });
-
-            await getZones(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(zones);
-        });
-
-        test('should return an error if ID is invalid', async () => {
-            req.params.idComplex = 'invalid_id';
-
-            await getZones(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
+            const result = await remove(req, res);
+            expect(result.status).toBe(400);
+            expect(result.message).toBe('Invalid ID format');
         });
     });
 });
