@@ -125,7 +125,9 @@ export const addReaction = async (anounId, userId, reactionType) => {
 
                 var updatedAnoun = await announcement.save();
             } else {
-                announcement.reactions.push({ user: userId, type: reactionType });
+                const user = await User.findById(userId);
+
+                announcement.reactions.push({ user: userId, userName: user.userName, type: reactionType });
 
                 var updatedAnoun = await announcement.save();
 

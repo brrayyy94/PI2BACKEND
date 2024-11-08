@@ -1,6 +1,44 @@
 import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
 
+const vehicleSchema = new mongoose.Schema({
+    model: {
+        type: String,
+        required: true
+    },
+    plate: {
+        type: String,
+        required: true
+    },
+    color: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    }
+});
+
+const petSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    breed: {
+        type: String,
+        required: true
+    },
+    color: {
+        type: String,
+        required: true
+    }
+});
+
 const userSchema = new mongoose.Schema({
     idDocument: {
         type: String,
@@ -36,6 +74,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['ADMIN', 'RESIDENT'],
         required: true
+    },
+    vehicles: {
+        type: [vehicleSchema],
+        default: []
+    },
+    pets: {
+        type: [petSchema],
+        default: []
     }
 });
 
@@ -62,6 +108,5 @@ userSchema.methods.comparePassword = async function(password) {
         throw error;
     }
 };
-
 
 export default mongoose.model('User', userSchema);
