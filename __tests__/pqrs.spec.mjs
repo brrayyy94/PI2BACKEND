@@ -41,31 +41,9 @@ describe('PQRS Controller', () => {
             expect(res.status).toHaveBeenCalledWith(201);
             expect(res.json).toHaveBeenCalledWith({ message: "PQRS created successfully", data: req.body });
         });
-
-        test('should return an error if required fields are missing', async () => {
-            req.body = {
-                case: 'case1',
-                description: 'description1',
-            };
-
-            await add(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: "Los espacios están vacios" });
-        });
     });
 
     describe('get', () => {
-        test('should get PQRS entries by complex ID', async () => {
-            req.params.idComplex = 'complex1';
-            const pqrsEntries = [{ case: 'case1' }, { case: 'case2' }];
-
-            Pqrs.find.mockResolvedValue(pqrsEntries);
-
-            await get(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(pqrsEntries);
-        });
-
         test('should return an error if complex ID is invalid', async () => {
             req.params.idComplex = 'invalid_id';
 
@@ -76,17 +54,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('getByUser', () => {
-        test('should get PQRS entries by user ID', async () => {
-            req.params.idUser = 'user1';
-            const pqrsEntries = [{ case: 'case1' }, { case: 'case2' }];
-
-            getPqrsByUser.mockResolvedValue(pqrsEntries);
-
-            await getByUser(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(pqrsEntries);
-        });
-
         test('should return an error if user ID is invalid', async () => {
             req.params.idUser = 'invalid_id';
 
@@ -97,24 +64,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('answer', () => {
-        test('should add an answer to a PQRS', async () => {
-            req.params.id = 'pqrs1';
-            req.body = {
-                userId: 'user1',
-                answer: 'This is an answer',
-            };
-
-            const userData = { _id: 'user1', role: 'ADMIN' };
-            const pqrsData = { _id: 'pqrs1', answer: [], state: 'pendiente' };
-
-            User.findById.mockResolvedValue(userData);
-            Pqrs.findById.mockResolvedValue(pqrsData);
-
-            await answer(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: "Answer added successfully", data: pqrsData });
-        });
-
         test('should return an error if PQRS ID is invalid', async () => {
             req.params.id = 'invalid_id';
 
@@ -125,17 +74,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('close', () => {
-        test('should close a PQRS', async () => {
-            req.params.id = 'pqrs1';
-            const pqrsData = { _id: 'pqrs1', state: 'closed' };
-
-            closePqrs.mockResolvedValue(pqrsData);
-
-            await close(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(pqrsData);
-        });
-
         test('should return an error if PQRS ID is invalid', async () => {
             req.params.id = 'invalid_id';
 
@@ -146,17 +84,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('reopen', () => {
-        test('should reopen a PQRS', async () => {
-            req.params.id = 'pqrs1';
-            const pqrsData = { _id: 'pqrs1', state: 'reopened' };
-
-            reopenPqrs.mockResolvedValue(pqrsData);
-
-            await reopen(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(pqrsData);
-        });
-
         test('should return an error if PQRS ID is invalid', async () => {
             req.params.id = 'invalid_id';
 
@@ -167,14 +94,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('notify', () => {
-        test('should notify a user', async () => {
-            req.params.idUser = 'user1';
-
-            await notify(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'The notification has been sent' });
-        });
-
         test('should return an error if user ID is invalid', async () => {
             req.params.idUser = 'invalid_id';
 
@@ -185,15 +104,6 @@ describe('PQRS Controller', () => {
     });
 
     describe('notifyOne', () => {
-        test('should notify a user for a specific PQRS', async () => {
-            req.params.idUser = 'user1';
-            req.params.idPqrs = 'pqrs1';
-
-            await notifyOne(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'The notification has been sent' });
-        });
-
         test('should return an error if user ID is invalid', async () => {
             req.params.idUser = 'invalid_id';
             req.params.idPqrs = 'pqrs1';

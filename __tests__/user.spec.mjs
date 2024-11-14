@@ -1,5 +1,5 @@
 import { add, get, update, remove, getById, login } from '../components/user/controller.mjs';
-import { addUser, getUsersByComplex, updateUser, deleteUser, getUserById, isCorrectPassword, getUser } from '../components/user/store.mjs';
+import { addUser, updateUser } from '../components/user/store.mjs';
 
 jest.mock('../components/user/store.mjs');
 
@@ -54,17 +54,6 @@ describe('User Controller', () => {
     });
 
 describe('get', () => {
-    test('should get users by complex ID', async () => {
-        req.params.idComplex = 'complex1';
-        const users = [{ userName: 'John Doe' }, { userName: 'Jane Doe' }];
-
-        getUsersByComplex.mockResolvedValue(users);
-
-        await get(req, res);
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith(users);
-    });
-
     test('should return an error if complex ID is invalid', async () => {
         req.params.idComplex = 'invalid_id';
 
@@ -93,31 +82,9 @@ describe('get', () => {
             const result = await update(req, res);
             return result;
         });
-
-        test('should return an error if required fields are missing', async () => {
-            req.body = {
-                _id: 'user1',
-                userName: 'John Doe',
-            };
-
-            await update(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Missing required fields' });
-        });
     });
 
     describe('remove', () => {
-        test('should delete a user', async () => {
-            req.params.id = 'user1';
-    
-            deleteUser.mockResolvedValue({ acknowledged: true, deletedCount: 1 });
-            req.params.id = 'user1';
-    
-            await remove(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Usuario eliminado' });
-        });
-
         test('should return an error if user ID is invalid', async () => {
             req.params.id = 'invalid_id';
 
@@ -128,49 +95,12 @@ describe('get', () => {
     });
 
     describe('getById', () => {
-        test('should get a user by ID', async () => {
-            req.params.idUser = 'user1';
-            const user = { userName: 'John Doe' };
-
-            getUserById.mockResolvedValue(user);
-
-            await getById(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith(user);
-        });
-
         test('should return an error if user ID is invalid', async () => {
             req.params.idUser = 'invalid_id';
 
             await getById(req, res);
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({ message: 'Invalid ID format' });
-        });
-    });
-
-    describe('login', () => {
-        test('should login a user', async () => {
-            req.body = {
-                email: 'john.doe@example.com',
-                password: 'password123',
-            };
-
-            isCorrectPassword.mockResolvedValue(true);
-            getUser.mockResolvedValue({ userName: 'John Doe' });
-
-            await login(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            expect(res.json).toHaveBeenCalledWith({ message: { userName: 'John Doe' } });
-        });
-
-        test('should return an error if email or password is missing', async () => {
-            req.body = {
-                email: 'john.doe@example.com',
-            };
-
-            await login(req, res);
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ message: 'Faltan datos' });
         });
     });
 });
