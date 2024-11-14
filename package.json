@@ -18,8 +18,7 @@
     "start": "node server.mjs",
     "dev": "nodemon server.mjs",
     "swagger-autogen": "node ./docs/swagger.js",
-    "test:unit": "jest --config jest.unit.config.js",
-    "test:integration": "jest --config jest.integration.config.js"
+    "test": "jest --config jest.config.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
