@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createDirectory, getDirectoriesByComplex, getDirectoryByUser, removeDirectory, updateDirectory, getDirectoryById } from "./controller.mjs";
-import { error } from "../../network/response.mjs";
+import { success, error } from "../../network/response.mjs";
 
 const router = Router();
 

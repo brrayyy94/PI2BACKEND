@@ -129,7 +129,7 @@ export const addReaction = async (anounId, userId, reactionType) => {
 
                 announcement.reactions.push({ user: userId, userName: user.userName, type: reactionType });
 
-                var updatedAnoun = await announcement.save();
+                updatedAnoun = await announcement.save();
 
                 const userAnoun = await User.findById(announcement.User);
 

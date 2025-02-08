@@ -1,12 +1,5 @@
-const options = {
-    openapi: "OpenAPI 3",
-    language: "en-US",
-    disableLogs: false,
-    autoHeaders: false,
-    autoQuery: false,
-    autoBody: false,
-  };
-  const generateSwagger = require("swagger-autogen")();
+  import swaggerAutogen from "swagger-autogen";
+  const generateSwagger = swaggerAutogen();
   
   const swaggerDocument = {
     info: {

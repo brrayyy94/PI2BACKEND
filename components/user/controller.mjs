@@ -18,7 +18,7 @@ import {
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Login
-const login = async (req, res) => {
+const login = async (req) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -36,7 +36,7 @@ const login = async (req, res) => {
 };
 
 // Create (C)
-const add = async (req, res) => {
+const add = async (req) => {
     try {
         const { idDocument, userName, idComplex, email, password, phone, apartment, role } = req.body;
 
@@ -97,7 +97,7 @@ const getById = async (req, res) => {
 }
 
 // Update (U)
-const update = async (req, res) => {
+const update = async (req) => {
     try {
         const { _id, idDocument, userName, idComplex, email, password, phone, apartment, role } = req.body;
 
