@@ -1,6 +1,5 @@
 import { get, getConfigColors, remove, addZone, getZone, updateZone, deleteZone, getZones } from '../components/complex/controller.mjs';
-import jest from 'jest-mock';
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 
 jest.mock('../components/complex/store.mjs');
 

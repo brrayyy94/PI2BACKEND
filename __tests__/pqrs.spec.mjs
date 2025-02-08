@@ -1,6 +1,5 @@
 import { add, answer, get, getByUser, close, notify, reopen, notifyOne } from '../components/pqrs/controller.mjs';
-import jest from 'jest-mock';
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { createPqrs } from '../components/pqrs/store.mjs';
 import User from '../components/user/model.mjs';
 

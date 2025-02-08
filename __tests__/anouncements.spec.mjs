@@ -1,23 +1,9 @@
 import { add, getByComplex } from '../components/anouncements/controller.mjs';
 import { addAnoun, getAnounsByComplex } from '../components/anouncements/store.mjs';
-import jest from 'jest-mock';
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import mongoose from 'mongoose';
 
-jest.mock('../components/anouncements/store.mjs', () => ({
-    addAnoun: jest.fn(),
-    getAnounsByComplex: jest.fn(),
-    updateAnoun: jest.fn(),
-    deleteAnoun: jest.fn(),
-}));
-
-jest.mock('../components/anouncements/controller.mjs', () => ({
-    validateAnuncio: jest.fn(),
-    add: jest.requireActual('../components/anouncements/controller.mjs').add,
-    getByComplex: jest.requireActual('../components/anouncements/controller.mjs').getByComplex,
-    update: jest.requireActual('../components/anouncements/controller.mjs').update,
-    remove: jest.requireActual('../components/anouncements/controller.mjs').remove,
-}));
+jest.mock('../components/anouncements/store.mjs');
 
 describe('Announcements Controller', () => {
     let req, res;

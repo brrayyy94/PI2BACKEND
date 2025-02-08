@@ -1,5 +1,4 @@
-import jest from 'jest-mock';
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { add, get, update, remove, getById} from '../components/user/controller.mjs';
 import { addUser, updateUser } from '../components/user/store.mjs';
 //agregando algo 
