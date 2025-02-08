@@ -23,7 +23,7 @@ export const sendPushNotification = async (subscription, title, body) => {
 
         await webpush.sendNotification(userSubscription, payload);
         return true;
-    } catch (error) {
+    } catch {
         return false;
     }
 };
@@ -45,7 +45,7 @@ export const sendPushNotificationByUser = async (userId, title, body) => {
 
         await sendPushNotification(subscription, title, body);
         return true;
-    } catch (error) {
+    } catch {
         return false;
     }
 };
@@ -91,7 +91,7 @@ export const sendPushNotificationByComplex = async (complexId, type, title, body
         }
 
         return true;
-    } catch (error) {
+    } catch {
         return false;
     }
 };

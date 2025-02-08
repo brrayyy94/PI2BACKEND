@@ -10,7 +10,7 @@ const validateAnuncio = (anuncio) => {
 };
 
 // Create (C)
-const add = async (req, res) => {
+const add = async (req) => {
     try {
         const anuncio = req.body;
         validateAnuncio(anuncio);

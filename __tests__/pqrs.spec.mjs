@@ -1,7 +1,8 @@
-import { add, answer, get, getByUser, close, pqrsAnswers, notify, reopen, notifyOne } from '../components/pqrs/controller.mjs';
-import { createPqrs, addAnswer, getPqrsByUser, getPqrsByComplex, closePqrs, reopenPqrs, getPqrsAnswers, notifyPqrs, notifyOnePqrs } from '../components/pqrs/store.mjs';
+import { add, answer, get, getByUser, close, notify, reopen, notifyOne } from '../components/pqrs/controller.mjs';
+import jest from 'jest-mock';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { createPqrs } from '../components/pqrs/store.mjs';
 import User from '../components/user/model.mjs';
-import mongoose from 'mongoose';
 
 jest.mock('../components/pqrs/store.mjs');
 jest.mock('../components/user/model.mjs');

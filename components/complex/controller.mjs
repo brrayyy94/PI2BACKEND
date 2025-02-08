@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
-const add = async (req, res) => {
+const add = async (req) => {
     const { name, address, config } = req.body;
     try {
         const primaryColor = config.primaryColor;
@@ -62,7 +62,7 @@ const getConfigColors = async (req, res) => {
     }
 };
 
-const update = async (req, res) => {
+const update = async (req) => {
     const { _id, name, address, config } = req.body;
     try {
         const primaryColor = config.primaryColor;
@@ -80,7 +80,7 @@ const update = async (req, res) => {
     }
 }
 
-const updateColors = async (req, res) => {
+const updateColors = async (req) => {
     const { idComplex } = req.params;
     const { primaryColor, secondaryColor } = req.body;
 

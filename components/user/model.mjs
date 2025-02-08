@@ -101,12 +101,7 @@ userSchema.pre('save', async function(next) {
 
 // Método para comparar la contraseña ingresada con la contraseña almacenada
 userSchema.methods.comparePassword = async function(password) {
-    try {
-        const isMatch = await bcryptjs.compare(password, this.password);
-        return isMatch;
-    } catch (error) {
-        throw error;
-    }
+    return await bcryptjs.compare(password, this.password);
 };
 
 export default mongoose.model('User', userSchema);

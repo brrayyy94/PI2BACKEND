@@ -1,5 +1,7 @@
-import { validateAnuncio, add, getByComplex, update, remove } from '../components/anouncements/controller.mjs';
-import { addAnoun, getAnounsByComplex, updateAnoun, deleteAnoun } from '../components/anouncements/store.mjs';
+import { add, getByComplex } from '../components/anouncements/controller.mjs';
+import { addAnoun, getAnounsByComplex } from '../components/anouncements/store.mjs';
+import jest from 'jest-mock';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import mongoose from 'mongoose';
 
 jest.mock('../components/anouncements/store.mjs', () => ({

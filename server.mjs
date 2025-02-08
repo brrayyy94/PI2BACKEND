@@ -5,11 +5,12 @@ import cors from 'cors';
 import { startConnection } from './db.mjs';
 import dotenv from 'dotenv';
 import swaggerUIPath from "swagger-ui-express";
-import swaggerjsonFilePath from './docs/swagger.json' assert { type: 'json' };
+import fs from 'fs';
+const swaggerjsonFilePath = JSON.parse(fs.readFileSync('./docs/swagger.json', 'utf-8'));
 import webpush from "web-push";
 
 dotenv.config();
-
+/*eslint no-undef: "error"*/
 webpush.setVapidDetails(
   "mailto:no-reply@wetogether.com",
   process.env.VAPID_PUBLIC_KEY,

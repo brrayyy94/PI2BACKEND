@@ -17,12 +17,16 @@
   "scripts": {
     "start": "node server.mjs",
     "dev": "nodemon server.mjs",
+    "lint": "eslint",
     "swagger-autogen": "node ./docs/swagger.js",
     "test": "jest --config jest.config.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
-    "babel-jest": "^29.7.0"
+    "@eslint/js": "^9.20.0",
+    "babel-jest": "^29.7.0",
+    "eslint": "^9.20.0",
+    "globals": "^15.14.0"
   }
 }
