@@ -3,37 +3,36 @@ name: Code workflow
 on:
   push:
     branches:
-      - main
+      - main  # Despliegue a Render solo en pushes a main
   pull_request:
     branches:
-      - main
+      - main  # Validaciones en Pull Requests a main
 
 jobs:
   code-validation:
     runs-on: ubuntu-22.04
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node JS
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    
-    - name: Install dependencies
-      run: npm install
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Run lint
-      run: npm run lint
+      - name: Setup Node JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Run tests
-      run: npm test
+      - name: Install dependencies
+        run: npm install
 
-    - name: Deploy to Render
-      uses: JorgeLNJunior/render-deploy@v1.4.4
-      with:
-        service_id: ${{ secrets.RENDER_SERVICE_ID }}
-        api_key: ${{ secrets.RENDER_API_KEY }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Deploy to Render # Este paso solo se ejecuta en pushes a main
+        if: github.event_name == 'push' # Condición para el despliegue
+        uses: JorgeLNJunior/render-deploy@v1.4.4
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
