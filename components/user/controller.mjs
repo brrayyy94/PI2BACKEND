@@ -29,9 +29,11 @@ const login = async (req) => {
             const user = await getUser(email); // Obtiene los datos del usuario
             console.log('LOGIN: ', user.userName); // Muestra un mensaje de bienvenida en la consola
             return { status: 200, message: user }; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
+        } else {
+            return { status: 400, message: 'Credenciales incorrectas' }; // Devuelve un error si la autenticación falla
         }
     } catch (error) {
-        throw { status: 400, message: error.message };
+        return { status: 400, message: error.message };
     }
 };
 
@@ -56,7 +58,7 @@ const add = async (req) => {
 };
 
 // Read (R)
-const get = async (req, res) => {
+const get = async (req) => {
     const { idComplex } = req.params;
     try {
         if (!idComplex) {
@@ -64,7 +66,7 @@ const get = async (req, res) => {
         }
         // Validar si el ID es un ObjectId válido
         if (!mongoose.Types.ObjectId.isValid(idComplex)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
         const users = await getUsersByComplex(idComplex);
         if (!users) {
@@ -76,7 +78,7 @@ const get = async (req, res) => {
     }
 };
 
-const getById = async (req, res) => {
+const getById = async (req) => {
     const { idUser } = req.params;
     try {
         if (!idUser) {
@@ -84,7 +86,7 @@ const getById = async (req, res) => {
         }
         // Validar si el ID es un ObjectId válido
         if (!mongoose.Types.ObjectId.isValid(idUser)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
         const user = await getUserById(idUser);
         if (!user) {
@@ -116,7 +118,7 @@ const update = async (req) => {
 }
 
 // Delete (D)
-const remove = async (req, res) => {
+const remove = async (req) => {
     const { id } = req.params;
     try {
         if (!id) {
@@ -124,7 +126,7 @@ const remove = async (req, res) => {
         }
         // Validar si el ID es un ObjectId válido
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
         const deletedUser = await deleteUser(id);
         if (!deletedUser) {
@@ -136,7 +138,7 @@ const remove = async (req, res) => {
     }
 };
 
-const addPet = async (req, res) => {
+const addPet = async (req) => {
     try {
         const { userId } = req.params;
         const pet = req.body;
@@ -146,7 +148,7 @@ const addPet = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await addUserPet(userId, pet);
@@ -157,7 +159,7 @@ const addPet = async (req, res) => {
     }
 }
 
-const updatePet = async (req, res) => {
+const updatePet = async (req) => {
     try {
         const { userId } = req.params;
         const pet = req.body;
@@ -167,7 +169,7 @@ const updatePet = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await updateUserPet(userId, pet);
@@ -178,7 +180,7 @@ const updatePet = async (req, res) => {
     }
 }
 
-const removePet = async (req, res) => {
+const removePet = async (req) => {
     try {
         const { userId, petId } = req.params;
 
@@ -187,7 +189,7 @@ const removePet = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(petId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await deleteUserPet(userId, petId);
@@ -198,7 +200,7 @@ const removePet = async (req, res) => {
     }
 }
 
-const addVehicle = async (req, res) => {
+const addVehicle = async (req) => {
     try {
         const { userId } = req.params;
         const vehicle = req.body;
@@ -208,7 +210,7 @@ const addVehicle = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await addUserVehicle(userId, vehicle);
@@ -219,7 +221,7 @@ const addVehicle = async (req, res) => {
     }
 }
 
-const updateVehicle = async (req, res) => {
+const updateVehicle = async (req) => {
     try {
         const { userId } = req.params;
         const vehicle = req.body;
@@ -229,7 +231,7 @@ const updateVehicle = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await updateUserVehicle(userId, vehicle);
@@ -240,7 +242,7 @@ const updateVehicle = async (req, res) => {
     }
 }
 
-const removeVehicle = async (req, res) => {
+const removeVehicle = async (req) => {
     try {
         const { userId, vehicleId } = req.params;
 
@@ -249,7 +251,7 @@ const removeVehicle = async (req, res) => {
         }
 
         if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(vehicleId)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
+            return { status: 400, message: 'Invalid ID format' };
         }
 
         await deleteUserVehicle(userId, vehicleId);
