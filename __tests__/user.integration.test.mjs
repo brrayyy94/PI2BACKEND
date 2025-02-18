@@ -82,7 +82,7 @@ describe('User Component Integration Tests', () => {
             userName: 'John Doe',
             idComplex: 'complex1',
             email: 'john.doe@example.com',
-            password: await bcryptjs.hash('password123', 10), // Encriptar la contraseña
+            password: await bcryptjs.hash('password123', 5), // Encriptar la contraseña
             phone: '1234567890',
             apartment: '101',
             role: 'RESIDENT',

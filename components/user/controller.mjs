@@ -26,7 +26,6 @@ const login = async (req) => {
     const isAuthenticated = await isCorrectPassword(email, password);
     if (isAuthenticated) { // Si la autenticación es exitosa
         const user = await getUser(email); // Obtiene los datos del usuario
-        console.log('LOGIN: ', user.userName); // Muestra un mensaje de bienvenida en la consola
         return { status: 200, message: user }; // Devuelve un objeto con el estado 200 (OK) y user
     } else {
         throw { status: 400, message: 'Credenciales incorrectas' }; // Devuelve un error si la autenticación falla
