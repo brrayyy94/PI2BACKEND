@@ -1,3 +1,8 @@
+// Mockea webpush antes de importar el servidor
+jest.mock('web-push', () => ({
+    setVapidDetails: jest.fn(), // Mockea la función setVapidDetails
+}));
+
 import request from 'supertest';
 import { jest, describe, test, expect, afterEach } from '@jest/globals';
 import app from '../server.mjs'; // Asegúrate de exportar `app` desde tu archivo principal
