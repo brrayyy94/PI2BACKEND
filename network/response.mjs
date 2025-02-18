@@ -18,6 +18,8 @@ export const error = (res, message, status, details) => {
             return value;
         };
     };
+
+    console.log('[response error] ' + (details?.message || JSON.stringify(details, getCircularReplacer())));
     
     if (res.headersSent) { // Verificar si ya se han enviado las cabeceras
         return; // Si ya se enviaron, se detiene la ejecución
