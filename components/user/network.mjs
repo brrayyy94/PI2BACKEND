@@ -45,11 +45,12 @@ router.post('/add', (req, res) => {
 
 //Route POST /login
 router.post('/login', (req, res) => {
-    controller.login(req, res)
+    controller.login(req)
         .then(({ status, message }) => {
             success(res, message, status);
         })
         .catch(({ status, message }) => {
+            // Usa la función error para manejar errores
             error(res, 'Error interno', status || 500, message);
         });
 });

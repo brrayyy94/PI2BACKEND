@@ -128,10 +128,13 @@ describe('User Controller', () => {
             req.body = { email: 'test@example.com', password: 'wrongpassword' };
             isCorrectPassword.mockResolvedValue(false); // Simula que la autenticación falla
         
-            const result = await login(req);
-            expect(result.status).toBe(400); // Verifica que el estado sea 400
-            expect(result.message).toBe('Credenciales incorrectas'); // Verifica el mensaje de error
-        });
+            try {
+                await login(req);
+            } catch (error) {
+                expect(error.status).toBe(400); // Verifica que el estado sea 400
+                expect(error.message).toBe('Credenciales incorrectas'); // Verifica el mensaje de error
+            }
+        });        
     });
 
     describe('addPet', () => {

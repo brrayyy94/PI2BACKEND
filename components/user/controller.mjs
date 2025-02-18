@@ -19,21 +19,17 @@ const isNotEmptyOrWhitespace = (str) => str && str.trim().length > 0;
 
 // Login
 const login = async (req) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return { status: 400, message: 'Faltan datos' };
-        }
-        const isAuthenticated = await isCorrectPassword(email, password);
-        if (isAuthenticated) { // Si la autenticación es exitosa
-            const user = await getUser(email); // Obtiene los datos del usuario
-            console.log('LOGIN: ', user.userName); // Muestra un mensaje de bienvenida en la consola
-            return { status: 200, message: user }; // Devuelve un objeto con el estado 200 (OK) y un mensaje de éxito
-        } else {
-            return { status: 400, message: 'Credenciales incorrectas' }; // Devuelve un error si la autenticación falla
-        }
-    } catch (error) {
-        return { status: 400, message: error.message };
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return { status: 400, message: 'Faltan datos' };
+    }
+    const isAuthenticated = await isCorrectPassword(email, password);
+    if (isAuthenticated) { // Si la autenticación es exitosa
+        const user = await getUser(email); // Obtiene los datos del usuario
+        console.log('LOGIN: ', user.userName); // Muestra un mensaje de bienvenida en la consola
+        return { status: 200, message: user }; // Devuelve un objeto con el estado 200 (OK) y user
+    } else {
+        throw { status: 400, message: 'Credenciales incorrectas' }; // Devuelve un error si la autenticación falla
     }
 };
 
@@ -71,8 +67,9 @@ const get = async (req) => {
         const users = await getUsersByComplex(idComplex);
         if (!users) {
             return { status: 404, message: 'Users not found' };
+        }else{
+            return { status: 200, message: users };
         }
-        return { status: 200, message: users };
     } catch (error) {
         return { status: 400, message: error.message };
     }

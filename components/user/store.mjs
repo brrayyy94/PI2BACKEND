@@ -2,17 +2,14 @@ import User from './model.mjs';
 
 export const isCorrectPassword = async (email, password) => {
     try {
-        const foundUser = await User.findOne({ email });
+        const foundUser = await User.findOne({ email: email.toLowerCase() });
         if (!foundUser) {
-            return "Correo no encontrado"; // Devuelve un mensaje si el usuario no existe
+            return false; // Devuelve un mensaje si el usuario no existe
         }
-        try {
-            const isMatch = await foundUser.comparePassword(password); // Compara la contraseña ingresada con la contraseña almacenada
-            return isMatch; // Devuelve true si la contraseña es correcta, false si no lo es
-        } catch (error) {
-            console.error('Error al comparar contraseñas:', error);
-            return false; // Devolver false si hay un error
-        }
+        const isMatch = await foundUser.comparePassword(password); // Compara la contraseña ingresada con la contraseña almacenada
+
+        return isMatch; // Devuelve true si la contraseña es correcta, false si no lo es
+        
     } catch (error) {
         console.error('Error en isCorrectPassword:', error);
         throw new Error('Error interno');

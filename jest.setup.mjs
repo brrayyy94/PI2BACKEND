@@ -1,13 +1,25 @@
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { beforeAll, afterAll } from 'jest';
+import { beforeAll, afterAll } from '@jest/globals';
 
-// Connect to a test database before running tests
+let mongoServer;
+
 beforeAll(async () => {
-    const url = `mongodb://127.0.0.1/test_database`;
-    await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    // Inicia la base de datos en memoria
+    mongoServer = await MongoMemoryServer.create();
+
+    // Obtiene la URI de la base de datos en memoria
+    const uri = mongoServer.getUri();
+
+    // Asigna la URI a la variable global __MONGO_URI__
+    global.__MONGO_URI__ = uri;
+
+    // Conecta Mongoose a la base de datos en memoria
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
-// Disconnect from the test database after running tests
 afterAll(async () => {
-    await mongoose.connection.close();
+    // Desconecta Mongoose y detiene la base de datos en memoria
+    await mongoose.disconnect();
+    await mongoServer.stop();
 });
