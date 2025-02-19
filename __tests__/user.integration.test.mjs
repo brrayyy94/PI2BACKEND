@@ -4,13 +4,26 @@ jest.mock('web-push', () => ({
 }));
 
 import request from 'supertest';
-import { jest, describe, test, expect, afterEach } from '@jest/globals';
+import { jest, describe, test, expect, afterEach, beforeAll, afterAll
+} from '@jest/globals';
 import bcryptjs from 'bcryptjs';
-import app from '../server.mjs'; // Asegúrate de exportar `app` desde tu archivo principal
+import app from '../server.mjs';
 import * as store from '../components/user/store.mjs'; // Importa el módulo store para mockear sus funciones
 
 // Mockear el módulo store
 jest.mock('../components/user/store.mjs');
+
+let server; // Servidor HTTP
+
+beforeAll(async () => {
+    // Inicia el servidor HTTP
+    server = app.listen(0);
+});
+
+afterAll(async () => {
+    // Cierra el servidor HTTP
+    server.close();
+});
 
 describe('User Component Integration Tests', () => {
     afterEach(() => {
@@ -33,7 +46,7 @@ describe('User Component Integration Tests', () => {
         // Mockear la función `addUser` del store
         store.addUser.mockResolvedValue(userData);
 
-        const response = await request(app)
+        const response = await request(server)
             .post('/user/add')
             .send(userData);
 
@@ -68,7 +81,7 @@ describe('User Component Integration Tests', () => {
             password: 'password123',
         };
 
-        const response = await request(app)
+        const response = await request(server)
             .post('/user/login')
             .send(loginData);
 
@@ -104,7 +117,7 @@ describe('User Component Integration Tests', () => {
             password: 'wrongpassword', // Contraseña incorrecta
         };
 
-        const response = await request(app)
+        const response = await request(server)
             .post('/user/login')
             .send(loginData);
 
@@ -143,7 +156,7 @@ describe('User Component Integration Tests', () => {
         // Mockear la función `getUsersByComplex` para devolver la lista de usuarios
         store.getUsersByComplex.mockResolvedValue(usersData);
 
-        const response = await request(app)
+        const response = await request(server)
             .get('/user/getByComplex/66c57ee8b91863b1f0bc2d32');
 
         expect(response.status).toBe(200);

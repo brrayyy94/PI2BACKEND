@@ -4,12 +4,24 @@ jest.mock('web-push', () => ({
 }));
 
 import request from 'supertest';
-import { jest, describe, test, expect, afterEach } from '@jest/globals';
-import app from '../server.mjs'; // Asegúrate de exportar `app` desde tu archivo principal
+import { jest, describe, test, expect, afterEach, beforeAll, afterAll} from '@jest/globals';
+import app from '../server.mjs';
 import * as store from '../components/announcements/store.mjs'; // Importa el módulo store para mockear sus funciones
 
 // Mockear el módulo store
 jest.mock('../components/announcements/store.mjs');
+
+let server; // Servidor HTTP
+
+beforeAll(async () => {
+    // Inicia el servidor HTTP
+    server = app.listen(0);
+});
+
+afterAll(async () => {
+    // Cierra el servidor HTTP
+    server.close();
+});
 
 describe('Announcements Component Integration Tests', () => {
     afterEach(() => {
@@ -28,7 +40,7 @@ describe('Announcements Component Integration Tests', () => {
         // Mockear la función `addAnoun` del store
         store.addAnoun.mockResolvedValue(announcementData);
 
-        const response = await request(app)
+        const response = await request(server)
             .post('/announcements/add')
             .send(announcementData);
 
@@ -61,7 +73,7 @@ describe('Announcements Component Integration Tests', () => {
         // Mockear la función `getAnounsByComplex` para devolver la lista de anuncios
         store.getAnounsByComplex.mockResolvedValue(announcementsData);
 
-        const response = await request(app)
+        const response = await request(server)
             .get(`/announcements/getByComplex/${idComplex}`);
 
         expect(response.status).toBe(200);
@@ -86,7 +98,7 @@ describe('Announcements Component Integration Tests', () => {
         // Mockear la función `getAnounById` para devolver el anuncio
         store.getAnounById.mockResolvedValue(announcementData);
 
-        const response = await request(app)
+        const response = await request(server)
             .get(`/announcements/getById/${announcementData._id}`);
 
         expect(response.status).toBe(200);
@@ -118,7 +130,7 @@ describe('Announcements Component Integration Tests', () => {
         // Mockear la función `getAnounsByUser` para devolver la lista de anuncios
         store.getAnounsByUser.mockResolvedValue(announcementsData);
 
-        const response = await request(app)
+        const response = await request(server)
             .get(`/announcements/getByUser/${userId}`);
 
         expect(response.status).toBe(200);
@@ -147,7 +159,7 @@ describe('Announcements Component Integration Tests', () => {
         // Mockear la función `searchAnnouncementsByKeyword` para devolver la lista de anuncios
         store.searchAnnouncementsByKeyword.mockResolvedValue(announcementsData);
 
-        const response = await request(app)
+        const response = await request(server)
             .get(`/announcements/search/${keyword}/${idComplex}`);
 
         expect(response.status).toBe(200);

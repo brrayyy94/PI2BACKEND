@@ -1,25 +1,33 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { beforeAll, afterAll } from '@jest/globals';
+import dotenv from 'dotenv';
+dotenv.config();
+import {beforeAll, afterAll, jest} from '@jest/globals';
 
-let mongoServer;
-
+// Configuración global antes de todas las pruebas
 beforeAll(async () => {
-    // Inicia la base de datos en memoria
-    mongoServer = await MongoMemoryServer.create();
+    // Mockea console.log y console.error antes de cualquier registro
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    // Obtiene la URI de la base de datos en memoria
-    const uri = mongoServer.getUri();
-
-    // Asigna la URI a la variable global __MONGO_URI__
-    global.__MONGO_URI__ = uri;
-
-    // Conecta Mongoose a la base de datos en memoria
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    try {
+        // Conecta a la base de datos
+        const url = encodeURI(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`);
+        await mongoose.connect(url);
+        console.log('Conexión establecida con la base de datos'); // Este mensaje será suprimido
+    } catch (error) {
+        // Restaura console.error para ver el mensaje de error
+        jest.spyOn(console, 'error').mockRestore();
+        console.error('Error al conectar con la base de datos:', error);
+        throw error;
+    }
 });
 
+// Configuración global después de todas las pruebas
 afterAll(async () => {
-    // Desconecta Mongoose y detiene la base de datos en memoria
-    await mongoose.disconnect();
-    await mongoServer.stop();
+    // Cierra la conexión a la base de datos
+    await mongoose.connection.close();
+    console.log('Conexión a la base de datos cerrada'); // Este mensaje será suprimido
+    
+    // Restaura los mocks
+    jest.restoreAllMocks();
 });
