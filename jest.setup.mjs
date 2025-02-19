@@ -1,22 +1,13 @@
-import {beforeAll, afterAll, jest} from '@jest/globals';
 import mongoose from 'mongoose';
+import { beforeAll, afterAll } from 'jest';
 
-jest.mock('mongoose', () => ({
-    connect: jest.fn().mockResolvedValue(true),
-    connection: {
-        close: jest.fn().mockResolvedValue(true),
-    },
-}));
-
+// Connect to a test database before running tests
 beforeAll(async () => {
-    // Mockea console.log y console.error antes de cualquier registro
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    // Mockea la conexión a la base de datos
-    await mongoose.connect('mock-url');
+    const url = `mongodb://127.0.0.1/test_database`;
+    await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
+// Disconnect from the test database after running tests
 afterAll(async () => {
-    // Mockea el cierre de la conexión
     await mongoose.connection.close();
 });

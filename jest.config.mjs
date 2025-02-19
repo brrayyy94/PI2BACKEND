@@ -3,7 +3,6 @@ export default {
       'mjs',
       'js',
     ],
-    setupFilesAfterEnv: ['./jest.setup.mjs'],
     testMatch: ['**/?(*.)+(spec|test).(m)js'],
     verbose: true,
     transform: {
