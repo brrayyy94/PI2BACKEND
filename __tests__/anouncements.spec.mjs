@@ -1,9 +1,18 @@
-import { add, getByComplex } from '../components/anouncements/controller.mjs';
-import { addAnoun, getAnounsByComplex } from '../components/anouncements/store.mjs';
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { add, getByComplex } from '../components/announcements/controller.mjs';
+import { addAnoun, getAnounsByComplex } from '../components/announcements/store.mjs';
+import { beforeAll, afterAll, jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import mongoose from 'mongoose';
 
-jest.mock('../components/anouncements/store.mjs');
+jest.mock('../components/announcements/store.mjs');
+
+beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterAll(() => {
+    jest.restoreAllMocks(); // Restaura los mocks después de las pruebas
+});
 
 describe('Announcements Controller', () => {
     let req, res;

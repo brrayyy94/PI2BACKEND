@@ -56,7 +56,8 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        lowercase: true
     },
     password: {
         type: String,
@@ -101,6 +102,8 @@ userSchema.pre('save', async function(next) {
 
 // Método para comparar la contraseña ingresada con la contraseña almacenada
 userSchema.methods.comparePassword = async function(password) {
+    console.log("Contraseña ingresada:", password);
+    console.log("Contraseña en la base de datos:", this.password);
     return await bcryptjs.compare(password, this.password);
 };
 

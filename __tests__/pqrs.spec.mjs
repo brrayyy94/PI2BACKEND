@@ -1,7 +1,16 @@
 import { add, answer, get, getByUser, close, notify, reopen, notifyOne } from '../components/pqrs/controller.mjs';
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { beforeAll, afterAll, jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { createPqrs } from '../components/pqrs/store.mjs';
 import User from '../components/user/model.mjs';
+
+beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterAll(() => {
+    jest.restoreAllMocks(); // Restaura los mocks después de las pruebas
+});
 
 jest.mock('../components/pqrs/store.mjs');
 jest.mock('../components/user/model.mjs');
