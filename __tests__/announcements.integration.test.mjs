@@ -3,6 +3,19 @@ jest.mock('web-push', () => ({
     setVapidDetails: jest.fn(), // Mockea la función setVapidDetails
 }));
 
+jest.mock('mongoose', () => {
+    const actualMongoose = jest.requireActual('mongoose'); // Obtiene la implementación real
+
+    return {
+        ...actualMongoose, // Mantiene otras funciones reales como Schema
+        connect: jest.fn().mockResolvedValue(), // Mockea la conexión
+        connection: {
+            close: jest.fn().mockResolvedValue(), // Mockea el cierre de conexión
+        },
+    };
+});
+
+
 import request from 'supertest';
 import { jest, describe, test, expect, afterEach, beforeAll, afterAll} from '@jest/globals';
 import app from '../server.mjs';
